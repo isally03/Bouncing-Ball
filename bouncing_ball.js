@@ -18,8 +18,6 @@ var padHeight = 10;
 var padWidth = 150;
 var padAngle = 0;
 
-
-
 window.onload = function () {
 	document.body.style.overflow = "hidden";
 	makeCanvas();
