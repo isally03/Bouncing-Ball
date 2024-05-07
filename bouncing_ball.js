@@ -78,9 +78,9 @@ function makeCanvas() {
 	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
 
-	canvas.style.backgroundImage = "url(\"background.jpg\")";
+	canvas.style.backgroundImage= "url(\"background.jpg\")";
 	canvas.style.backgroundRepeat= "no-repeat";
-	canvas.style.backgroundSize = sWidth + "px " + sHeight + "px";
+	canvas.style.backgroundSize= "cover";
 }
 
 function drawBall() {
