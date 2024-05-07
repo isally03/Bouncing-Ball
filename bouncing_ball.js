@@ -1,5 +1,5 @@
 var sWidth = window.innerWidth;
-var sHeight =window.innerHeight;
+var sHeight = window.innerHeight;
 var canvas;
 var ctx;
 
@@ -19,10 +19,12 @@ var padWidth = 150;
 var padAngle = 0;
 
 window.onload = function () {
-	document.body.style.overflow = "hidden";
-	makeCanvas();
-	drawBall();
-	drawPad();
+	mainMenu();
+	$("#startGame").on("click", gameStart);
+	$("#store").on("click", store);
+	$("#profiles").on("click", profiles);
+	$("#exitGame").on("click", exitGame);
+	$("#settings").on("click", settings);
 	$(document).on("keydown",movPad);
 // setInterval(drawPad, 100);
 
@@ -31,8 +33,40 @@ window.onload = function () {
 // 	console.log("키 코드: " + event.which);
 // });
 
+function mainMenu() {
+	var mainMenu = document.getElementById("mainMenu");
 
+	var startGame = document.createElement("input");
+	startGame.type = "button";
+	startGame.id = "startGame";
+	startGame.value = "게임시작";
+	mainMenu.appendChild(startGame);
 
+	var store = document.createElement("input");
+	store.type = "button";
+	store.id = "store";
+	store.value = "상점";
+	mainMenu.appendChild(store);
+
+	var profiles = document.createElement("input");
+	profiles.type = "button";
+	profiles.id = "profiles";
+	profiles.value = "프로필";
+	mainMenu.appendChild(profiles);
+
+	var exitGame = document.createElement("input");
+	exitGame.type = "button";
+	exitGame.id = "exitGame";
+	exitGame.value = "게임종료";
+	mainMenu.appendChild(exitGame);
+}
+
+function gameStart() {
+	document.getElementById("mainMenu").style.display = "none";
+	makeCanvas();
+	drawBall();
+	drawPad();
+}
 
 function makeCanvas() {
 	var element = document.createElement("canvas");
@@ -49,9 +83,9 @@ function makeCanvas() {
 	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
 
-	canvas.style.backgroundImage= "url(\"background.jpg\")";
+	canvas.style.backgroundImage = "url(\"background.jpg\")";
 	canvas.style.backgroundRepeat= "no-repeat";
-	canvas.style.backgroundSize= "cover";
+	canvas.style.backgroundSize = sWidth + "px " + sHeight + "px";
 }
 
 function drawBall() {
