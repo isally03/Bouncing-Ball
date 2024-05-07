@@ -73,12 +73,7 @@ function makeCanvas() {
 	element.width = sWidth;
 	element.height = sHeight;
 	element.setAttribute("id", "myCanvas");
-	document.body.appendChild(element);	
-
-	// console.log("can" + element.height + "  screen"+ screen.availHeight);
-	// console.log(document.body.style.height);
-	
-
+	document.body.appendChild(element);
 
 	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
@@ -90,7 +85,6 @@ function makeCanvas() {
 
 function drawBall() {
 	
-
 	ctx.beginPath();
     ctx.arc(ballX, ballY, ballRadius, 0, Math.PI*2); //(x좌표,y좌표,원 반지름, 시작각도, 끝각도, 그리는 방향)
     ctx.fillStyle = ballColor;
