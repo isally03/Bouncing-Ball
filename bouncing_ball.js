@@ -17,6 +17,8 @@ var padY;
 var padHeight;
 var padWidth;
 
+var ball;
+
 window.onload = function () {
 	mainMenu();
 	$("#startGame").on("click", gameStart);
@@ -60,6 +62,7 @@ function gameStart() {
 	makeCanvas();
 	drawBall();
 	drawPad();
+	ball = setInterval(movBall, 10);
 }
 
 function gameInit() {
@@ -109,11 +112,13 @@ function makeCanvas() {
 }
 
 function drawBall() {
+	ctx.save();
 	ctx.beginPath();
     ctx.arc(ballX, ballY, ballRadius, 0, Math.PI*2); //(x좌표,y좌표,원 반지름, 시작각도, 끝각도, 그리는 방향)
     ctx.fillStyle = ballColor;
     ctx.fill();
     ctx.closePath();
+	ctx.restore();
 }
 
 function drawPad() {
@@ -128,3 +133,26 @@ function draw(){
 	drawBall();
 	drawPad();
 }
+
+function movBall() {
+	ctx.save();
+	ctx.beginPath();
+    ctx.arc(ballX, ballY, ballRadius + 1, 0, Math.PI*2);
+	ctx.closePath();
+	ctx.clip();
+	ctx.clearRect(ballX - ballRadius - 1, ballY - ballRadius - 1, ballRadius * 2 + 2, ballRadius * 2 + 2);
+	ctx.restore();
+	if (ballX < ballRadius || ballX > sWidth - ballRadius)
+		dx = -dx;
+	if (ballY < ballRadius || ballY > sHeight - ballRadius)
+		dy = -dy;
+	ballX += dx;
+	ballY += dy;
+	drawBall();
+	drawPad();
+}
+
+function stopBall() {
+	clearInterval(ball);
+}
+
