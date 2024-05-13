@@ -81,16 +81,14 @@ function gameInit() {
 	padY = sHeight-40;
 	padHeight = 10;
 	padWidth = 150;
+	
+	canvas = document.getElementById("myCanvas");
+	canvas.width = sWidth;
+	canvas.height = sHeight;
+	canvas.hidden = false;
 }
 
 function makeCanvas() {
-	var element = document.createElement("canvas");
-	element.width = sWidth;
-	element.height = sHeight;
-	element.setAttribute("id", "myCanvas");
-	document.body.appendChild(element);
-
-	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
 
 	canvas.style.backgroundImage= "url(\"background.jpg\")";
@@ -144,7 +142,11 @@ function movBall() {
 	ctx.restore();
 	if (ballX < ballRadius || ballX > sWidth - ballRadius)
 		dx = -dx;
-	if (ballY < ballRadius || ballY > sHeight - ballRadius)
+	if (ballY > sHeight - ballRadius) {
+		gameOver();
+		return;
+	}
+	if ((ballY >= padY - padHeight / 2 - ballRadius && ballX >= padX - padWidth / 2 && ballY <= padX + padWidth / 2) || ballY < ballRadius)
 		dy = -dy;
 	ballX += dx;
 	ballY += dy;
@@ -152,7 +154,8 @@ function movBall() {
 	drawPad();
 }
 
-function stopBall() {
+function gameOver() {
 	clearInterval(ball);
+	canvas.hidden = true;
+	document.getElementById("mainMenu").style.display = "block";
 }
-
