@@ -1,22 +1,21 @@
-var sWidth = window.innerWidth;
-var sHeight = window.innerHeight;
+var sWidth;
+var sHeight;
 var canvas;
 var ctx;
 
-var ballX = sWidth/2;
-var ballY = sHeight-100;
-var velocityX = 5;
-var velocityY = 5;
-var dx = 3;
-var dy = 3;
-var ballRadius = 15;
-var ballColor = "black";
+var ballX;
+var ballY;
+var velocityX;
+var velocityY;
+var dx;
+var dy;
+var ballRadius;
+var ballColor;
 
-var padX = sWidth/2;
-var padY = sHeight-40;
-var padHeight = 10;
-var padWidth = 150;
-var padAngle = 0;
+var padX;
+var padY;
+var padHeight;
+var padWidth;
 
 window.onload = function () {
 	mainMenu();
@@ -25,13 +24,7 @@ window.onload = function () {
 	$("#profiles").on("click", profiles);
 	$("#exitGame").on("click", exitGame);
 	$("#settings").on("click", settings);
-	$(document).on("keydown",movPad);
-// setInterval(drawPad, 100);
-
 }
-// $(document).keydown(function(event){
-// 	console.log("키 코드: " + event.which);
-// });
 
 function mainMenu() {
 	var mainMenu = document.getElementById("mainMenu");
@@ -63,9 +56,28 @@ function mainMenu() {
 
 function gameStart() {
 	document.getElementById("mainMenu").style.display = "none";
+	gameInit();
 	makeCanvas();
 	drawBall();
 	drawPad();
+}
+
+function gameInit() {
+	sWidth = document.documentElement.clientWidth;
+	sHeight = document.documentElement.clientHeight;
+	ballX = sWidth/2;
+	ballY = sHeight-100;
+	velocityX = 5;
+	velocityY = 5;
+	dx = 3;
+	dy = 3;
+	ballRadius = 15;
+	ballColor = "black";
+
+	padX = sWidth/2;
+	padY = sHeight-40;
+	padHeight = 10;
+	padWidth = 150;
 }
 
 function makeCanvas() {
@@ -81,26 +93,34 @@ function makeCanvas() {
 	canvas.style.backgroundImage= "url(\"background.jpg\")";
 	canvas.style.backgroundRepeat= "no-repeat";
 	canvas.style.backgroundSize= "cover";
+	$("#myCanvas").mousemove(function(e) {
+		ctx.save();
+		ctx.translate(padX,padY);
+		ctx.clearRect(-padWidth/2, -padHeight/2, padWidth, padHeight);
+		ctx.restore();
+		if (e.pageX < padWidth / 2)
+			padX = padWidth / 2;
+		else if (e.pageX + padWidth / 2 > sWidth)
+			padX = sWidth - padWidth / 2;
+		else
+			padX = e.pageX;
+		drawPad();
+	});
 }
 
 function drawBall() {
-	
 	ctx.beginPath();
     ctx.arc(ballX, ballY, ballRadius, 0, Math.PI*2); //(x좌표,y좌표,원 반지름, 시작각도, 끝각도, 그리는 방향)
     ctx.fillStyle = ballColor;
     ctx.fill();
     ctx.closePath();
-
 }
 
 function drawPad() {
 	ctx.save();
 	ctx.translate(padX,padY);
-	ctx.rotate(padAngle * Math.PI / 180);
 	ctx.fillRect(-padWidth/2, -padHeight/2, padWidth, padHeight);
 	ctx.restore();
-	
-
 }
 
 function draw(){
@@ -108,17 +128,3 @@ function draw(){
 	drawBall();
 	drawPad();
 }
-
-function movPad(event){ //pad 각도 변경
-	if(event.key=="w"){
-		padAngle +=2;
-
-	}
-	else if(event.key =="s"){ 
-		padAngle -=2;
-	}
-	// console.log("movPad: "+ event.key);
-	draw();
-}
-
-

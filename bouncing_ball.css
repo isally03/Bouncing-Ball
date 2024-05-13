@@ -1,4 +1,4 @@
-*{ padding: 0; margin: 0; }
+* { padding: 0; margin: 0; }
 li { list-style: none; }
 a { text-decoration: none; }
 img { border: 0; }
@@ -31,6 +31,8 @@ img { border: 0; }
     position: absolute;
     right: 20px;
     bottom: 20px;
+    width: 60px;
+    height: 60px;
 }
 
 #settings_Icon {
