@@ -26,6 +26,7 @@ var brickRowCountMax; // 8
 var brickColumnCountMax; // 33 
 var bricks = []; // 전체화면 기준, 8*33배열
 var brickRate;
+var brickCnt;
 
 var ball;
 var ballMoveSpeed;
@@ -69,6 +70,7 @@ function mainMenu() {
 
 function gameStart() {
 	document.getElementById("mainMenu").style.display = "none";
+	document.getElementById("settings_Icon").style.display = "none";
 	gameInit();
 	makeCanvas();
 	drawBall();
@@ -117,12 +119,12 @@ function gameInit() {
 	canvas.hidden = false;
 
 	brickMargin = 10;
-	brickRowCountMax = 8;
-	brickColumnCountMax = 20;
+	brickRowCountMax = 12;
+	brickColumnCountMax = 30;
 	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
 	brickSideMargin = brickMargin + brickLength / 2;
 	brickTopMargin = brickMargin + brickLength / 2;
-	brickRate = 10;
+	brickRate = 5;
 
 }
 
@@ -188,33 +190,36 @@ function drawBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽�
 }
 
 function breakBrick() {
-	for (var i = 0; i < brickRowCountMax; i++) {
-		var y = brickTopMargin + brickLength * i;
-		for (var j = 0; j < brickColumnCountMax; j++) {
-			var x = brickSideMargin + brickLength * j;
-			if (bricks[i][j] == 1) {
+	for (var i = 0; i < 2; i++) {
+		var idxY = Math.floor((ballY - brickTopMargin) / brickLength) + i;
+		var y = idxY * brickLength + brickTopMargin;
+		for (var j = 0; j < 2; j++) {
+			var idxX = Math.floor((ballX - brickSideMargin) / brickLength) + j;
+			var x = idxX * brickLength + brickSideMargin;
+			console.log(idxY, idxX);
+			if (idxY < brickRowCountMax && idxY >= 0 && idxX < brickColumnCountMax && idxX >= 0 && bricks[idxY][idxX] == 1) {
 				if (dx > 0 && ballX < x && ballX + ballRadius > x && ballY > y && ballY < y + brickLength) { // LeftSide
 					dx = -dx;
-					bricks[i][j] = 0;
+					bricks[idxY][idxX] = 0; x
 					console.log("Left");
 				}
 				else if (dy > 0 && ballY < y && ballY + ballRadius > y && ballX > x && ballX < x + brickLength) { // TopSide
 					dy = -dy;
-					bricks[i][j] = 0;
+					bricks[idxY][idxX] = 0;
 					console.log("Top");
 				}
 				else if (dx < 0 && ballX > x && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
 					dx = -dx;
-					bricks[i][j] = 0;
+					bricks[idxY][idxX] = 0;
 					console.log("Right");
 				}
 				else if (dy < 0 && ballY > y && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
 					dy = -dy;
-					bricks[i][j] = 0;
+					bricks[idxY][idxX] = 0;
 					console.log("Bottom");
 				}
 
-				if (bricks[i][j] == 0) {
+				if (bricks[idxY][idxX] == 0) {
 					ctx.save();
 					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
 					ctx.restore();
@@ -253,17 +258,22 @@ function gameOver() {
 	clearInterval(ball);
 	canvas.hidden = true;
 	document.getElementById("mainMenu").style.display = "block";
+	document.getElementById("settings_Icon").style.display = "block";
 }
 
 function stageOne() {
-	bricks[0] = [0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[1] = [0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[2] = [0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 
 	for (var i = 0; i < brickRowCountMax; i++) {
 		for (var j = 0; j < brickColumnCountMax; j++) {
