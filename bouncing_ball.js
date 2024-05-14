@@ -31,6 +31,8 @@ var brickCnt;
 var ball;
 var ballMoveSpeed;
 
+var currentStage;
+
 window.onload = function () {
 	mainMenu();
 	$("#startGame").on("click", gameStart);
@@ -70,13 +72,9 @@ function mainMenu() {
 
 function gameStart() {
 	$("#mainMenu").hide();
-	$("settings_Icon").hide();
-	gameInit();
-	makeCanvas();
-	drawBall();
-	drawPad();
-	ball = setInterval(movBall, ballMoveSpeed);
-	stageOne();
+	$("#settings_Icon").hide();
+	currentStage = 1;
+	stage(currentStage);
 }
 
 function challenge() {
@@ -103,7 +101,7 @@ function gameInit() {
 	velocityX = 5;
 	velocityY = 5;
 	dx = 5;
-	dy = 5;
+	dy = -5;
 	ballRadius = 15;
 	ballColor = "black";
 	ballMoveSpeed = 10;
@@ -124,12 +122,12 @@ function gameInit() {
 	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
 	brickSideMargin = brickMargin + brickLength / 2;
 	brickTopMargin = brickMargin + brickLength / 2;
-	brickRate = 5;
-
+	brickRate = 10;
 }
 
 function makeCanvas() {
 	ctx = canvas.getContext("2d");
+	ctx.clearRect(0, 0, sWidth, sHeight);
 
 	canvas.style.backgroundImage = "url(\"background.jpg\")";
 	canvas.style.backgroundRepeat = "no-repeat";
@@ -220,6 +218,7 @@ function breakBrick() {
 				}
 
 				if (bricks[idxY][idxX] == 0) {
+					brickCnt--;
 					ctx.save();
 					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
 					ctx.restore();
@@ -252,6 +251,11 @@ function movBall() {
 	ballY += dy;
 	drawBall();
 	drawPad();
+	if (brickCnt == 0) {
+		clearInterval(ball);
+		answer();
+		return;
+	}
 }
 
 function gameOver() {
@@ -261,7 +265,21 @@ function gameOver() {
 	$("#settings_Icon").show();
 }
 
+function stage(n) {
+	if (n == 1) stageOne();
+	else if (n == 2) stageTwo();
+	else if (n == 3) stageThree();
+	else endings();
+}
+
 function stageOne() {
+	gameInit();
+	makeCanvas();
+	drawBall();
+	drawPad();
+	ball = setInterval(movBall, ballMoveSpeed);
+
+	brickCnt = 0;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
@@ -279,11 +297,92 @@ function stageOne() {
 		for (var j = 0; j < brickColumnCountMax; j++) {
 			if (bricks[i][j] == 0) {
 				var randomInt = Math.floor(Math.random() * brickRate);
-				if (randomInt == 2)
+				if (randomInt == 0) {
 					bricks[i][j] = 1;
+					brickCnt++;
+				}
 			}
 		}
 	}
 	drawBricks();
 }
 
+function answer() {
+	alert("Stage " + currentStage + "clear!");
+	currentStage++;
+	stage(currentStage);
+}
+
+function stageTwo() {
+	gameInit();
+	makeCanvas();
+	drawBall();
+	drawPad();
+	ball = setInterval(movBall, ballMoveSpeed);
+	
+	brickCnt = 0;
+	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+
+	for (var i = 0; i < brickRowCountMax; i++) {
+		for (var j = 0; j < brickColumnCountMax; j++) {
+			if (bricks[i][j] == 0) {
+				var randomInt = Math.floor(Math.random() * brickRate);
+				if (randomInt == 0) {
+					bricks[i][j] = 1;
+					brickCnt++;
+				}
+			}
+		}
+	}
+	drawBricks();
+}
+
+function stageThree() {
+	gameInit();
+	makeCanvas();
+	drawBall();
+	drawPad();
+	ball = setInterval(movBall, ballMoveSpeed);
+	
+	brickCnt = 0;
+	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+
+	for (var i = 0; i < brickRowCountMax; i++) {
+		for (var j = 0; j < brickColumnCountMax; j++) {
+			if (bricks[i][j] == 0) {
+				var randomInt = Math.floor(Math.random() * brickRate);
+				if (randomInt == 0) {
+					bricks[i][j] = 1;
+					brickCnt++;
+				}
+			}
+		}
+	}
+	drawBricks();
+}
+
+function endings() {
+	alert("Clear!");
+}
