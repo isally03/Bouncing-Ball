@@ -22,9 +22,9 @@ var brickMargin;
 var brickSideMargin;
 var brickTopMargin;
 var brickBottomMargin;
-var brickRowCountMax; // 8
-var brickColumnCountMax; // 33 
-var bricks = []; // 전체화면 기준, 8*33배열
+var brickRowCountMax;
+var brickColumnCountMax;
+var bricks = [];
 var brickRate;
 var brickCnt;
 
@@ -69,8 +69,8 @@ function mainMenu() {
 }
 
 function gameStart() {
-	document.getElementById("mainMenu").style.display = "none";
-	document.getElementById("settings_Icon").style.display = "none";
+	$("#mainMenu").hide();
+	$("settings_Icon").hide();
 	gameInit();
 	makeCanvas();
 	drawBall();
@@ -257,8 +257,8 @@ function movBall() {
 function gameOver() {
 	clearInterval(ball);
 	canvas.hidden = true;
-	document.getElementById("mainMenu").style.display = "block";
-	document.getElementById("settings_Icon").style.display = "block";
+	$("#mainMenu").show();
+	$("#settings_Icon").show();
 }
 
 function stageOne() {
