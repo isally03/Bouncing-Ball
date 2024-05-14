@@ -17,12 +17,23 @@ var padY;
 var padHeight;
 var padWidth;
 
+var brickLength;
+var brickMargin;
+var brickSideMargin;
+var brickTopMargin;
+var brickBottomMargin;
+var brickRowCountMax; // 8
+var brickColumnCountMax; // 33 
+var bricks = []; // 전체화면 기준, 8*33배열
+var brickRate;
+
 var ball;
+var ballMoveSpeed;
 
 window.onload = function () {
 	mainMenu();
 	$("#startGame").on("click", gameStart);
-	$("#store").on("click", store);
+	$("challenge").on("click", challenge);
 	$("#profiles").on("click", profiles);
 	$("#exitGame").on("click", exitGame);
 	$("#settings").on("click", settings);
@@ -37,11 +48,11 @@ function mainMenu() {
 	startGame.value = "게임시작";
 	mainMenu.appendChild(startGame);
 
-	var store = document.createElement("input");
-	store.type = "button";
-	store.id = "store";
-	store.value = "상점";
-	mainMenu.appendChild(store);
+	var challenge = document.createElement("input");
+	challenge.type = "button";
+	challenge.id = "challenge";
+	challenge.value = "도전 과제";
+	mainMenu.appendChild(challenge);
 
 	var profiles = document.createElement("input");
 	profiles.type = "button";
@@ -62,42 +73,69 @@ function gameStart() {
 	makeCanvas();
 	drawBall();
 	drawPad();
-	ball = setInterval(movBall, 10);
+	ball = setInterval(movBall, ballMoveSpeed);
+	stageOne();
+}
+
+function challenge() {
+	// 작성 요함
+}
+
+function profiles() {
+	// 작성 요함
+}
+
+function exitGame() {
+	// 작성 요함
+}
+
+function settings() {
+	// 작성 요함
 }
 
 function gameInit() {
 	sWidth = document.documentElement.clientWidth;
 	sHeight = document.documentElement.clientHeight;
-	ballX = sWidth/2;
-	ballY = sHeight-100;
+	ballX = sWidth / 2;
+	ballY = sHeight - 100;
 	velocityX = 5;
 	velocityY = 5;
-	dx = 3;
-	dy = 3;
+	dx = 5;
+	dy = 5;
 	ballRadius = 15;
 	ballColor = "black";
+	ballMoveSpeed = 10;
 
-	padX = sWidth/2;
-	padY = sHeight-40;
+	padX = sWidth / 2;
+	padY = sHeight - 40;
 	padHeight = 10;
 	padWidth = 150;
-	
+
 	canvas = document.getElementById("myCanvas");
 	canvas.width = sWidth;
 	canvas.height = sHeight;
 	canvas.hidden = false;
+
+	brickMargin = 10;
+	brickRowCountMax = 8;
+	brickColumnCountMax = 20;
+	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
+	brickSideMargin = brickMargin + brickLength / 2;
+	brickTopMargin = brickMargin + brickLength / 2;
+	brickRate = 10;
+
 }
 
 function makeCanvas() {
 	ctx = canvas.getContext("2d");
 
-	canvas.style.backgroundImage= "url(\"background.jpg\")";
-	canvas.style.backgroundRepeat= "no-repeat";
-	canvas.style.backgroundSize= "cover";
-	$("#myCanvas").mousemove(function(e) {
+	canvas.style.backgroundImage = "url(\"background.jpg\")";
+	canvas.style.backgroundRepeat = "no-repeat";
+	canvas.style.backgroundSize = "cover";
+	$("#myCanvas").mousemove(function (e) {
 		ctx.save();
-		ctx.translate(padX,padY);
-		ctx.clearRect(-padWidth/2, -padHeight/2, padWidth, padHeight);
+		ctx.translate(padX, padY);
+		ctx.clearRect(-padWidth / 2, -padHeight / 2, padWidth + 1, padHeight);
 		ctx.restore();
 		if (e.pageX < padWidth / 2)
 			padX = padWidth / 2;
@@ -109,44 +147,101 @@ function makeCanvas() {
 	});
 }
 
+function draw() {
+	ctx.clearRect(0, 0, sWidth, sHeight);
+	drawBall();
+	drawPad();
+}
+
 function drawBall() {
 	ctx.save();
 	ctx.beginPath();
-    ctx.arc(ballX, ballY, ballRadius, 0, Math.PI*2); //(x좌표,y좌표,원 반지름, 시작각도, 끝각도, 그리는 방향)
-    ctx.fillStyle = ballColor;
-    ctx.fill();
-    ctx.closePath();
+	ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2); //(x좌표,y좌표,원 반지름, 시작각도, 끝각도, 그리는 방향)
+	ctx.fillStyle = ballColor;
+	ctx.fill();
+	ctx.closePath();
 	ctx.restore();
 }
 
 function drawPad() {
 	ctx.save();
-	ctx.translate(padX,padY);
-	ctx.fillRect(-padWidth/2, -padHeight/2, padWidth, padHeight);
+	ctx.translate(padX, padY);
+	ctx.fillRect(-padWidth / 2, -padHeight / 2, padWidth, padHeight);
 	ctx.restore();
 }
 
-function draw(){
-	ctx.clearRect(0,0,sWidth,sHeight);
-	drawBall();
-	drawPad();
+function drawBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽돌
+	for (var i = 0; i < brickRowCountMax; i++) {
+		var y = brickTopMargin + brickLength * i;
+		for (var j = 0; j < brickColumnCountMax; j++) {
+			var x = brickSideMargin + brickLength * j;
+			if (bricks[i][j] != 0) {
+				ctx.save();
+				ctx.fillStyle = "gray";
+				ctx.fillRect(x, y, brickLength, brickLength);
+				ctx.fillStyle = "black";
+				ctx.strokeRect(x, y, brickLength, brickLength);
+				ctx.restore();
+			}
+		}
+	}
+}
+
+function breakBrick() {
+	for (var i = 0; i < brickRowCountMax; i++) {
+		var y = brickTopMargin + brickLength * i;
+		for (var j = 0; j < brickColumnCountMax; j++) {
+			var x = brickSideMargin + brickLength * j;
+			if (bricks[i][j] == 1) {
+				if (dx > 0 && ballX < x && ballX + ballRadius > x && ballY > y && ballY < y + brickLength) { // LeftSide
+					dx = -dx;
+					bricks[i][j] = 0;
+					console.log("Left");
+				}
+				else if (dy > 0 && ballY < y && ballY + ballRadius > y && ballX > x && ballX < x + brickLength) { // TopSide
+					dy = -dy;
+					bricks[i][j] = 0;
+					console.log("Top");
+				}
+				else if (dx < 0 && ballX > x && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
+					dx = -dx;
+					bricks[i][j] = 0;
+					console.log("Right");
+				}
+				else if (dy < 0 && ballY > y && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
+					dy = -dy;
+					bricks[i][j] = 0;
+					console.log("Bottom");
+				}
+
+				if (bricks[i][j] == 0) {
+					ctx.save();
+					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
+					ctx.restore();
+					return;
+				}
+			}
+		}
+	}
 }
 
 function movBall() {
 	ctx.save();
 	ctx.beginPath();
-    ctx.arc(ballX, ballY, ballRadius + 1, 0, Math.PI*2);
+	ctx.arc(ballX, ballY, ballRadius + 1, 0, Math.PI * 2);
 	ctx.closePath();
 	ctx.clip();
 	ctx.clearRect(ballX - ballRadius - 1, ballY - ballRadius - 1, ballRadius * 2 + 2, ballRadius * 2 + 2);
 	ctx.restore();
+	breakBrick();
+	drawBricks();
 	if (ballX < ballRadius || ballX > sWidth - ballRadius)
 		dx = -dx;
 	if (ballY > sHeight - ballRadius) {
 		gameOver();
 		return;
 	}
-	if ((ballY >= padY - padHeight / 2 - ballRadius && ballX >= padX - padWidth / 2 && ballY <= padX + padWidth / 2) || ballY < ballRadius)
+	if ((dy > 0 && ballY >= padY - padHeight / 2 - ballRadius && ballY <= padY + padHeight / 2 && ballX > padX - padWidth / 2 && ballX < padX + padWidth / 2) || ballY < ballRadius)
 		dy = -dy;
 	ballX += dx;
 	ballY += dy;
@@ -159,3 +254,26 @@ function gameOver() {
 	canvas.hidden = true;
 	document.getElementById("mainMenu").style.display = "block";
 }
+
+function stageOne() {
+	bricks[0] = [0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[1] = [0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[2] = [0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+
+	for (var i = 0; i < brickRowCountMax; i++) {
+		for (var j = 0; j < brickColumnCountMax; j++) {
+			if (bricks[i][j] == 0) {
+				var randomInt = Math.floor(Math.random() * brickRate);
+				if (randomInt == 2)
+					bricks[i][j] = 1;
+			}
+		}
+	}
+	drawBricks();
+}
+
