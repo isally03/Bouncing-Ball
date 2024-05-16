@@ -238,7 +238,6 @@ function breakBrick() {
 				else if (dy < 0 && ballY > y + brickLength && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
 					dy = -dy;
 					bricks[idxY][idxX] = 0;
-					console.log("bottom");
 				}
 
 				if (bricks[idxY][idxX] == 0) {
