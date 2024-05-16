@@ -30,6 +30,8 @@ var brickCnt;
 
 var ball;
 var ballMoveSpeed;
+
+var score;
 var timebar;
 var timebarHeight;
 var timePerSecond;
@@ -78,6 +80,7 @@ function gameStart() {
 	$("#mainMenu").hide();
 	$("#settings_Icon").hide();
 	currentStage = 1;
+	score = 0;
 	stage(currentStage);
 }
 
@@ -213,10 +216,10 @@ function drawBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽�
 }
 
 function breakBrick() {
-	for (var i = 0; i < 2; i++) {
+	for (var i = 0; i != 2 * Math.sign(dy); i += 1 * Math.sign(dy)) {
 		var idxY = Math.floor((ballY - brickTopMargin) / brickLength) + i;
 		var y = idxY * brickLength + brickTopMargin;
-		for (var j = 0; j < 2; j++) {
+		for (var j = 0; j != 2 * Math.sign(dx); j += 1 * Math.sign(dx)) {
 			var idxX = Math.floor((ballX - brickSideMargin) / brickLength) + j;
 			var x = idxX * brickLength + brickSideMargin;
 			if (idxY < brickRowCountMax && idxY >= 0 && idxX < brickColumnCountMax && idxX >= 0 && bricks[idxY][idxX] == 1) {
@@ -228,13 +231,14 @@ function breakBrick() {
 					dy = -dy;
 					bricks[idxY][idxX] = 0;
 				}
-				else if (dx < 0 && ballX > x && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
+				else if (dx < 0 && ballX > x + brickLength && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
 					dx = -dx;
 					bricks[idxY][idxX] = 0;
 				}
-				else if (dy < 0 && ballY > y && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
+				else if (dy < 0 && ballY > y + brickLength && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
 					dy = -dy;
 					bricks[idxY][idxX] = 0;
+					console.log("bottom");
 				}
 
 				if (bricks[idxY][idxX] == 0) {
