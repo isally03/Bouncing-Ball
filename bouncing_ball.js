@@ -101,8 +101,8 @@ function settings() {
 }
 
 function gameInit() {
-	sWidth = document.documentElement.clientWidth;
-	sHeight = document.documentElement.clientHeight;
+	sWidth = $(document).width();
+	sHeight = $(document).height();
 	ballX = sWidth / 2;
 	ballY = sHeight - 100;
 	velocityX = 5;
@@ -227,15 +227,15 @@ function breakBrick() {
 					dx = -dx;
 					bricks[idxY][idxX] = 0;
 				}
-				else if (dy > 0 && ballY < y && ballY + ballRadius > y && ballX > x && ballX < x + brickLength) { // TopSide
+				if (dy > 0 && ballY < y && ballY + ballRadius > y && ballX > x && ballX < x + brickLength) { // TopSide
 					dy = -dy;
 					bricks[idxY][idxX] = 0;
 				}
-				else if (dx < 0 && ballX > x + brickLength && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
+				if (dx < 0 && ballX > x + brickLength && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
 					dx = -dx;
 					bricks[idxY][idxX] = 0;
 				}
-				else if (dy < 0 && ballY > y + brickLength && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
+				if (dy < 0 && ballY > y + brickLength && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
 					dy = -dy;
 					bricks[idxY][idxX] = 0;
 				}
