@@ -235,10 +235,10 @@ function gameInit() {
 	ballY = sHeight - 100;
 	velocityX = 5;
 	velocityY = 5;
-	dx = 2;
-	dy = -2;
+	dx = 5;
+	dy = -5;
 	ballRadius = 15;
-	ballMoveSpeed = 2;
+	ballMoveSpeed = 10;
 
 	padX = sWidth / 2;
 	padY = sHeight - 40;
@@ -256,7 +256,7 @@ function gameInit() {
 	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
 	brickSideMargin = brickMargin + brickLength / 2;
 	brickTopMargin = brickMargin + brickLength / 2;
-	brickRate = 20;
+	brickRate = 10;
 
 	red = 115;
 	green = 103;
@@ -367,23 +367,11 @@ function breakBrick() {
 			var idxX = Math.floor((ballX - brickSideMargin) / brickLength) + j;
 			var x = idxX * brickLength + brickSideMargin;
 			if (idxY < brickRowCountMax && idxY >= 0 && idxX < brickColumnCountMax && idxX >= 0 && bricks[idxY][idxX] == 1) {
-				if (dx > 0 && ballX < x && ballX + ballRadius > x && ballY > y && ballY < y + brickLength) { // LeftSide
-					dx = -dx;
+				if (detectCollision(x, y) != null) {
 					bricks[idxY][idxX] = 0;
+					if (detectCollision(x, y) == "side") { dx = -dx; }
+					else { dy = -dy; }
 				}
-				if (dy > 0 && ballY < y && ballY + ballRadius > y && ballX > x && ballX < x + brickLength) { // TopSide
-					dy = -dy;
-					bricks[idxY][idxX] = 0;
-				}
-				if (dx < 0 && ballX > x + brickLength && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
-					dx = -dx;
-					bricks[idxY][idxX] = 0;
-				}
-				if (dy < 0 && ballY > y + brickLength && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
-					dy = -dy;
-					bricks[idxY][idxX] = 0;
-				}
-
 				if (bricks[idxY][idxX] == 0) {
 					brickCnt--;
 					ctx.save();
@@ -394,6 +382,20 @@ function breakBrick() {
 			}
 		}
 	}
+}
+
+function detectCollision(brickX, brickY) {
+	var distX = ballX - Math.max(brickX, Math.min(ballX, brickX + brickLength));
+	var distY = ballY - Math.max(brickY, Math.min(ballY, brickY + brickLength));
+	if (distX * distX + distY * distY < ballRadius * ballRadius) {
+		if (Math.abs(distX) > Math.abs(distY)) {
+			return "side";
+		}
+		else {
+			return "above";
+		}
+	}
+	return null;
 }
 
 function movBall() {
@@ -481,9 +483,9 @@ function makeRandomBricks() {
 
 function stageOne() {
 	timePerSecond = 18;
-	bricks[0] = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,];
-	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,];
+	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
