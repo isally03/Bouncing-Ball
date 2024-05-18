@@ -254,6 +254,8 @@ function gameInit() {
 	timebarHeight = 20;
 	backImage="url(\"background1.jpg\")"
 	ballColor="black";
+	backgroundMusic.src="backgroundmusic1.wav";
+	gameoverMusic.src="gameover1.wav";
 }
 
 function makeCanvas() {
