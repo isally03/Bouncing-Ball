@@ -227,8 +227,8 @@ function gameInit() {
 	ballY = sHeight - 100;
 	velocityX = 5;
 	velocityY = 5;
-	dx = 5;
-	dy = -5;
+	dx = 4;
+	dy = -4;
 	ballRadius = 15;
 	ballMoveSpeed = 10;
 
@@ -242,13 +242,13 @@ function gameInit() {
 	canvas.height = sHeight;
 	canvas.hidden = false;
 
-	brickMargin = 10;
 	brickRowCountMax = 12;
 	brickColumnCountMax = 30;
+	brickMargin = sWidth % (brickColumnCountMax + 1) / 2;
 	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
 	brickSideMargin = brickMargin + brickLength / 2;
 	brickTopMargin = brickMargin + brickLength / 2;
-	brickRate = 10;
+	brickRate = 1000000;
 
 	timeX = 0;
 	timebarHeight = 20;
@@ -366,7 +366,7 @@ function breakBrick() {
 				if (bricks[idxY][idxX] == 0) {
 					brickCnt--;
 					ctx.save();
-					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
+					ctx.clearRect(x - 2, y - 2, brickLength + 4, brickLength + 4);
 					ctx.restore();
 					return;
 				}
@@ -452,15 +452,17 @@ function makeRandomBricks() {
 					brickCnt++;
 				}
 			}
+			else if (bricks[i][j] == 1)
+				brickCnt++;
 		}
 	}
 }
 
 function stageOne() {
 	timePerSecond = 180;
-	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[0] = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,];
+	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,];
 	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
