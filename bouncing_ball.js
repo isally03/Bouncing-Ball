@@ -37,6 +37,14 @@ var timebarHeight;
 var timePerSecond;
 var timeX;
 
+var red;
+var redPerSecond;
+var green;
+var greenPerSecond;
+var blue;
+var bluePerSecond;
+
+
 var currentStage;
 var backImage="url(\"background1.jpg\")";
 var backgroundMusic=new Audio("backgroundmusic1.wav");
@@ -227,10 +235,10 @@ function gameInit() {
 	ballY = sHeight - 100;
 	velocityX = 5;
 	velocityY = 5;
-	dx = 4;
-	dy = -4;
+	dx = 2;
+	dy = -2;
 	ballRadius = 15;
-	ballMoveSpeed = 10;
+	ballMoveSpeed = 2;
 
 	padX = sWidth / 2;
 	padY = sHeight - 40;
@@ -248,7 +256,11 @@ function gameInit() {
 	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
 	brickSideMargin = brickMargin + brickLength / 2;
 	brickTopMargin = brickMargin + brickLength / 2;
-	brickRate = 1000000;
+	brickRate = 20;
+
+	red = 115;
+	green = 103;
+	blue = 240;
 
 	timeX = 0;
 	timebarHeight = 20;
@@ -305,20 +317,29 @@ function drawPad() {
 }
 
 function drawTimeBar() {
-	ctx.save();
-	ctx.fillStyle = "#3CB371";
-	ctx.fillRect(0, sHeight - timebarHeight, sWidth, timebarHeight);
-	ctx.restore();
+	redPerSecond = (255 - red) / timePerSecond;
+	greenPerSecond = - green / timePerSecond;
+	bluePerSecond = - blue / timePerSecond;
+	removeTimeBar();
 	timebar = setInterval(removeTimeBar, 1000);
 }
 
 function removeTimeBar() {
 	ctx.save();
-	ctx.clearRect(timeX, sHeight - timebarHeight, sWidth / timePerSecond, timebarHeight);
+	ctx.clearRect(0, sHeight - timebarHeight, sWidth, timebarHeight);
+	ctx.fillStyle = makeRGB(red, green, blue);
+	ctx.fillRect(timeX, sHeight - timebarHeight, sWidth - timeX, timebarHeight);
+	red += redPerSecond;
+	green += greenPerSecond;
+	blue += bluePerSecond;
 	timeX += sWidth / timePerSecond;
 	if (timeX >= sWidth)
 		gameOver();
 	ctx.restore();
+}
+
+function makeRGB(a, b, c) {
+	return "rgb(" + Math.floor(a) + ", " + Math.floor(b) + ", " + Math.floor(c) + ")";
 }
 
 function drawBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽돌
@@ -366,7 +387,7 @@ function breakBrick() {
 				if (bricks[idxY][idxX] == 0) {
 					brickCnt--;
 					ctx.save();
-					ctx.clearRect(x - 2, y - 2, brickLength + 4, brickLength + 4);
+					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
 					ctx.restore();
 					return;
 				}
@@ -459,7 +480,7 @@ function makeRandomBricks() {
 }
 
 function stageOne() {
-	timePerSecond = 180;
+	timePerSecond = 18;
 	bricks[0] = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,];
@@ -475,7 +496,7 @@ function stageOne() {
 }
 
 function stageTwo() {
-	timePerSecond = 150;
+	timePerSecond = 15;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
@@ -491,7 +512,7 @@ function stageTwo() {
 }
 
 function stageThree() {
-	timePerSecond = 120;
+	timePerSecond = 12;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
