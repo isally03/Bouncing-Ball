@@ -37,21 +37,16 @@ var timebarHeight;
 var timePerSecond;
 var timeX;
 
-var red;
-var redPerSecond;
-var green;
-var greenPerSecond;
-var blue;
-var bluePerSecond;
-
-
 var currentStage;
 var backImage="url(\"background1.jpg\")";
 var backgroundMusic=new Audio("backgroundmusic1.wav");
 backgroundMusic.loop=true;
 var gameoverMusic=new Audio("gameover1.wav");
+var backgroundMusicVolume;
+var gameoverMusicVolume;
 window.onload = function () {
 	mainMenu();
+	settings();
 	$("#startGame").on("click", gameStart);
 	$("challenge").on("click", challenge);
 	$("#profiles").on("click", profiles);
@@ -95,6 +90,12 @@ function gameStart() {
 	currentStage = 1;
 	score = 0;
 	stage(currentStage);
+
+	backgroundMusicVolume=$("#musicVolume").val()/100;
+	gameoverMusicVolume=$("#overVolume").val()/100;
+
+	backgroundMusic.volume=backgroundMusicVolume;
+	gameoverMusic.volume=gameoverMusicVolume;
 	backgroundMusic.currentTime=0;
 	backgroundMusic.play();
 	gameoverMusic.pause();
@@ -152,6 +153,15 @@ function settings() {
 				text:backmusic
 			}).appendTo(musicSelect);
 		});
+		var musicVolumeLabel=$("<label>",{id:"music_volume_label"}).text("배경 음악 음량: ").appendTo(settingsMenu);
+		var musicVolumeSlider=$("<input>",{
+			type:"range",
+			id:"musicVolume",
+			min:0,
+			max:100,
+			value:50
+		}).appendTo(settingsMenu);
+
 		var overLabel=$("<label>",{id:"over_label"}).text("실패 음악 선택: ").appendTo(settingsMenu);
 		var overselect=$("<select>",{
 			id:"overSelect"
@@ -163,6 +173,16 @@ function settings() {
 				text:overmusic
 			}).appendTo(overSelect);
 		});
+
+		var overVolumeLabel=$("<label>",{id:"over_volume_label"}).text("실패 음악 음량: ").appendTo(settingsMenu);
+		var overVolumeSlider=$("<input>",{
+			type:"range",
+			id:"overVolume",
+			min:0,
+			max:100,
+			value:50
+		}).appendTo(settingsMenu);
+
 		$("<br>").appendTo(settingsMenu);
 		$("<br>").appendTo(settingsMenu);
 		if($("#settings"))
@@ -250,17 +270,13 @@ function gameInit() {
 	canvas.height = sHeight;
 	canvas.hidden = false;
 
+	brickMargin = 10;
 	brickRowCountMax = 12;
 	brickColumnCountMax = 30;
-	brickMargin = sWidth % (brickColumnCountMax + 1) / 2;
 	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
 	brickSideMargin = brickMargin + brickLength / 2;
 	brickTopMargin = brickMargin + brickLength / 2;
 	brickRate = 10;
-
-	red = 115;
-	green = 103;
-	blue = 240;
 
 	timeX = 0;
 	timebarHeight = 20;
@@ -317,29 +333,20 @@ function drawPad() {
 }
 
 function drawTimeBar() {
-	redPerSecond = (255 - red) / timePerSecond;
-	greenPerSecond = - green / timePerSecond;
-	bluePerSecond = - blue / timePerSecond;
-	removeTimeBar();
+	ctx.save();
+	ctx.fillStyle = "#3CB371";
+	ctx.fillRect(0, sHeight - timebarHeight, sWidth, timebarHeight);
+	ctx.restore();
 	timebar = setInterval(removeTimeBar, 1000);
 }
 
 function removeTimeBar() {
 	ctx.save();
-	ctx.clearRect(0, sHeight - timebarHeight, sWidth, timebarHeight);
-	ctx.fillStyle = makeRGB(red, green, blue);
-	ctx.fillRect(timeX, sHeight - timebarHeight, sWidth - timeX, timebarHeight);
-	red += redPerSecond;
-	green += greenPerSecond;
-	blue += bluePerSecond;
+	ctx.clearRect(timeX, sHeight - timebarHeight, sWidth / timePerSecond, timebarHeight);
 	timeX += sWidth / timePerSecond;
 	if (timeX >= sWidth)
 		gameOver();
 	ctx.restore();
-}
-
-function makeRGB(a, b, c) {
-	return "rgb(" + Math.floor(a) + ", " + Math.floor(b) + ", " + Math.floor(c) + ")";
 }
 
 function drawBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽돌
@@ -367,11 +374,23 @@ function breakBrick() {
 			var idxX = Math.floor((ballX - brickSideMargin) / brickLength) + j;
 			var x = idxX * brickLength + brickSideMargin;
 			if (idxY < brickRowCountMax && idxY >= 0 && idxX < brickColumnCountMax && idxX >= 0 && bricks[idxY][idxX] == 1) {
-				if (detectCollision(x, y) != null) {
+				if (dx > 0 && ballX < x && ballX + ballRadius > x && ballY > y && ballY < y + brickLength) { // LeftSide
+					dx = -dx;
 					bricks[idxY][idxX] = 0;
-					if (detectCollision(x, y) == "side") { dx = -dx; }
-					else { dy = -dy; }
 				}
+				if (dy > 0 && ballY < y && ballY + ballRadius > y && ballX > x && ballX < x + brickLength) { // TopSide
+					dy = -dy;
+					bricks[idxY][idxX] = 0;
+				}
+				if (dx < 0 && ballX > x + brickLength && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
+					dx = -dx;
+					bricks[idxY][idxX] = 0;
+				}
+				if (dy < 0 && ballY > y + brickLength && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
+					dy = -dy;
+					bricks[idxY][idxX] = 0;
+				}
+
 				if (bricks[idxY][idxX] == 0) {
 					brickCnt--;
 					ctx.save();
@@ -382,20 +401,6 @@ function breakBrick() {
 			}
 		}
 	}
-}
-
-function detectCollision(brickX, brickY) {
-	var distX = ballX - Math.max(brickX, Math.min(ballX, brickX + brickLength));
-	var distY = ballY - Math.max(brickY, Math.min(ballY, brickY + brickLength));
-	if (distX * distX + distY * distY < ballRadius * ballRadius) {
-		if (Math.abs(distX) > Math.abs(distY)) {
-			return "side";
-		}
-		else {
-			return "above";
-		}
-	}
-	return null;
 }
 
 function movBall() {
@@ -475,14 +480,12 @@ function makeRandomBricks() {
 					brickCnt++;
 				}
 			}
-			else if (bricks[i][j] == 1)
-				brickCnt++;
 		}
 	}
 }
 
 function stageOne() {
-	timePerSecond = 18;
+	timePerSecond = 180;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
@@ -498,7 +501,7 @@ function stageOne() {
 }
 
 function stageTwo() {
-	timePerSecond = 15;
+	timePerSecond = 150;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
@@ -514,7 +517,7 @@ function stageTwo() {
 }
 
 function stageThree() {
-	timePerSecond = 12;
+	timePerSecond = 120;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
