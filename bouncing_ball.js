@@ -37,11 +37,18 @@ var timebarHeight;
 var timePerSecond;
 var timeX;
 
+var red;
+var redPerSecond;
+var green;
+var greenPerSecond;
+var blue;
+var bluePerSecond;
+
 var currentStage;
-var backImage="url(\"background1.jpg\")";
-var backgroundMusic=new Audio("backgroundmusic1.wav");
-backgroundMusic.loop=true;
-var gameoverMusic=new Audio("gameover1.wav");
+var backImage = "url(\"background1.jpg\")";
+var backgroundMusic = new Audio("backgroundmusic1.wav");
+backgroundMusic.loop = true;
+var gameoverMusic = new Audio("gameover1.wav");
 var backgroundMusicVolume;
 var gameoverMusicVolume;
 window.onload = function () {
@@ -91,12 +98,12 @@ function gameStart() {
 	score = 0;
 	stage(currentStage);
 
-	backgroundMusicVolume=$("#musicVolume").val()/100;
-	gameoverMusicVolume=$("#overVolume").val()/100;
+	backgroundMusicVolume = $("#musicVolume").val() / 100;
+	gameoverMusicVolume = $("#overVolume").val() / 100;
 
-	backgroundMusic.volume=backgroundMusicVolume;
-	gameoverMusic.volume=gameoverMusicVolume;
-	backgroundMusic.currentTime=0;
+	backgroundMusic.volume = backgroundMusicVolume;
+	gameoverMusic.volume = gameoverMusicVolume;
+	backgroundMusic.currentTime = 0;
 	backgroundMusic.play();
 	gameoverMusic.pause();
 }
@@ -116,134 +123,134 @@ function exitGame() {
 function settings() {
 	$("#mainMenu").hide();
 	$("#settings_Icon").hide();
-	if($("#settingsMenu").length===0){
-		var settingsMenu=$("<div>",{
-			id:"settingsMenu"
+	if ($("#settingsMenu").length === 0) {
+		var settingsMenu = $("<div>", {
+			id: "settingsMenu"
 		}).appendTo("body");
-		var ballLabel=$("<label>",{id:"ball_label"}).text("공 색깔 선택: ").appendTo(settingsMenu);
-		var ballSelect=$("<select>",{
-		id:"ballSelect"
+		var ballLabel = $("<label>", { id: "ball_label" }).text("공 색깔 선택: ").appendTo(settingsMenu);
+		var ballSelect = $("<select>", {
+			id: "ballSelect"
 		}).appendTo(settingsMenu);
-		var balls=["공1","공2","공3"];
-		$.each(balls,function(index,ball){
-			$("<option>",{
-				value:ball,
-				text:ball
+		var balls = ["공1", "공2", "공3"];
+		$.each(balls, function (index, ball) {
+			$("<option>", {
+				value: ball,
+				text: ball
 			}).appendTo(ballSelect);
 		});
-		var backLabel=$("<label>",{id:"back_label"}).text("배경 색상 선택: ").appendTo(settingsMenu);
-		var backselect=$("<select>",{
-			id:"backSelect"
+		var backLabel = $("<label>", { id: "back_label" }).text("배경 색상 선택: ").appendTo(settingsMenu);
+		var backselect = $("<select>", {
+			id: "backSelect"
 		}).appendTo(settingsMenu);
-		var backgrounds=["배경1","배경2","배경3"];
-		$.each(backgrounds,function(index,background){
-			$("<option>",{
-				value:background,
-				text:background
+		var backgrounds = ["배경1", "배경2", "배경3"];
+		$.each(backgrounds, function (index, background) {
+			$("<option>", {
+				value: background,
+				text: background
 			}).appendTo(backSelect);
 		});
-		var musicLabel=$("<label>",{id:"music_label"}).text("배경 음악 선택: ").appendTo(settingsMenu);
-		var musicselect=$("<select>",{
-			id:"musicSelect"
+		var musicLabel = $("<label>", { id: "music_label" }).text("배경 음악 선택: ").appendTo(settingsMenu);
+		var musicselect = $("<select>", {
+			id: "musicSelect"
 		}).appendTo(settingsMenu);
-		var backmusics=["음악1","음악2","음악3"];
-		$.each(backmusics,function(index,backmusic){
-			$("<option>",{
-				value:backmusic,
-				text:backmusic
+		var backmusics = ["음악1", "음악2", "음악3"];
+		$.each(backmusics, function (index, backmusic) {
+			$("<option>", {
+				value: backmusic,
+				text: backmusic
 			}).appendTo(musicSelect);
 		});
-		var musicVolumeLabel=$("<label>",{id:"music_volume_label"}).text("배경 음악 음량: ").appendTo(settingsMenu);
-		var musicVolumeSlider=$("<input>",{
-			type:"range",
-			id:"musicVolume",
-			min:0,
-			max:100,
-			value:50
+		var musicVolumeLabel = $("<label>", { id: "music_volume_label" }).text("배경 음악 음량: ").appendTo(settingsMenu);
+		var musicVolumeSlider = $("<input>", {
+			type: "range",
+			id: "musicVolume",
+			min: 0,
+			max: 100,
+			value: 50
 		}).appendTo(settingsMenu);
 
-		var overLabel=$("<label>",{id:"over_label"}).text("실패 음악 선택: ").appendTo(settingsMenu);
-		var overselect=$("<select>",{
-			id:"overSelect"
+		var overLabel = $("<label>", { id: "over_label" }).text("실패 음악 선택: ").appendTo(settingsMenu);
+		var overselect = $("<select>", {
+			id: "overSelect"
 		}).appendTo(settingsMenu);
-		var overmusics=["효과음1","효과음2","효과음3"];
-		$.each(overmusics,function(index,overmusic){
-			$("<option>",{
-				value:overmusic,
-				text:overmusic
+		var overmusics = ["효과음1", "효과음2", "효과음3"];
+		$.each(overmusics, function (index, overmusic) {
+			$("<option>", {
+				value: overmusic,
+				text: overmusic
 			}).appendTo(overSelect);
 		});
 
-		var overVolumeLabel=$("<label>",{id:"over_volume_label"}).text("실패 음악 음량: ").appendTo(settingsMenu);
-		var overVolumeSlider=$("<input>",{
-			type:"range",
-			id:"overVolume",
-			min:0,
-			max:100,
-			value:50
+		var overVolumeLabel = $("<label>", { id: "over_volume_label" }).text("실패 음악 음량: ").appendTo(settingsMenu);
+		var overVolumeSlider = $("<input>", {
+			type: "range",
+			id: "overVolume",
+			min: 0,
+			max: 100,
+			value: 50
 		}).appendTo(settingsMenu);
 
 		$("<br>").appendTo(settingsMenu);
 		$("<br>").appendTo(settingsMenu);
-		if($("#settings"))
-		var saveButton=$("<input>",{
-			type:"button",value:"저장"
-		}).css("margin-right","10px").appendTo(settingsMenu).on("click",settingsSave);
-		var cancelButton=$("<input>",{
-			type:"button",value:"취소"
-		}).appendTo(settingsMenu).on("click",settingsCancel);
-		}
-	else{
+		if ($("#settings"))
+			var saveButton = $("<input>", {
+				type: "button", value: "저장"
+			}).css("margin-right", "10px").appendTo(settingsMenu).on("click", settingsSave);
+		var cancelButton = $("<input>", {
+			type: "button", value: "취소"
+		}).appendTo(settingsMenu).on("click", settingsCancel);
+	}
+	else {
 		$("#settingsMenu").show();
-	}	
+	}
 }
-function settingsSave(){
-	var selectBall=$("#ballSelect").val();
-	if(selectBall==="공1"){
-		ballColor="black";
+function settingsSave() {
+	var selectBall = $("#ballSelect").val();
+	if (selectBall === "공1") {
+		ballColor = "black";
 	}
-	else if(selectBall==="공2"){
-		ballColor="red";
+	else if (selectBall === "공2") {
+		ballColor = "red";
 	}
-	else{
-		ballColor="blue";
+	else {
+		ballColor = "blue";
 	}
-	var selectBack=$("#backSelect").val();
-	if(selectBack==="배경1"){
-		backImage="url(\"background1.jpg\")";
+	var selectBack = $("#backSelect").val();
+	if (selectBack === "배경1") {
+		backImage = "url(\"background1.jpg\")";
 	}
-	else if(selectBack==="배경2"){
-		backImage="url(\"background2.jpg\")";
+	else if (selectBack === "배경2") {
+		backImage = "url(\"background2.jpg\")";
 	}
-	else{
-		backImage="url(\"background3.png\")";
+	else {
+		backImage = "url(\"background3.png\")";
 	}
-	var selectMusic=$("#musicSelect").val();
-	if(selectMusic==="음악1"){
-		backgroundMusic.src="backgroundmusic1.wav";
+	var selectMusic = $("#musicSelect").val();
+	if (selectMusic === "음악1") {
+		backgroundMusic.src = "backgroundmusic1.wav";
 	}
-	else if(selectMusic==="음악2"){
-		backgroundMusic.src="backgroundmusic2.mp3";
+	else if (selectMusic === "음악2") {
+		backgroundMusic.src = "backgroundmusic2.mp3";
 	}
-	else{
-		backgroundMusic.src="backgroundmusic3.mp3";
+	else {
+		backgroundMusic.src = "backgroundmusic3.mp3";
 	}
-	var selectOver=$("#overSelect").val();
-	if(selectOver==="효과음1"){
-		gameoverMusic.src="gameover1.wav";
+	var selectOver = $("#overSelect").val();
+	if (selectOver === "효과음1") {
+		gameoverMusic.src = "gameover1.wav";
 	}
-	else if(selectOver==="효과음2"){
-		gameoverMusic.src="gameover2.wav";
+	else if (selectOver === "효과음2") {
+		gameoverMusic.src = "gameover2.wav";
 	}
-	else{
-		gameoverMusic.src="gameover3.wav";
+	else {
+		gameoverMusic.src = "gameover3.wav";
 	}
 
 	$("#settingsMenu").hide();
 	$("#mainMenu").show();
 	$("#settings_Icon").show();
 }
-function settingsCancel(){
+function settingsCancel() {
 	$("#settingsMenu").hide();
 	$("#mainMenu").show();
 	$("#settings_Icon").show();
@@ -273,17 +280,22 @@ function gameInit() {
 	brickMargin = 10;
 	brickRowCountMax = 12;
 	brickColumnCountMax = 30;
+	brickMargin = sWidth % (brickColumnCountMax + 1) / 2;
 	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
 	brickSideMargin = brickMargin + brickLength / 2;
 	brickTopMargin = brickMargin + brickLength / 2;
 	brickRate = 10;
 
+	red = 115;
+	green = 103;
+	blue = 240;
+
 	timeX = 0;
 	timebarHeight = 20;
-	backImage="url(\"background1.jpg\")"
-	ballColor="black";
-	backgroundMusic.src="backgroundmusic1.wav";
-	gameoverMusic.src="gameover1.wav";
+	backImage = "url(\"background1.jpg\")"
+	ballColor = "black";
+	backgroundMusic.src = "backgroundmusic1.wav";
+	gameoverMusic.src = "gameover1.wav";
 }
 
 function makeCanvas() {
@@ -333,20 +345,29 @@ function drawPad() {
 }
 
 function drawTimeBar() {
-	ctx.save();
-	ctx.fillStyle = "#3CB371";
-	ctx.fillRect(0, sHeight - timebarHeight, sWidth, timebarHeight);
-	ctx.restore();
+	redPerSecond = (255 - red) / timePerSecond;
+	greenPerSecond = - green / timePerSecond;
+	bluePerSecond = - blue / timePerSecond;
+	removeTimeBar();
 	timebar = setInterval(removeTimeBar, 1000);
 }
 
 function removeTimeBar() {
 	ctx.save();
-	ctx.clearRect(timeX, sHeight - timebarHeight, sWidth / timePerSecond, timebarHeight);
+	ctx.clearRect(0, sHeight - timebarHeight, sWidth, timebarHeight);
+	ctx.fillStyle = makeRGB(red, green, blue);
+	ctx.fillRect(timeX, sHeight - timebarHeight, sWidth - timeX, timebarHeight);
+	red += redPerSecond;
+	green += greenPerSecond;
+	blue += bluePerSecond;
 	timeX += sWidth / timePerSecond;
 	if (timeX >= sWidth)
 		gameOver();
 	ctx.restore();
+}
+
+function makeRGB(a, b, c) {
+	return "rgb(" + Math.floor(a) + ", " + Math.floor(b) + ", " + Math.floor(c) + ")";
 }
 
 function drawBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽돌
@@ -374,23 +395,11 @@ function breakBrick() {
 			var idxX = Math.floor((ballX - brickSideMargin) / brickLength) + j;
 			var x = idxX * brickLength + brickSideMargin;
 			if (idxY < brickRowCountMax && idxY >= 0 && idxX < brickColumnCountMax && idxX >= 0 && bricks[idxY][idxX] == 1) {
-				if (dx > 0 && ballX < x && ballX + ballRadius > x && ballY > y && ballY < y + brickLength) { // LeftSide
-					dx = -dx;
+				if (detectCollision(x, y) != null) {
 					bricks[idxY][idxX] = 0;
+					if (detectCollision(x, y) == "side") { dx = -dx; }
+					else { dy = -dy; }
 				}
-				if (dy > 0 && ballY < y && ballY + ballRadius > y && ballX > x && ballX < x + brickLength) { // TopSide
-					dy = -dy;
-					bricks[idxY][idxX] = 0;
-				}
-				if (dx < 0 && ballX > x + brickLength && ballX - ballRadius < x + brickLength && ballY > y && ballY < y + brickLength) { // RightSide
-					dx = -dx;
-					bricks[idxY][idxX] = 0;
-				}
-				if (dy < 0 && ballY > y + brickLength && ballY - ballRadius < y + brickLength && ballX > x && ballX < x + brickLength) { // BottomSide
-					dy = -dy;
-					bricks[idxY][idxX] = 0;
-				}
-
 				if (bricks[idxY][idxX] == 0) {
 					brickCnt--;
 					ctx.save();
@@ -401,6 +410,20 @@ function breakBrick() {
 			}
 		}
 	}
+}
+
+function detectCollision(brickX, brickY) {
+	var distX = ballX - Math.max(brickX, Math.min(ballX, brickX + brickLength));
+	var distY = ballY - Math.max(brickY, Math.min(ballY, brickY + brickLength));
+	if (distX * distX + distY * distY < ballRadius * ballRadius) {
+		if (Math.abs(distX) > Math.abs(distY)) {
+			return "side";
+		}
+		else {
+			return "above";
+		}
+	}
+	return null;
 }
 
 function movBall() {
@@ -462,7 +485,7 @@ function gameOver() {
 	$("#mainMenu").show();
 	$("#settings_Icon").show();
 	backgroundMusic.pause();
-	gameoverMusic.currentTime=0;
+	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();
 }
 
@@ -480,6 +503,8 @@ function makeRandomBricks() {
 					brickCnt++;
 				}
 			}
+			else if (bricks[i][j] == 1)
+				brickCnt++;
 		}
 	}
 }
