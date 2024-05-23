@@ -1,14 +1,40 @@
 *{padding: 0; margin: 0;}
 
 
-body{
+body {
     position: absolute;
     width: 100%;
-    top:0;
-    bottom:0;
+    top: 0;
+    bottom: 0;
     margin: auto;
-    background-color: yellow;
+    background: radial-gradient(circle, rgba(64, 64, 64, 0.8) 0%, rgba(64, 64, 64, 0.1) 70%), url("start_background2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
+
+body::before {
+    position: absolute;
+    content: "";
+    top:0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 253, 247,0.4);
+}
+
+
+#exit_img{
+    height: 25px;
+    margin-top: 7px;
+    margin-right: 25px;
+    float: right;  
+ }
+
+ #return_img{
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 20px;
+ }
 
 /* 스토리 진행 창 */
 
@@ -17,7 +43,7 @@ body{
     width: 800px;
     height: 800px;
     margin: 5% auto;
-    background-color: rgb(190, 236, 248);
+    /* background-color: rgb(190, 236, 248); */
 }
 
 .contentbox{
@@ -25,27 +51,22 @@ body{
     width: 100%;
     height: 760px;
     border-radius:  0 0 25px 25px;
-    background-color: orange;
+    background-color: #FFFDF7;
 }
 
 .exitbar{
     overflow: hidden;
     height: 40px;
     border-radius: 25px 25px 0 0;
-    background-color:cadetblue;
+    background-color:#e9e7e3;
 }
 
-#exit_img{
-    line-height: 40px;
-    margin-right: 35px;
-    float: right;  
-}
 
 .storybox{
     width: 100%;
     padding: 10px 0;
     margin: 5px 0;
-    background-color: aliceblue;
+    /* background-color: #FDC921; */
 }
 .storybox>img{
     display: inline;
@@ -58,7 +79,7 @@ body{
     margin: 0 10px;
     padding: 10px 10px;
     border-radius: 8px;
-    background-color: gainsboro;
+    background-color: rgba(233,231,227,0.8);
 }
 
 /* setting */
@@ -68,14 +89,17 @@ body{
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background-color: rgb(190, 236, 248);
+    background-color: #6798C0;
 }
 
-nav{
+.nav{
     overflow: hidden;
-    height: 40px;
-    background-color:cadetblue;
+    height: 50px;
+    background-color: #6798C0;
 }
+
+
+
 .content{
     overflow: hidden;
     display: flex;
@@ -90,7 +114,7 @@ nav{
     margin-left: 15%;
     width: 300px;
     height: 600px;
-    background-color: aliceblue;
+    background-color:#FDC921;
 }
 
 #configbox{
@@ -101,7 +125,7 @@ nav{
     margin-right: 15%;
     width: 600px;
     height: 500px;
-    background-color: aliceblue;
+    background-color:#FDC921;
 }
 
 #prev{
@@ -111,7 +135,7 @@ nav{
     width: 100px;
     height: 50px;
     line-height: 50px;
-    background-color:  rgb(190, 236, 248);
+    background-color:  #6798C0;
     text-align: center;
 }
 
@@ -124,7 +148,7 @@ nav{
     line-height: 50px;
     padding-left: 50px;
     margin: auto;
-    background-color:  rgb(190, 236, 248);
+    background-color:   #6798C0;
     /* text-align: center; */
 }
 
@@ -133,20 +157,21 @@ nav{
 /* my profil */
 
 #myinfo{
-    /*display: none;*/
+    display: none;
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background-color: rgb(190, 236, 248);
+    background-color:#6798C0;
 }
 
 #my_box{
     position: relative;
     display: inline-block;
     width: 20%;
-    height: 800px;
+    height: 700px;
+    margin-top: 100px;
     margin-left: 10%;
-    background-color: aliceblue;
+    /* background-color: #FDC921; */
 }
 
 #challenge_box{
@@ -156,8 +181,8 @@ nav{
     width: 40%;
     height: 600px;
     margin-left: 10%;
-    margin-top: 100px;
-    background-color: aliceblue;
+    margin-top: 150px;
+    background-color: #FDC921;
 }
 
 .challenge{
@@ -181,10 +206,10 @@ nav{
     position: absolute;
     width: 50%;
     height: 50px;
-    bottom: -10px;
+    bottom: -5px;
     margin: 5% 25%;
     line-height: 50px;
-    background-color:  rgb(190, 236, 248);
+    background-color: #6798C0;
     text-align: center;
 }
 
@@ -192,5 +217,27 @@ nav{
     position: absolute;
     bottom: 10px;
 }
+
+
+/* Color Theme Swatches in Hex */
+.시작화면-1-hex { color: #A0D9C4; }
+.시작화면-2-hex { color: #B1BF45; }
+.시작화면-3-hex { color: #F2B749; }
+.시작화면-4-hex { color: #F2E8D5; }
+.시작화면-5-hex { color: #F25D50; }
+
+/* Color Theme Swatches in RGBA */
+.시작화면-1-rgba { color: rgba(160, 217, 196, 1); }
+.시작화면-2-rgba { color: rgba(177, 191, 69, 1); }
+.시작화면-3-rgba { color: rgba(242, 183, 73, 1); }
+.시작화면-4-rgba { color: rgba(242, 232, 213, 1); }
+.시작화면-5-rgba { color: rgba(242, 93, 80, 1); }
+
+/* Color Theme Swatches in HSLA */
+.시작화면-1-hsla { color: hsla(157, 42, 73, 1); }
+.시작화면-2-hsla { color: hsla(66, 48, 50, 1); }
+.시작화면-3-hsla { color: hsla(39, 86, 61, 1); }
+.시작화면-4-hsla { color: hsla(39, 52, 89, 1); }
+.시작화면-5-hsla { color: hsla(4, 86, 63, 1); }
 
 
