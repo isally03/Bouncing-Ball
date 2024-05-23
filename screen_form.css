@@ -2,24 +2,27 @@
 
 
 body {
+    z-index: -1;
     position: absolute;
     width: 100%;
     top: 0;
     bottom: 0;
     margin: auto;
-    background: radial-gradient(circle, rgba(64, 64, 64, 0.8) 0%, rgba(64, 64, 64, 0.1) 70%), url("start_background2.jpg");
+    background: url("start_background2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 body::before {
+    z-index: -1;
     position: absolute;
     content: "";
     top:0px;
     left:0px;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 253, 247,0.4);
+    background:
+    linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 35%, rgba(107, 107, 107, 0.562) 50%, rgba(16,25,31, 0.4)65%,#10191f 100%);
 }
 
 
@@ -36,12 +39,48 @@ body::before {
     margin-left: 20px;
  }
 
+
+/* 메인 메뉴 */
+
+ #main{
+    display: none;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+ }
+#menu_box{
+    margin-top: 250px;
+    margin-bottom: 50px;
+}
+
+ #menu_box>div{
+    text-align: center;
+    font-size: 40px;
+    line-height: 80px;
+    font-weight: bold;
+    color: #FFFDF7;
+ }
+
+ #menu_box>div:hover{
+    font-size: 50px;
+    /* line-height: 80px; */
+ }
+ #main>div:last-child{
+    text-align: center;
+    line-height: 80px;
+    font-weight: bold;
+    font-size: 50px;
+    text-shadow: 0px 0px 3px #FFFDF7;
+    color: transparent;
+ }
+
+
 /* 스토리 진행 창 */
 
 #storyboard{
     display: none;
     width: 800px;
-    height: 800px;
+    /* height: 800px; */
     margin: 5% auto;
     /* background-color: rgb(190, 236, 248); */
 }
@@ -49,7 +88,7 @@ body::before {
 .contentbox{
     overflow: hidden;
     width: 100%;
-    height: 760px;
+    height: 700px;
     border-radius:  0 0 25px 25px;
     background-color: #FFFDF7;
 }
@@ -89,13 +128,13 @@ body::before {
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background-color: #6798C0;
+    background-color: #6798c06b;
 }
 
 .nav{
     overflow: hidden;
     height: 50px;
-    background-color: #6798C0;
+    /* background-color: #6798c06b; */
 }
 
 
@@ -114,8 +153,10 @@ body::before {
     margin-left: 15%;
     width: 300px;
     height: 600px;
-    background-color:#FDC921;
+    background-color:#eaf3f8af;
+    box-shadow: 8px 3px 0px 5px#4c545a9c;
 }
+
 
 #configbox{
     position: relative;
@@ -125,7 +166,8 @@ body::before {
     margin-right: 15%;
     width: 600px;
     height: 500px;
-    background-color:#FDC921;
+    background-color:#eaf3f8af;
+    box-shadow: 8px 3px 0px 5px#4c545a96;
 }
 
 #prev{
@@ -135,7 +177,8 @@ body::before {
     width: 100px;
     height: 50px;
     line-height: 50px;
-    background-color:  #6798C0;
+    background-color:  #eaf3f8af;
+    box-shadow: 8px 3px 0px 5px#4c545a96;
     text-align: center;
 }
 
@@ -148,7 +191,8 @@ body::before {
     line-height: 50px;
     padding-left: 50px;
     margin: auto;
-    background-color:   #6798C0;
+    box-shadow: 8px 3px 0px 5px#4c545a96;
+    background-color:   #eaf3f8af;
     /* text-align: center; */
 }
 
@@ -157,11 +201,11 @@ body::before {
 /* my profil */
 
 #myinfo{
-    display: none;
+    /* display: none; */
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background-color:#6798C0;
+    background-color:#6798c06b;
 }
 
 #my_box{
@@ -170,7 +214,7 @@ body::before {
     width: 20%;
     height: 700px;
     margin-top: 100px;
-    margin-left: 10%;
+    margin-left: 5%;
     /* background-color: #FDC921; */
 }
 
@@ -179,10 +223,10 @@ body::before {
     overflow: scroll;
     display: inline-block;
     width: 40%;
-    height: 600px;
-    margin-left: 10%;
-    margin-top: 150px;
-    background-color: #FDC921;
+    height: 400px;
+    /* margin-left: 10%; */
+    margin-top: 100px;
+    background-color: #eaf3f8af;
 }
 
 .challenge{
@@ -192,7 +236,7 @@ body::before {
 
 #chara_box{
     position: relative;
-    background-color: goldenrod;
+    background-color: #eaf3f8af;
     width: 100%;
     
 }
@@ -209,7 +253,7 @@ body::before {
     bottom: -5px;
     margin: 5% 25%;
     line-height: 50px;
-    background-color: #6798C0;
+    background-color: #eaf3f8af;
     text-align: center;
 }
 
@@ -217,27 +261,5 @@ body::before {
     position: absolute;
     bottom: 10px;
 }
-
-
-/* Color Theme Swatches in Hex */
-.시작화면-1-hex { color: #A0D9C4; }
-.시작화면-2-hex { color: #B1BF45; }
-.시작화면-3-hex { color: #F2B749; }
-.시작화면-4-hex { color: #F2E8D5; }
-.시작화면-5-hex { color: #F25D50; }
-
-/* Color Theme Swatches in RGBA */
-.시작화면-1-rgba { color: rgba(160, 217, 196, 1); }
-.시작화면-2-rgba { color: rgba(177, 191, 69, 1); }
-.시작화면-3-rgba { color: rgba(242, 183, 73, 1); }
-.시작화면-4-rgba { color: rgba(242, 232, 213, 1); }
-.시작화면-5-rgba { color: rgba(242, 93, 80, 1); }
-
-/* Color Theme Swatches in HSLA */
-.시작화면-1-hsla { color: hsla(157, 42, 73, 1); }
-.시작화면-2-hsla { color: hsla(66, 48, 50, 1); }
-.시작화면-3-hsla { color: hsla(39, 86, 61, 1); }
-.시작화면-4-hsla { color: hsla(39, 52, 89, 1); }
-.시작화면-5-hsla { color: hsla(4, 86, 63, 1); }
 
 
