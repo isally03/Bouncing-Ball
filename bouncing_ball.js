@@ -370,7 +370,7 @@ function makeRGB(a, b, c) {
 	return "rgb(" + Math.floor(a) + ", " + Math.floor(b) + ", " + Math.floor(c) + ")";
 }
 
-function drawBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽돌
+function drawAllBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽돌
 	for (var i = 0; i < brickRowCountMax; i++) {
 		var y = brickTopMargin + brickLength * i;
 		for (var j = 0; j < brickColumnCountMax; j++) {
@@ -381,6 +381,27 @@ function drawBricks() { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽�
 				ctx.fillRect(x, y, brickLength, brickLength);
 				ctx.fillStyle = "black";
 				ctx.strokeRect(x, y, brickLength, brickLength);
+				ctx.restore();
+			}
+		}
+	}
+}
+
+function drawBricks(curX, curY) { // state == 1 : 진짜 벽돌, state == 2 : 가짜 벽돌
+	for (var i = -1; i < 2; i++) {
+		var idxY = Math.floor((curY - brickTopMargin) / brickLength) + i;
+		var y = idxY * brickLength + brickTopMargin;
+		for (var j = -1; j < 2; j++) {
+			var idxX = Math.floor((curX - brickSideMargin) / brickLength) + j;
+			var x = idxX * brickLength + brickSideMargin;
+			if (idxY < brickRowCountMax && idxY >= 0 && idxX < brickColumnCountMax && idxX >= 0) {
+				ctx.save();
+				if (bricks[idxY][idxX] != 0) {
+					ctx.fillStyle = "gray";
+					ctx.fillRect(x, y, brickLength, brickLength);
+					ctx.fillStyle = "black";
+					ctx.strokeRect(x, y, brickLength, brickLength);
+				}
 				ctx.restore();
 			}
 		}
@@ -402,9 +423,8 @@ function breakBrick() {
 				}
 				if (bricks[idxY][idxX] == 0) {
 					brickCnt--;
-					ctx.save();
 					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
-					ctx.restore();
+					drawBricks(x, y);
 					return;
 				}
 			}
@@ -435,7 +455,7 @@ function movBall() {
 	ctx.clearRect(ballX - ballRadius - 1, ballY - ballRadius - 1, ballRadius * 2 + 2, ballRadius * 2 + 2);
 	ctx.restore();
 	breakBrick();
-	drawBricks();
+	drawBricks(ballX, ballY);
 	if (ballX < ballRadius || ballX > sWidth - ballRadius)
 		dx = -dx;
 	if (ballY > sHeight - ballRadius) {
@@ -468,7 +488,7 @@ function stage(n) {
 		else stageThree();
 		draw();
 		makeRandomBricks();
-		drawBricks();
+		drawAllBricks();
 	}
 }
 
@@ -510,7 +530,7 @@ function makeRandomBricks() {
 }
 
 function stageOne() {
-	timePerSecond = 180;
+	timePerSecond = 18;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
@@ -526,7 +546,7 @@ function stageOne() {
 }
 
 function stageTwo() {
-	timePerSecond = 150;
+	timePerSecond = 15;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
@@ -542,7 +562,7 @@ function stageTwo() {
 }
 
 function stageThree() {
-	timePerSecond = 120;
+	timePerSecond = 12;
 	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
