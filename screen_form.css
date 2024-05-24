@@ -30,13 +30,13 @@ body::before {
     width: 100%;
     height: 100%;
     background:
-    linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 35%, rgba(107, 107, 107, 0.562) 50%, rgba(16,25,31, 0.4)65%,#10191f 100%);
+    linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 25%, rgba(16, 25, 31, 0.274) 35%, rgba(128, 124, 124, 0.527) 50%, rgba(16, 25, 31, 0.274) 65% ,rgba(16,25,31, 0.4)75%,#10191f 100%);
 }
 
 
 #exit_img{
-    height: 25px;
-    margin-top: 7px;
+    height: 30px;
+    margin-top: 11px;
     margin-right: 25px;
     float: right;  
  }
@@ -51,7 +51,7 @@ body::before {
 /* 메인 메뉴 */
 
  #main{
-    /* display: none; */
+    display: none;
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -86,6 +86,7 @@ body::before {
     text-shadow: 0px 0px 2px #FFFDF7;
     color: transparent;
     opacity: 0.7;
+    letter-spacing: 20px;
  }
 
 
@@ -105,11 +106,12 @@ body::before {
     height: 700px;
     border-radius:  0 0 25px 25px;
     background-color: #FFFDF7;
+    opacity: 0.95;
 }
 
 .exitbar{
     overflow: hidden;
-    height: 40px;
+    height: 50px;
     border-radius: 25px 25px 0 0;
     background-color:#e9e7e3;
 }
@@ -146,7 +148,8 @@ body::before {
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background-color: #6798c06b;
+    /* background-color: #6798c06b; */
+    background: linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 35% , rgba(16,25,31, 0.4)65%,#10191f 100%);
 }
 
 .nav{
@@ -172,7 +175,7 @@ body::before {
     width: 300px;
     height: 600px;
     background-color:#eaf3f8af;
-    box-shadow: 8px 3px 0px 5px#4c545a9c;
+    box-shadow: 8px 3px 0px 5px#4c545a96;
 }
 
 
@@ -219,11 +222,11 @@ body::before {
 /* challenge_page */
 
 #challenge_page{
-    display: none;
+    /* display: none; */
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background-color:#031927b0;
+    background: linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 35% , rgba(16,25,31, 0.4)65%,#10191f 100%);
 }
 
 #my_box{
