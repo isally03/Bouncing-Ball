@@ -97,7 +97,6 @@ body::before {
     width: 800px;
     /* height: 800px; */
     margin: 5% auto;
-    /* background-color: rgb(190, 236, 248); */
 }
 
 .contentbox{
@@ -131,12 +130,12 @@ body::before {
 
 .storybox>.narbox {
     display: inline-block;
-    max-width: calc(100% - 70px); /* Adjust according to your layout, considering margins and image width */
+    max-width: calc(100% - 70px);
     margin: 0 10px;
     padding: 10px 10px;
     border-radius: 8px;
     background-color: rgba(233,231,227,0.8);
-    white-space: nowrap; /* Prevent text from wrapping */
+    white-space: nowrap; 
     overflow: hidden;
 
 }
@@ -148,14 +147,12 @@ body::before {
     overflow: hidden;
     width: 100%;
     height: 100%;
-    /* background-color: #6798c06b; */
     background: linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 35% , rgba(16,25,31, 0.4)65%,#10191f 100%);
 }
 
 .nav{
     overflow: hidden;
     height: 90px;
-    /* background-color: #6798c06b; */
 }
 
 
@@ -214,7 +211,6 @@ body::before {
     margin: auto;
     box-shadow: 8px 3px 0px 5px#4c545a96;
     background-color:   #eaf3f8af;
-    /* text-align: center; */
 }
 
 
@@ -236,16 +232,13 @@ body::before {
     height: 500px;
     margin-top: 100px;
     margin-left: 10%;
-    /* background-color: #FDC921; */
 }
 
 #assignment_box{
-    /* position: relative; */
     overflow: scroll;
     display: block;
     width: 35%;
     height: 400px;
-    /* margin-left: 10%; */
     margin-top: 100px;
     background-color: #eaf3f8af;
 }
@@ -277,7 +270,6 @@ body::before {
     bottom: -70px;
     margin: 5% 0;
     line-height: 50px;
-    /* background-color: #eaf3f8; */
     font-size: 40px;
     font-weight: bolder;
     color: #ffffff;
@@ -296,9 +288,9 @@ body::before {
 
 
 #result_page {
-    display: flex; /* 플렉스박스 사용 */
-    justify-content: center; /* 수평 중앙 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
+    display: flex;
+    justify-content: center; 
+    align-items: center;
     width: 100%;
     height: 100%;
     background: url("score_background.png"), #e7e6d5 no-repeat center center fixed;
@@ -306,10 +298,10 @@ body::before {
 }
 
 .result_box {
-    display: flex; /* 플렉스박스 사용 */
-    justify-content: center; /* 수평 중앙 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
-    flex-direction: column; /* 수직 정렬 */
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column;
     text-align: center;
     width: 500px;
     margin: 0 auto;
@@ -321,10 +313,10 @@ body::before {
     width: 500px;
     border-radius: 50%;
     border: 5px solid black;
-    display: flex; /* 플렉스박스 사용 */
-    justify-content: center; /* 수평 중앙 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
-    flex-direction: column; /* 수직 정렬 */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column; 
 }
 
 
