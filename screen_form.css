@@ -423,4 +423,6 @@ body::before {
     margin-bottom: 10px;
     display: block;
 }
-#h
+#return_img:hover{
+    cursor: pointer;
+}
