@@ -51,6 +51,9 @@ backgroundMusic.loop = true;
 var gameoverMusic = new Audio("gameover1.wav");
 var backgroundMusicVolume;
 var gameoverMusicVolume;
+
+var itmes=[];
+var itemDropRate=0.2;
 window.onload = function () {
 	mainMenu();
 	$("#startGame").on("click", gameStart);
@@ -123,10 +126,13 @@ function exitGame() {
 function settings() {
 	$("#mainMenu").hide();
 	$("#settings_Icon").hide();
+
 	if ($("#settingsMenu").length === 0) {
 		var settingsMenu = $("<div>", {
 			id: "settingsMenu"
 		}).appendTo("body");
+
+		//공 색깔 관련 환경설정
 		var ballLabel = $("<label>", { id: "ball_label" }).text("공 색깔 선택: ").appendTo(settingsMenu);
 		var ballSelect = $("<select>", {
 			id: "ballSelect"
@@ -138,6 +144,8 @@ function settings() {
 				text: ball
 			}).appendTo(ballSelect);
 		});
+
+		//게임 배경 화면 관련 환경설정
 		var backLabel = $("<label>", { id: "back_label" }).text("배경 색상 선택: ").appendTo(settingsMenu);
 		var backselect = $("<select>", {
 			id: "backSelect"
@@ -149,6 +157,8 @@ function settings() {
 				text: background
 			}).appendTo(backSelect);
 		});
+
+		//게임 배경 음악 관련 환경설정
 		var musicLabel = $("<label>", { id: "music_label" }).text("배경 음악 선택: ").appendTo(settingsMenu);
 		var musicselect = $("<select>", {
 			id: "musicSelect"
@@ -168,7 +178,11 @@ function settings() {
 			max: 100,
 			value: 50
 		}).appendTo(settingsMenu);
+		var musicVolumeValue=$("<span>",{
+			id:"musicVolumeValue"
+		}).text(musicVolumeSlider.val()).css("margin-left","5px").appendTo(settingsMenu);
 
+		//게임 실패 음악 관련 환경설정
 		var overLabel = $("<label>", { id: "over_label" }).text("실패 음악 선택: ").appendTo(settingsMenu);
 		var overselect = $("<select>", {
 			id: "overSelect"
@@ -180,7 +194,6 @@ function settings() {
 				text: overmusic
 			}).appendTo(overSelect);
 		});
-
 		var overVolumeLabel = $("<label>", { id: "over_volume_label" }).text("실패 음악 음량: ").appendTo(settingsMenu);
 		var overVolumeSlider = $("<input>", {
 			type: "range",
@@ -189,9 +202,13 @@ function settings() {
 			max: 100,
 			value: 50
 		}).appendTo(settingsMenu);
+		var overVolumeValue=$("<span>",{
+			id:"overVolumeValue"
+		}).text(overVolumeSlider.val()).css("margin-left","5px").appendTo(settingsMenu);
 
 		$("<br>").appendTo(settingsMenu);
 		$("<br>").appendTo(settingsMenu);
+
 		if ($("#settings"))
 			var saveButton = $("<input>", {
 				type: "button", value: "저장"
@@ -199,6 +216,12 @@ function settings() {
 		var cancelButton = $("<input>", {
 			type: "button", value: "취소"
 		}).appendTo(settingsMenu).on("click", settingsCancel);
+		musicVolumeSlider.on("input",function(){
+			$("#musicVolumeValue").text($(this).val());
+		});
+		overVolumeSlider.on("input",function(){
+			$("#overVolumeValue").text($(this).val());
+		});
 	}
 	else {
 		$("#settingsMenu").show();
