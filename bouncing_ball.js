@@ -45,7 +45,7 @@ var blue;
 var bluePerSecond;
 
 var currentStage;
-var backImage = "url(\"background1.jpg\")";
+var backImage;
 var backgroundMusic = new Audio("backgroundmusic1.wav");
 backgroundMusic.loop = true;
 var gameoverMusic = new Audio("gameover1.wav");
@@ -53,12 +53,12 @@ var backgroundMusicVolume;
 var gameoverMusicVolume;
 window.onload = function () {
 	mainMenu();
-	settings();
 	$("#startGame").on("click", gameStart);
 	$("challenge").on("click", challenge);
 	$("#profiles").on("click", profiles);
 	$("#exitGame").on("click", exitGame);
 	$("#settings").on("click", settings);
+	settings();
 	settingsSave();
 	settingsCancel();
 }
@@ -292,10 +292,6 @@ function gameInit() {
 
 	timeX = 0;
 	timebarHeight = 20;
-	backImage = "url(\"background1.jpg\")"
-	ballColor = "black";
-	backgroundMusic.src = "backgroundmusic1.wav";
-	gameoverMusic.src = "gameover1.wav";
 }
 
 function makeCanvas() {
