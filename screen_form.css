@@ -1,15 +1,23 @@
-*{padding: 0; margin: 0;}
+@font-face {
+    font-family: 'HSSanTokki20-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405@1.0/HSSanTokki20-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*{padding: 0; margin: 0; font-family: 'HSSanTokki20-Regular', sans-serif;}
+
 
 
 body {
     z-index: -1;
     position: absolute;
     width: 100%;
+    height: 100%;
     top: 0;
     bottom: 0;
-    margin: auto;
-    background: url("start_background2.jpg");
-    background-repeat: no-repeat;
+    margin: 0;
+    background: url("start_background2.jpg") no-repeat center center fixed;
     background-size: cover;
 }
 
@@ -34,7 +42,7 @@ body::before {
  }
 
  #return_img{
-    height: 40px;
+    height: 80px;
     margin-top: 10px;
     margin-left: 20px;
  }
@@ -43,7 +51,7 @@ body::before {
 /* 메인 메뉴 */
 
  #main{
-    display: none;
+    /* display: none; */
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -54,15 +62,20 @@ body::before {
 }
 
  #menu_box>div{
+    width: 60%;
+    margin: 0 auto;
     text-align: center;
-    font-size: 40px;
-    line-height: 80px;
+    font-size: 50px;
+    line-height: 100px;
     font-weight: bold;
     color: #FFFDF7;
+    letter-spacing:10px;
  }
 
  #menu_box>div:hover{
-    font-size: 50px;
+    font-size: 60px;
+    letter-spacing: 25px;
+    text-shadow: 0px 0px 15px #dfcff5;
     /* line-height: 80px; */
  }
  #main>div:last-child{
@@ -70,15 +83,16 @@ body::before {
     line-height: 80px;
     font-weight: bold;
     font-size: 50px;
-    text-shadow: 0px 0px 3px #FFFDF7;
+    text-shadow: 0px 0px 2px #FFFDF7;
     color: transparent;
+    opacity: 0.7;
  }
 
 
 /* 스토리 진행 창 */
 
 #storyboard{
-    /* display: none; */
+    display: none;
     width: 800px;
     /* height: 800px; */
     margin: 5% auto;
@@ -122,12 +136,12 @@ body::before {
     background-color: rgba(233,231,227,0.8);
     white-space: nowrap; /* Prevent text from wrapping */
     overflow: hidden;
-    /* text-overflow: ellipsis; Add ellipsis if text overflows */
+
 }
 
-/* setting */
+/* customize */
 
-#setting{
+#customize_page{
     display: none;
     overflow: hidden;
     width: 100%;
@@ -137,7 +151,7 @@ body::before {
 
 .nav{
     overflow: hidden;
-    height: 50px;
+    height: 90px;
     /* background-color: #6798c06b; */
 }
 
@@ -202,68 +216,79 @@ body::before {
 
 
 
-/* my profil */
+/* challenge_page */
 
-#myinfo{
+#challenge_page{
     display: none;
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background-color:#6798c06b;
+    background-color:#031927b0;
 }
 
 #my_box{
     position: relative;
     display: inline-block;
-    width: 20%;
-    height: 700px;
+    width: 400px;
+    height: 500px;
     margin-top: 100px;
-    margin-left: 5%;
+    margin-left: 10%;
     /* background-color: #FDC921; */
 }
 
-#challenge_box{
-    position: relative;
+#assignment_box{
+    /* position: relative; */
     overflow: scroll;
-    display: inline-block;
-    width: 40%;
+    display: block;
+    width: 35%;
     height: 400px;
     /* margin-left: 10%; */
     margin-top: 100px;
     background-color: #eaf3f8af;
 }
 
-.challenge{
+.assignment{
     font-size: 1.5em;
     margin: 2em 1em;
 }
 
 #chara_box{
     position: relative;
-    background-color: #eaf3f8af;
-    width: 100%;
+    background-color: #ffffff;
+    width: 40%;
+    opacity: 0.8;
     
 }
 #chara_box>img{
     width: 80%;
-    margin: 5% 25%;
+    margin: 10% 10%;
+    padding: 5% 0;
+    
    
 }
 
 #name{
     position: absolute;
-    width: 50%;
+    width: 100%;
     height: 50px;
-    bottom: -5px;
-    margin: 5% 25%;
+    bottom: -70px;
+    margin: 5% 0;
     line-height: 50px;
-    background-color: #eaf3f8af;
+    /* background-color: #eaf3f8; */
+    font-size: 40px;
+    font-weight: bolder;
+    color: #ffffff;
+    text-shadow: 0px 0px 2px #ffffff;
+    color: transparent;
     text-align: center;
 }
 
 #play_box{
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bolder;
 }
 
 
