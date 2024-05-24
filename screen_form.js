@@ -5,7 +5,7 @@ $(document).ready(function() {
     var gameoverMusic = new Audio("gameover1.wav");
     var backgroundMusicVolume;
     var gameoverMusicVolume;
-    function startPachinkoAnimation(finalScore) {
+    function startSlotAnimation(finalScore) {
         var finalScoreStr = finalScore.toString().padStart(4, '0');
 
         finalScoreStr.split('').forEach((digit, index) => {
@@ -38,9 +38,9 @@ $(document).ready(function() {
             
         }, 2000); 
     }
-    startPachinkoAnimation(3654);
+
     function settings() {
-    $("#main").hide();
+    $("#main_page").hide();
 
     if ($("#settingsMenu").length === 0) {
         var settingsMenu=$("<div>",{
@@ -185,11 +185,11 @@ function settingsSave() {
     }
 
     $("#settingsMenu").hide();
-    $("#main").show();
+    $("#main_page").show();
 }
 function settingsCancel() {
     $("#settingsMenu").hide();
-    $("#main").show();
+    $("#main_page").show();
 }
     $("#customize").on("click",function(){
         $("#customize_page").css("display","block");
@@ -197,7 +197,7 @@ function settingsCancel() {
     });
     $("#return_img").on("click",function(){
         $("#customize_page").hide();
-        $("#main").show();
+        $("#main_page").show();
     })
 
 });
