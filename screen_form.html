@@ -54,7 +54,41 @@
         </nav>
         <div class="content">
             <div id="previewbox"> <div id="prev">prev</div></div>
-            <div id="configbox"> <div id="config">config</div></div>
+            <div id="configbox"> 
+                <div id="settingsMenu">
+                    <h1 id="ball_colors">BALL COLOR</h1>
+                    <label class="custom-radio"><input type="radio" name="ballColor" value="black"><span>BLACK</span></label>
+                    <label class="custom-radio"><input type="radio" name="ballColor" value="red"><span>RED</span></label>
+                    <label class="custom-radio"><input type="radio" name="ballColor" value="blue"><span>BLUE</span></label>
+                    
+                    <h1 id="backgrounds">BACKGROUND</h1>
+                    <label class="custom-radio"><input type="radio" name="backImage" value="background1.jpg"><span>AM</span></label>
+                    <label class="custom-radio"><input type="radio" name="backImage" value="background2.jpg"><span>PM</span></label>
+                    <label class="custom-radio"><input type="radio" name="backImage" value="background3.png"><span>NIGHT</span></label>
+                    
+                    <h1 id="BGMS">BGM</h1>
+                    <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic1.wav"><span>BGM 1</span></label>
+                    <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic2.mp3"><span>BGM 2</span></label>
+                    <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic3.mp3"><span>BGM 3</span></label>
+                    
+                    <h1 id="music_volume">BGM VOLUME</h1>
+                    <input type="range" id="musicVolume" min="0" max="100" value="50"><span id="musicVolumeValue">50</span>
+                    
+
+                    <h1 id="OVER">FAIL SOUND</h1>
+                    <label class="custom-radio"><input type="radio" name="overMusic" value="gameover1.wav"><span>OVER 1</span></label>
+                    <label class="custom-radio"><input type="radio" name="overMusic" value="gameover2.wav"><span>OVER 2</span></label>
+                    <label class="custom-radio"><input type="radio" name="overMusic" value="gameover3.wav"><span>OVER 3</span></label>
+                   
+                    <h1 id="over_volume">FAIL SOUND VOLUME</h1>
+                    <input type="range" id="overVolume" min="0" max="100" value="50"><span id="overVolumeValue">50</span>
+
+                    <div>
+                        <input class = "button_animate_1" type="button" value="저장" onclick="settingsSave()">
+                        <input class = "button_animate_1" type="button" value="취소" onclick="settingsCancel()">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="challenge_page">
@@ -78,7 +112,7 @@
     </div>
     <div id="result_page">
         <div class="result_box" id="success_box">
-            <div class = "btn-3" id="round_cover"><p>SCORE</p>
+            <div id="round_cover"><p>SCORE</p>
                 <div id="score_box">
                     <span class="digit" id="digit1"></span>
                     <span class="digit" id="digit2"></span>
