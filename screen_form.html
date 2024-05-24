@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Bouncing_Ball</title>
-	<link rel="stylesheet" type="text/css" href="screen_form.css">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<!-- <script src="screen_form.js"></script> -->
+    <meta charset="utf-8">
+    <title>Bouncing_Ball</title>
+    <link rel="stylesheet" type="text/css" href="screen_form.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="screen_form.js"></script>
 </head>
 
 <body>
@@ -19,9 +19,9 @@
         <div>please select the menu . . .</div>
     </div>
 
-	<div id = "storyboard">
+    <div id="storyboard">
         <div class="exitbar">
-            <img id = "exit_img" src="x.png" alt="X"></img>
+            <img id="exit_img" src="x.png" alt="X"></img>
         </div>
         <div class="contentbox">
             <div class="storybox">
@@ -44,38 +44,46 @@
     </div>
     <div id="customize_page">
         <nav class="nav">
-            <img id = "return_img" src="arrow.png" alt="<-"></img>
+            <img id="return_img" src="arrow.png" alt="<-"></img>
         </nav>
-        <div class = "content">
-            <div id="previewbox"> <div id = "prev">prev</div></div>
-            <div id="configbox"> <div id = "config">config</div></div>
-           
-           
-        </div>
-
+        <div class="content">
+            <div id="previewbox"> <div id="prev">prev</div></div>
+            <div id="configbox"> <div id="config">config</div></div>
         </div>
     </div>
     <div id="challenge_page">
         <nav class="nav">
-            <img id = "return_img" src="arrow.png" alt="<-"></img>
+            <img id="return_img" src="arrow.png" alt="<-"></img>
         </nav>
-        <div class = "content">
+        <div class="content">
             <div id="my_box">
                 <div id="chara_box">
                     <img src="chara1.jpg" alt="캐릭터">
-                    <div id = "name">name</div>
+                    <div id="name">name</div>
                 </div>  
                 <div id="play_box">평균 플레이 시간</div>
             </div>
-           
             <div id="assignment_box">
                 <div class="assignment">공튀기기(1/5)</div>
                 <div class="assignment">공튀기기(1/5)</div>
                 <div class="assignment">공튀기기(1/5)</div>
             </div>
-           
         </div>
     </div>
-    <div id="help"></div>
+    <div id="result_page">
+        <div class="result_box" id="success_box">
+            <div class = "btn-3" id="round_cover"><p>SCORE</p>
+                <div id="score_box">
+                    <span class="digit" id="digit1"></span>
+                    <span class="digit" id="digit2"></span>
+                    <span class="digit" id="digit3"></span>
+                    <span class="digit" id="digit4"></span>
+                </div>
+            </div>
+        </div>
+        <div class="result_box" id="fail_box">
+            <p>FAILED</p>
+        </div>
+    </div>
 </body>
 </html>
