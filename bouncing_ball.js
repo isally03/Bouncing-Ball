@@ -54,6 +54,10 @@ var gameoverMusicVolume;
 
 var itmes=[];
 var itemDropRate=0.2;
+
+let prevMouseX = 0, prevMouseY = 0;
+let paddleSpeed = 0;
+
 window.onload = function () {
 	mainMenu();
 	$("#startGame").on("click", gameStart);
@@ -61,9 +65,11 @@ window.onload = function () {
 	$("#profiles").on("click", profiles);
 	$("#exitGame").on("click", exitGame);
 	$("#settings").on("click", settings);
+	$(document).on("mousemove", mouseMoveSpeed);
 	settings();
 	settingsSave();
 	settingsCancel();
+	
 }
 
 function mainMenu() {
@@ -123,6 +129,23 @@ function exitGame() {
 	// 작성 요함
 }
 
+
+function mouseMoveSpeed(event){
+	// 마우스 움직임 속도 계산
+	const distance = Math.sqrt(
+		Math.pow(event.clientX - prevMouseX, 2) +
+		Math.pow(event.clientY - prevMouseY, 2)
+	  );
+	  const mouseSpeed = distance / 16.67; // 1초당 픽셀 수로 변환
+	
+	  // 마우스 속도에 비례하여 패드 속도 조절
+	  paddleSpeed = mouseSpeed * 0.1;
+	
+	  // 이전 마우스 좌표 업데이트
+	  prevMouseX = event.clientX;
+	  prevMouseY = event.clientY;
+
+}
 function settings() {
 	$("#mainMenu").hide();
 	$("#settings_Icon").hide();
@@ -480,8 +503,19 @@ function movBall() {
 		gameOver();
 		return;
 	}
-	if ((dy > 0 && ballY >= padY - padHeight / 2 - ballRadius && ballY <= padY + padHeight / 2 && ballX > padX - padWidth / 2 && ballX < padX + padWidth / 2) || ballY < ballRadius)
-		dy = -dy;
+	// pad와 부딪혔을때
+	if (dy > 0 && 
+		(ballY >= padY - padHeight / 2 - ballRadius) && 
+		(ballY <= padY + padHeight / 2) && 
+		(ballX > padX - padWidth / 2) && 
+		(ballX < padX + padWidth / 2)
+		){
+		dy = -dy * (1 + paddleSpeed * 0.5); // 공의 속도를 패드 속도에 비례하여 증가
+		paddleSpeed = 0; // 패드 속도 초기화
+	}
+	// 윗 edge와 부딪혔을때
+	if(ballY < ballRadius) dy = -dy;
+
 	ballX += dx;
 	ballY += dy;
 	drawBall();
