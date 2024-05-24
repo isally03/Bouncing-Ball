@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    var backImage;
+    var backgroundMusic = new Audio("backgroundmusic1.wav");
+    backgroundMusic.loop = true;
+    var gameoverMusic = new Audio("gameover1.wav");
+    var backgroundMusicVolume;
+    var gameoverMusicVolume;
     function startPachinkoAnimation(finalScore) {
         var finalScoreStr = finalScore.toString().padStart(4, '0');
 
@@ -40,7 +46,7 @@ $(document).ready(function() {
         var settingsMenu=$("<div>",{
             id:"settingsMenu"
         }).appendTo("#configbox");
-        
+
         //공 색깔 관련 환경설정
         var ballLabel = $("<label>", { id: "ball_label" }).text("공 색깔 선택: ").appendTo(settingsMenu);
         var ballSelect = $("<select>", {
@@ -179,17 +185,19 @@ function settingsSave() {
     }
 
     $("#settingsMenu").hide();
-    $("#mainMenu").show();
-    $("#settings_Icon").show();
+    $("#main").show();
 }
 function settingsCancel() {
     $("#settingsMenu").hide();
-    $("#mainMenu").show();
-    $("#settings_Icon").show();
+    $("#main").show();
 }
     $("#customize").on("click",function(){
         $("#customize_page").css("display","block");
         settings();
     });
+    $("#return_img").on("click",function(){
+        $("#customize_page").hide();
+        $("#main").show();
+    })
 
 });
