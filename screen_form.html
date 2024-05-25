@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Bouncing_Ball</title>
@@ -26,11 +25,11 @@
                 <span>m</span><span>e</span><span>n</span><span>u</span><span>&nbsp;</span>
                 <span>.</span><span>.</span><span>.</span>
             </div>
-
+           
             <audio src="Debussy - Reverie L68.mp3" autoplay loop controls id="main_menu_audio"></audio>
 
         </div>
-
+    
         <div id="storyboard">
             <div class="exitbar">
                 <img id="exit_img" src="x.png" alt="X"></img>
@@ -59,61 +58,44 @@
                 <img id="return_img" src="arrow.png" alt="<-"></img>
             </nav>
             <div class="content">
-                <div id="previewbox">
-                    <div id="prev">prev</div>
-                </div>
-                <div id="configbox">
+                <div id="previewbox"> <div id="prev">prev</div></div>
+                <div id="configbox"> 
                     <div id="settingsMenu">
                         <h1 id="ball_colors">BALL COLOR</h1>
-                        <label class="custom-radio"><input type="radio" name="ballColor" value="black"
-                                checked><span>BLACK</span></label>
-                        <label class="custom-radio"><input type="radio" name="ballColor"
-                                value="red"><span>RED</span></label>
-                        <label class="custom-radio"><input type="radio" name="ballColor"
-                                value="blue"><span>BLUE</span></label>
-
+                        <label class="custom-radio"><input type="radio" name="ballColor" value="black" checked><span>BLACK</span></label>
+                        <label class="custom-radio"><input type="radio" name="ballColor" value="red"><span>RED</span></label>
+                        <label class="custom-radio"><input type="radio" name="ballColor" value="blue"><span>BLUE</span></label>
+                        
                         <h1 id="backgrounds">BACKGROUND</h1>
-                        <label class="custom-radio"><input type="radio" name="backColor" value="background1.jpg"
-                                checked><span>AM</span></label>
-                        <label class="custom-radio"><input type="radio" name="backColor"
-                                value="background2.jpg"><span>PM</span></label>
-                        <label class="custom-radio"><input type="radio" name="backColor"
-                                value="background3.png"><span>NIGHT</span></label>
-
+                        <label class="custom-radio"><input type="radio" name="backColor" value="background1.jpg" checked><span>AM</span></label>
+                        <label class="custom-radio"><input type="radio" name="backColor" value="background2.jpg"><span>PM</span></label>
+                        <label class="custom-radio"><input type="radio" name="backColor" value="background3.png"><span>NIGHT</span></label>
+                        
                         <h1 id="BGMS">BGM</h1>
-                        <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic1.wav"
-                                checked><span>BGM 1</span></label>
-                        <label class="custom-radio"><input type="radio" name="music"
-                                value="backgroundmusic2.mp3"><span>BGM 2</span></label>
-                        <label class="custom-radio"><input type="radio" name="music"
-                                value="backgroundmusic3.mp3"><span>BGM 3</span></label>
-
+                        <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic1.wav" checked><span>BGM 1</span></label>
+                        <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic2.mp3"><span>BGM 2</span></label>
+                        <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic3.mp3"><span>BGM 3</span></label>
+                        
                         <h1 id="music_volume">BGM VOLUME</h1>
-                        <input type="range" id="musicVolume" min="0" max="100" value="50"><span
-                            id="musicVolumeValue">50</span>
-
-
+                        <input type="range" id="musicVolume" min="0" max="100" value="50"><span id="musicVolumeValue">50</span>
+                        
+    
                         <h1 id="OVER">FAIL SOUND</h1>
-                        <label class="custom-radio"><input type="radio" name="overMusic" value="gameover1.wav"
-                                checked><span>OVER 1</span></label>
-                        <label class="custom-radio"><input type="radio" name="overMusic"
-                                value="gameover2.wav"><span>OVER 2</span></label>
-                        <label class="custom-radio"><input type="radio" name="overMusic"
-                                value="gameover3.wav"><span>OVER 3</span></label>
+                        <label class="custom-radio"><input type="radio" name="overMusic" value="gameover1.wav" checked><span>OVER 1</span></label>
+                        <label class="custom-radio"><input type="radio" name="overMusic" value="gameover2.wav"><span>OVER 2</span></label>
+                        <label class="custom-radio"><input type="radio" name="overMusic" value="gameover3.wav"><span>OVER 3</span></label>
 
                         <h1 id="over_volume">FAIL SOUND VOLUME</h1>
-                        <input type="range" id="overVolume" min="0" max="100" value="50"><span
-                            id="overVolumeValue">50</span>
+                        <input type="range" id="overVolume" min="0" max="100" value="50"><span id="overVolumeValue">50</span>
                         <h1 id="mute_button">MUTE ALL SOUND</h1>
                         <input type="checkbox" id=Muteall>음소거
-
+                       
                         <h1 id="over_volume">FAIL SOUND VOLUME</h1>
-                        <input type="range" id="overVolume" min="0" max="100" value="50"><span
-                            id="overVolumeValue">50</span>
-
+                        <input type="range" id="overVolume" min="0" max="100" value="50"><span id="overVolumeValue">50</span>
+    
                         <div>
-                            <input class="button_animate_1" type="button" value="저장" onclick="settingsSave()">
-                            <input class="button_animate_1" type="button" value="취소" onclick="settingsCancel()">
+                            <input class = "button_animate_1" type="button" value="저장" onclick="settingsSave()">
+                            <input class = "button_animate_1" type="button" value="취소" onclick="settingsCancel()">
                         </div>
                     </div>
                 </div>
@@ -128,7 +110,7 @@
                     <div id="chara_box">
                         <img src="chara1.jpg" alt="캐릭터">
                         <div id="name">name</div>
-                    </div>
+                    </div>  
                     <div id="play_box">평균 플레이 시간</div>
                 </div>
                 <div id="assignment_box">
@@ -140,8 +122,7 @@
         </div>
         <div id="result_page">
             <div class="result_box" id="success_box">
-                <div id="round_cover">
-                    <p>SCORE</p>
+                <div id="round_cover"><p>SCORE</p>
                     <div id="score_box">
                         <span class="digit" id="digit1"></span>
                         <span class="digit" id="digit2"></span>
@@ -157,7 +138,6 @@
     </div>
     <canvas id="myCanvas"></canvas>
     <p id="myScore">점수 : 0</p>
-
+    
 </body>
-
 </html>
