@@ -264,8 +264,8 @@ function breakBrick() {
 
 					brickCnt--;
 					console.log(brickCnt);
-					score++;
-					combo++;
+					score += 10;
+					combo += 10;
 					scoreUpdate();
 					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
 					drawBricks(x, y);
