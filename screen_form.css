@@ -5,7 +5,11 @@
     font-style: normal;
 }
 
-*{padding: 0; margin: 0; font-family: 'HSSanTokki20-Regular', sans-serif;}
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'HSSanTokki20-Regular', sans-serif;
+}
 
 
 
@@ -25,43 +29,44 @@ body::before {
     z-index: -1;
     position: absolute;
     content: "";
-    top:0px;
-    left:0px;
+    top: 0px;
+    left: 0px;
     width: 100%;
     height: 100%;
     background:
-    linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 25%, rgba(16, 25, 31, 0.274) 35%, rgba(128, 124, 124, 0.527) 50%, rgba(16, 25, 31, 0.274) 65% ,rgba(16,25,31, 0.4)75%,#10191f 100%);
+        linear-gradient(to right, #10191f 0%, rgba(16, 25, 31, 0.4) 25%, rgba(16, 25, 31, 0.274) 35%, rgba(128, 124, 124, 0.527) 50%, rgba(16, 25, 31, 0.274) 65%, rgba(16, 25, 31, 0.4)75%, #10191f 100%);
 }
 
 
-#exit_img{
+#exit_img {
     height: 30px;
     margin-top: 11px;
     margin-right: 25px;
-    float: right;  
- }
+    float: right;
+}
 
- #return_img{
+#return_img {
     height: 80px;
     margin-top: 10px;
     margin-left: 20px;
- }
+}
 
 
 /* 메인 메뉴 */
 
- #main{
+#main {
     display: none;
     overflow: hidden;
     width: 100%;
     height: 100%;
- }
-#menu_box{
+}
+
+#menu_box {
     margin-top: 250px;
     margin-bottom: 50px;
 }
 
- #menu_box>div{
+#menu_box>div {
     width: 60%;
     margin: 0 auto;
     text-align: center;
@@ -69,16 +74,17 @@ body::before {
     line-height: 100px;
     font-weight: bold;
     color: #FFFDF7;
-    letter-spacing:10px;
- }
+    letter-spacing: 10px;
+}
 
- #menu_box>div:hover{
+#menu_box>div:hover {
     font-size: 60px;
     letter-spacing: 25px;
     text-shadow: 0px 0px 15px #dfcff5;
     /* line-height: 80px; */
- }
- #main>div:last-child{
+}
+
+#main>div:last-child {
     text-align: center;
     line-height: 80px;
     font-weight: bold;
@@ -87,12 +93,12 @@ body::before {
     color: transparent;
     opacity: 0.7;
     letter-spacing: 20px;
- }
+}
 
 
 /* 스토리 진행 창 */
 
-#storyboard{
+#storyboard {
     display: none;
     width: 800px;
     /* height: 800px; */
@@ -100,20 +106,20 @@ body::before {
     /* background-color: rgb(190, 236, 248); */
 }
 
-.contentbox{
+.contentbox {
     overflow: hidden;
     width: 100%;
     height: 700px;
-    border-radius:  0 0 25px 25px;
+    border-radius: 0 0 25px 25px;
     background-color: #FFFDF7;
     opacity: 0.95;
 }
 
-.exitbar{
+.exitbar {
     overflow: hidden;
     height: 50px;
     border-radius: 25px 25px 0 0;
-    background-color:#e9e7e3;
+    background-color: #e9e7e3;
 }
 
 .storybox {
@@ -131,28 +137,30 @@ body::before {
 
 .storybox>.narbox {
     display: inline-block;
-    max-width: calc(100% - 70px); /* Adjust according to your layout, considering margins and image width */
+    max-width: calc(100% - 70px);
+    /* Adjust according to your layout, considering margins and image width */
     margin: 0 10px;
     padding: 10px 10px;
     border-radius: 8px;
-    background-color: rgba(233,231,227,0.8);
-    white-space: nowrap; /* Prevent text from wrapping */
+    background-color: rgba(233, 231, 227, 0.8);
+    white-space: nowrap;
+    /* Prevent text from wrapping */
     overflow: hidden;
 
 }
 
 /* customize */
 
-#customize_page{
-    display: none;
+#customize_page {
+    /*display: none;*/
     overflow: hidden;
     width: 100%;
     height: 100%;
     /* background-color: #6798c06b; */
-    background: linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 35% , rgba(16,25,31, 0.4)65%,#10191f 100%);
+    background: linear-gradient(to right, #10191f 0%, rgba(16, 25, 31, 0.4) 35%, rgba(16, 25, 31, 0.4)65%, #10191f 100%);
 }
 
-.nav{
+.nav {
     overflow: hidden;
     height: 90px;
     /* background-color: #6798c06b; */
@@ -160,26 +168,26 @@ body::before {
 
 
 
-.content{
+.content {
     overflow: hidden;
     display: flex;
     justify-content: space-around;
     padding: 80px 0;
 }
 
-#previewbox{
+#previewbox {
     position: relative;
     /* display: inline-block; */
     float: left;
     margin-left: 15%;
     width: 300px;
     height: 600px;
-    background-color:#eaf3f8af;
+    background-color: #eaf3f8af;
     box-shadow: 8px 3px 0px 5px#4c545a96;
 }
 
 
-#configbox{
+#configbox {
     position: relative;
     /* display: inline-block; */
     float: right;
@@ -187,23 +195,23 @@ body::before {
     margin-right: 15%;
     width: 600px;
     height: 500px;
-    background-color:#eaf3f8af;
+    background-color: #eaf3f8af;
     box-shadow: 8px 3px 0px 5px#4c545a96;
 }
 
-#prev{
+#prev {
     position: absolute;
     bottom: -10px;
     left: 100px;
     width: 100px;
     height: 50px;
     line-height: 50px;
-    background-color:  #eaf3f8af;
+    background-color: #eaf3f8af;
     box-shadow: 8px 3px 0px 5px#4c545a96;
     text-align: center;
 }
 
-#config{
+#config {
     position: absolute;
     top: -10px;
     left: 100px;
@@ -213,7 +221,7 @@ body::before {
     padding-left: 50px;
     margin: auto;
     box-shadow: 8px 3px 0px 5px#4c545a96;
-    background-color:   #eaf3f8af;
+    background-color: #eaf3f8af;
     /* text-align: center; */
 }
 
@@ -221,15 +229,15 @@ body::before {
 
 /* challenge_page */
 
-#challenge_page{
+#challenge_page {
     /* display: none; */
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, #10191f 0%, rgba(16,25,31, 0.4) 35% , rgba(16,25,31, 0.4)65%,#10191f 100%);
+    background: linear-gradient(to right, #10191f 0%, rgba(16, 25, 31, 0.4) 35%, rgba(16, 25, 31, 0.4)65%, #10191f 100%);
 }
 
-#my_box{
+#my_box {
     position: relative;
     display: inline-block;
     width: 400px;
@@ -239,7 +247,7 @@ body::before {
     /* background-color: #FDC921; */
 }
 
-#assignment_box{
+#assignment_box {
     /* position: relative; */
     overflow: scroll;
     display: block;
@@ -250,27 +258,28 @@ body::before {
     background-color: #eaf3f8af;
 }
 
-.assignment{
+.assignment {
     font-size: 1.5em;
     margin: 2em 1em;
 }
 
-#chara_box{
+#chara_box {
     position: relative;
     background-color: #ffffff;
     width: 40%;
     opacity: 0.8;
-    
+
 }
-#chara_box>img{
+
+#chara_box>img {
     width: 80%;
     margin: 10% 10%;
     padding: 5% 0;
-    
-   
+
+
 }
 
-#name{
+#name {
     position: absolute;
     width: 100%;
     height: 50px;
@@ -286,12 +295,10 @@ body::before {
     text-align: center;
 }
 
-#play_box{
+#play_box {
     position: absolute;
     bottom: 20px;
     color: #ffffff;
     font-size: 20px;
     font-weight: bolder;
 }
-
-
