@@ -263,7 +263,6 @@ function breakBrick() {
 					else { dy = -dy; }
 
 					brickCnt--;
-					console.log(brickCnt);
 					score += 10;
 					combo += 10;
 					scoreUpdate();
@@ -313,8 +312,8 @@ function movBall() {
 		(ballX > padX - padWidth / 2) &&
 		(ballX < padX + padWidth / 2)
 	) {
-		dy = -dy * (1 + paddleSpeed * 2); // 공의 속도를 패드 속도에 비례하여 증가
-		dx = dx + (1 + paddleSpeed * 2);
+		dy = -dy * (1 + paddleSpeed * 0.5); // 공의 속도를 패드 속도에 비례하여 증가
+		dx = dx + (dx * paddleSpeed * 0.1);
 		paddleSpeed = 0; // 패드 속도 초기화
 		if (combo > 2) {
 			console.log(combo);
@@ -369,9 +368,10 @@ function answer() {
 }
 
 function gameOver() {
+	console.log("test")
 	clearInterval(ball);
 	clearInterval(timebar);
-	canvas.hidden = true;
+	$("#myCanvas").hide();
 	$("#result_page").show();
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
