@@ -53,16 +53,13 @@ img { border: 0; }
     float: right;  
  }
 
- #return_img1{
+ #return_img1, #return_img2{
     height: 80px;
     margin-top: 10px;
     margin-left: 20px;
+    cursor: pointer;
  }
- #return_img2{
-    height: 80px;
-    margin-top: 10px;
-    margin-left: 20px;
- }
+
 
  .button_animate_1{
     background-color: #FFFDF7;
