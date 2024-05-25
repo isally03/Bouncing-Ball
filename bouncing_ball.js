@@ -263,7 +263,6 @@ function breakBrick() {
 					else { dy = -dy; }
 
 					brickCnt--;
-					console.log(brickCnt);
 					score += 10;
 					combo += 10;
 					scoreUpdate();
@@ -369,9 +368,10 @@ function answer() {
 }
 
 function gameOver() {
+	console.log("test")
 	clearInterval(ball);
 	clearInterval(timebar);
-	canvas.hidden = true;
+	$("#myCanvas").hide();
 	$("#result_page").show();
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
