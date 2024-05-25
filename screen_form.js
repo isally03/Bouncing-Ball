@@ -3,8 +3,8 @@ var backImage = "background1.jpg";
 var backgroundMusic = new Audio("backgroundmusic1.wav");
 backgroundMusic.loop = true;
 var gameoverMusic = new Audio("gameover1.wav");
-var backgroundMusicVolume;
-var gameoverMusicVolume;
+var backgroundMusicVolume = 0.5;
+var gameoverMusicVolume = 0.5;
 
 $(document).ready(function() {
     $("#customize").on("click", function() {
@@ -23,6 +23,26 @@ $(document).ready(function() {
     $("#overVolume").on("input", function() {
         $("#overVolumeValue").text($(this).val());
         gameoverMusic.volume = $(this).val() / 100;
+    });
+
+    $("#Muteall").change(function(){
+        if($(this).is(":checked")){
+           backgroundMusic.volume=0;
+           $("#musicVolume").val(0).prop("disabled",true);
+           $("#musicVolumeValue").text(0);
+           gameoverMusic.volume=0;
+           $("#overVolume").val(0).prop("disabled",true);
+           $("#overVolumeValue").text(0);
+        }
+        else{
+            var volume=50;
+            backgroundMusic.volume=volume/100;
+            $("#musicVolume").val(50).prop("disabled",false);
+            $("#musicVolumeValue").text(50);
+            gameoverMusic.volume=volume/100;
+            $("#overVolume").val(50).prop("disabled",false);
+            $("#overVolumeValue").text(50);
+        }
     });
 
     $("#startGame").on("click", gameStart);

@@ -558,3 +558,9 @@ img { border: 0; }
 #return_img:hover{
     cursor: pointer;
 }
+#save_button:hover{
+    cursor: pointer;
+}
+#cancel_button:hover{
+    cursor: pointer;
+}
