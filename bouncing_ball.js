@@ -51,8 +51,14 @@ var itemDropRate=0.2;
 let prevMouseX = 0, prevMouseY = 0;
 let paddleSpeed = 0;
 
+var main_BGM;
+
 function gameStart() {
 	$("#main_menu").hide();
+// // 메인화면 음악 추가
+	main_BGM = document.getElementById("main_menu_audio");
+	main_BGM.pause();
+
 	currentStage = 1;
 	score = 0;
 	stage(currentStage);
@@ -341,6 +347,10 @@ function gameOver() {
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();
+
+	//메인 화면 음악 추가 게임종료 화면 추가 후 옮길 예정
+	main_BGM.play();
+
 }
 
 function endings() {
