@@ -499,7 +499,7 @@ function movBall() {
 	drawBricks(ballX, ballY);
 	if (ballX < ballRadius || ballX > sWidth - ballRadius)
 		dx = -dx;
-	if (ballY > sHeight - ballRadius) {
+	if (ballY > sHeight - timebarHeight - ballRadius) {
 		gameOver();
 		return;
 	}
