@@ -10,7 +10,6 @@ var velocityY;
 var dx;
 var dy;
 var ballRadius;
-var ballColor;
 
 var padX;
 var padY;
@@ -45,12 +44,6 @@ var blue;
 var bluePerSecond;
 
 var currentStage;
-var backImage;
-var backgroundMusic = new Audio("backgroundmusic1.wav");
-backgroundMusic.loop = true;
-var gameoverMusic = new Audio("gameover1.wav");
-var backgroundMusicVolume;
-var gameoverMusicVolume;
 
 var itmes=[];
 var itemDropRate=0.2;
@@ -58,51 +51,8 @@ var itemDropRate=0.2;
 let prevMouseX = 0, prevMouseY = 0;
 let paddleSpeed = 0;
 
-window.onload = function () {
-	mainMenu();
-	$("#startGame").on("click", gameStart);
-	$("challenge").on("click", challenge);
-	$("#profiles").on("click", profiles);
-	$("#exitGame").on("click", exitGame);
-	$("#settings").on("click", settings);
-	$(document).on("mousemove", mouseMoveSpeed);
-	settings();
-	settingsSave();
-	settingsCancel();
-	
-}
-
-function mainMenu() {
-	var mainMenu = document.getElementById("mainMenu");
-
-	var startGame = document.createElement("input");
-	startGame.type = "button";
-	startGame.id = "startGame";
-	startGame.value = "게임시작";
-	mainMenu.appendChild(startGame);
-
-	var challenge = document.createElement("input");
-	challenge.type = "button";
-	challenge.id = "challenge";
-	challenge.value = "도전 과제";
-	mainMenu.appendChild(challenge);
-
-	var profiles = document.createElement("input");
-	profiles.type = "button";
-	profiles.id = "profiles";
-	profiles.value = "프로필";
-	mainMenu.appendChild(profiles);
-
-	var exitGame = document.createElement("input");
-	exitGame.type = "button";
-	exitGame.id = "exitGame";
-	exitGame.value = "게임종료";
-	mainMenu.appendChild(exitGame);
-}
-
 function gameStart() {
-	$("#mainMenu").hide();
-	$("#settings_Icon").hide();
+	$("#main_menu").hide();
 	currentStage = 1;
 	score = 0;
 	stage(currentStage);
@@ -116,19 +66,6 @@ function gameStart() {
 	backgroundMusic.play();
 	gameoverMusic.pause();
 }
-
-function challenge() {
-	// 작성 요함
-}
-
-function profiles() {
-	// 작성 요함
-}
-
-function exitGame() {
-	// 작성 요함
-}
-
 
 function mouseMoveSpeed(event){
 	// 마우스 움직임 속도 계산
@@ -146,161 +83,7 @@ function mouseMoveSpeed(event){
 	  prevMouseY = event.clientY;
 
 }
-function settings() {
-	$("#mainMenu").hide();
-	$("#settings_Icon").hide();
 
-	if ($("#settingsMenu").length === 0) {
-		var settingsMenu = $("<div>", {
-			id: "settingsMenu"
-		}).appendTo("body");
-
-		//공 색깔 관련 환경설정
-		var ballLabel = $("<label>", { id: "ball_label" }).text("공 색깔 선택: ").appendTo(settingsMenu);
-		var ballSelect = $("<select>", {
-			id: "ballSelect"
-		}).appendTo(settingsMenu);
-		var balls = ["공1", "공2", "공3"];
-		$.each(balls, function (index, ball) {
-			$("<option>", {
-				value: ball,
-				text: ball
-			}).appendTo(ballSelect);
-		});
-
-		//게임 배경 화면 관련 환경설정
-		var backLabel = $("<label>", { id: "back_label" }).text("배경 색상 선택: ").appendTo(settingsMenu);
-		var backselect = $("<select>", {
-			id: "backSelect"
-		}).appendTo(settingsMenu);
-		var backgrounds = ["배경1", "배경2", "배경3"];
-		$.each(backgrounds, function (index, background) {
-			$("<option>", {
-				value: background,
-				text: background
-			}).appendTo(backSelect);
-		});
-
-		//게임 배경 음악 관련 환경설정
-		var musicLabel = $("<label>", { id: "music_label" }).text("배경 음악 선택: ").appendTo(settingsMenu);
-		var musicselect = $("<select>", {
-			id: "musicSelect"
-		}).appendTo(settingsMenu);
-		var backmusics = ["음악1", "음악2", "음악3"];
-		$.each(backmusics, function (index, backmusic) {
-			$("<option>", {
-				value: backmusic,
-				text: backmusic
-			}).appendTo(musicSelect);
-		});
-		var musicVolumeLabel = $("<label>", { id: "music_volume_label" }).text("배경 음악 음량: ").appendTo(settingsMenu);
-		var musicVolumeSlider = $("<input>", {
-			type: "range",
-			id: "musicVolume",
-			min: 0,
-			max: 100,
-			value: 50
-		}).appendTo(settingsMenu);
-		var musicVolumeValue=$("<span>",{
-			id:"musicVolumeValue"
-		}).text(musicVolumeSlider.val()).css("margin-left","5px").appendTo(settingsMenu);
-
-		//게임 실패 음악 관련 환경설정
-		var overLabel = $("<label>", { id: "over_label" }).text("실패 음악 선택: ").appendTo(settingsMenu);
-		var overselect = $("<select>", {
-			id: "overSelect"
-		}).appendTo(settingsMenu);
-		var overmusics = ["효과음1", "효과음2", "효과음3"];
-		$.each(overmusics, function (index, overmusic) {
-			$("<option>", {
-				value: overmusic,
-				text: overmusic
-			}).appendTo(overSelect);
-		});
-		var overVolumeLabel = $("<label>", { id: "over_volume_label" }).text("실패 음악 음량: ").appendTo(settingsMenu);
-		var overVolumeSlider = $("<input>", {
-			type: "range",
-			id: "overVolume",
-			min: 0,
-			max: 100,
-			value: 50
-		}).appendTo(settingsMenu);
-		var overVolumeValue=$("<span>",{
-			id:"overVolumeValue"
-		}).text(overVolumeSlider.val()).css("margin-left","5px").appendTo(settingsMenu);
-
-		$("<br>").appendTo(settingsMenu);
-		$("<br>").appendTo(settingsMenu);
-
-		if ($("#settings"))
-			var saveButton = $("<input>", {
-				type: "button", value: "저장"
-			}).css("margin-right", "10px").appendTo(settingsMenu).on("click", settingsSave);
-		var cancelButton = $("<input>", {
-			type: "button", value: "취소"
-		}).appendTo(settingsMenu).on("click", settingsCancel);
-		musicVolumeSlider.on("input",function(){
-			$("#musicVolumeValue").text($(this).val());
-		});
-		overVolumeSlider.on("input",function(){
-			$("#overVolumeValue").text($(this).val());
-		});
-	}
-	else {
-		$("#settingsMenu").show();
-	}
-}
-function settingsSave() {
-	var selectBall = $("#ballSelect").val();
-	if (selectBall === "공1") {
-		ballColor = "black";
-	}
-	else if (selectBall === "공2") {
-		ballColor = "red";
-	}
-	else {
-		ballColor = "blue";
-	}
-	var selectBack = $("#backSelect").val();
-	if (selectBack === "배경1") {
-		backImage = "url(\"background1.jpg\")";
-	}
-	else if (selectBack === "배경2") {
-		backImage = "url(\"background2.jpg\")";
-	}
-	else {
-		backImage = "url(\"background3.png\")";
-	}
-	var selectMusic = $("#musicSelect").val();
-	if (selectMusic === "음악1") {
-		backgroundMusic.src = "backgroundmusic1.wav";
-	}
-	else if (selectMusic === "음악2") {
-		backgroundMusic.src = "backgroundmusic2.mp3";
-	}
-	else {
-		backgroundMusic.src = "backgroundmusic3.mp3";
-	}
-	var selectOver = $("#overSelect").val();
-	if (selectOver === "효과음1") {
-		gameoverMusic.src = "gameover1.wav";
-	}
-	else if (selectOver === "효과음2") {
-		gameoverMusic.src = "gameover2.wav";
-	}
-	else {
-		gameoverMusic.src = "gameover3.wav";
-	}
-
-	$("#settingsMenu").hide();
-	$("#mainMenu").show();
-	$("#settings_Icon").show();
-}
-function settingsCancel() {
-	$("#settingsMenu").hide();
-	$("#mainMenu").show();
-	$("#settings_Icon").show();
-}
 function gameInit() {
 	sWidth = $(document).width();
 	sHeight = $(document).height();
@@ -344,7 +127,7 @@ function makeCanvas() {
 	ctx = canvas.getContext("2d");
 	ctx.clearRect(0, 0, sWidth, sHeight);
 
-	canvas.style.backgroundImage = backImage;
+	canvas.style.backgroundImage = `url("${backImage}")`;
 	canvas.style.backgroundRepeat = "no-repeat";
 	canvas.style.backgroundSize = "cover";
 	$("#myCanvas").mousemove(function (e) {
@@ -554,8 +337,7 @@ function gameOver() {
 	clearInterval(ball);
 	clearInterval(timebar);
 	canvas.hidden = true;
-	$("#mainMenu").show();
-	$("#settings_Icon").show();
+	$("#main_menu").show();
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();
@@ -629,4 +411,8 @@ function stageThree() {
 	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+}
+
+function exit() {
+
 }

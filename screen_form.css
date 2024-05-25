@@ -5,11 +5,13 @@
     font-style: normal;
 }
 
-*{padding: 0; margin: 0; }
+* { padding: 0; margin: 0; }
+body { overflow: hidden;}
+li { list-style: none; }
+a { text-decoration: none; }
+img { border: 0; }
 
-
-
-body {
+#main_menu {
     z-index: -1;
     position: absolute;
     width: 100%;
@@ -21,7 +23,7 @@ body {
     background-size: cover;
 }
 
-body::before {
+#main_menu::before {
     z-index: -1;
     position: absolute;
     content: "";
@@ -87,7 +89,7 @@ body::before {
     margin-bottom: 50px;
 }
 
- #menu_box>div{
+#menu_box>div{
     width: 60%;
     margin: 0 auto;
     text-align: center;
