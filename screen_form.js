@@ -6,7 +6,11 @@ var gameoverMusic = new Audio("gameover1.wav");
 var backgroundMusicVolume = 0.5;
 var gameoverMusicVolume = 0.5;
 
+var storybox;
+
 $(document).ready(function() {
+    storybox = $(".storybox");
+
     $("#customize").on("click", function() {
         settings();
     });
@@ -45,9 +49,10 @@ $(document).ready(function() {
         }
     });
 
-    $("#startGame").on("click", gameStart);
+    $("#startGame").on("click", prolog);
 	$("#challenge").on("click", challenge);
-	$("#exit").on("click", exit);
+	$("#exit").on("click", exit);  
+    $("#exit_img").on("click", finishStory);
 });
 
 
@@ -105,4 +110,32 @@ function settingsSave() {
 function settingsCancel() {
     $("#customize_page").hide();
     $("#main_page").show();
+}
+
+
+function prolog(){
+    $("#main_page").hide();
+    $("#storyboard").show();
+    $(window).keydown(playStory);
+}
+
+
+var index = 0;
+
+function playStory(){
+    if((index)== storybox.length ){
+        finishStory();
+    }
+    else{
+        console.log("index: "+index+"\nstorybox[index]"+ storybox[index]);
+        storybox.eq(index).css("display", "flex");
+        index++;
+    }
+   
+}
+
+function finishStory(){
+    $(window).off();
+    $("#storyboard").hide();
+    gameStart();
 }

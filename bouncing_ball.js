@@ -344,6 +344,7 @@ function gameOver() {
 	clearInterval(timebar);
 	canvas.hidden = true;
 	$("#main_menu").show();
+	$("#main_page").show();
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();
