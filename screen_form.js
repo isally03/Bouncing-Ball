@@ -85,4 +85,37 @@ $(document).ready(function() {
         $("#overVolumeValue").text($(this).val());
         gameoverMusic.volume = $(this).val() / 100;
     });
+    $("#save_button").on("click",function(){
+        settingsSave();
+    })
+    $("#cancel_button").on("click",function(){
+        settingsCancel();
+    })
+
+    $("#bgmMute").change(function(){
+        if($(this).is(":checked")){
+           backgroundMusic.volume=0;
+           $("#musicVolume").val(0);
+           $("#musicVolumeValue").text(0);
+        }
+        else{
+            var volume=50;
+            backgroundMusic.volume=volume/100;
+            $("#musicVolume").val(50);
+            $("#musicVolumeValue").text(50);
+        }
+    });
+    $("#overMute").change(function(){
+        if($(this).is(":checked")){
+           gameoverMusic.volume=0;
+           $("#overVolume").val(0);
+           $("#overVolumeValue").text(0);
+        }
+        else{
+            var volume=50;
+            gameoverMusic.volume=volume/100;
+            $("#overVolume").val(50);
+            $("#overVolumeValue").text(50);
+        }
+    });
 });
