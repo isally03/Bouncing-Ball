@@ -10,7 +10,6 @@ var velocityY;
 var dx;
 var dy;
 var ballRadius;
-var ballColor;
 
 var padX;
 var padY;
@@ -45,57 +44,25 @@ var blue;
 var bluePerSecond;
 
 var currentStage;
-var backImage;
-var backgroundMusic = new Audio("backgroundmusic1.wav");
-backgroundMusic.loop = true;
-var gameoverMusic = new Audio("gameover1.wav");
-var backgroundMusicVolume;
-var gameoverMusicVolume;
-window.onload = function () {
-	mainMenu();
-	$("#startGame").on("click", gameStart);
-	$("challenge").on("click", challenge);
-	$("#profiles").on("click", profiles);
-	$("#exitGame").on("click", exitGame);
-	$("#settings").on("click", settings);
-	settings();
-	settingsSave();
-	settingsCancel();
-}
 
-function mainMenu() {
-	var mainMenu = document.getElementById("mainMenu");
+var itmes=[];
+var itemDropRate=0.2;
 
-	var startGame = document.createElement("input");
-	startGame.type = "button";
-	startGame.id = "startGame";
-	startGame.value = "게임시작";
-	mainMenu.appendChild(startGame);
+let prevMouseX = 0, prevMouseY = 0;
+let paddleSpeed = 0;
 
-	var challenge = document.createElement("input");
-	challenge.type = "button";
-	challenge.id = "challenge";
-	challenge.value = "도전 과제";
-	mainMenu.appendChild(challenge);
+var main_BGM;
 
-	var profiles = document.createElement("input");
-	profiles.type = "button";
-	profiles.id = "profiles";
-	profiles.value = "프로필";
-	mainMenu.appendChild(profiles);
-
-	var exitGame = document.createElement("input");
-	exitGame.type = "button";
-	exitGame.id = "exitGame";
-	exitGame.value = "게임종료";
-	mainMenu.appendChild(exitGame);
-}
 
 function gameStart() {
-	$("#mainMenu").hide();
-	$("#settings_Icon").hide();
+	$("#main_menu").hide();
+// // 메인화면 음악 추가
+	main_BGM = document.getElementById("main_menu_audio");
+	main_BGM.pause();
+
 	currentStage = 1;
 	score = 0;
+	scoreUpdate();
 	stage(currentStage);
 
 	backgroundMusicVolume = $("#musicVolume").val() / 100;
@@ -108,153 +75,23 @@ function gameStart() {
 	gameoverMusic.pause();
 }
 
-function challenge() {
-	// 작성 요함
+function mouseMoveSpeed(event){
+	// 마우스 움직임 속도 계산
+	const distance = Math.sqrt(
+		Math.pow(event.clientX - prevMouseX, 2) +
+		Math.pow(event.clientY - prevMouseY, 2)
+	  );
+	  const mouseSpeed = distance / 16.67; // 1초당 픽셀 수로 변환
+	
+	  // 마우스 속도에 비례하여 패드 속도 조절
+	  paddleSpeed = mouseSpeed * 0.1;
+	
+	  // 이전 마우스 좌표 업데이트
+	  prevMouseX = event.clientX;
+	  prevMouseY = event.clientY;
+
 }
 
-function profiles() {
-	// 작성 요함
-}
-
-function exitGame() {
-	// 작성 요함
-}
-
-function settings() {
-	$("#mainMenu").hide();
-	$("#settings_Icon").hide();
-	if ($("#settingsMenu").length === 0) {
-		var settingsMenu = $("<div>", {
-			id: "settingsMenu"
-		}).appendTo("body");
-		var ballLabel = $("<label>", { id: "ball_label" }).text("공 색깔 선택: ").appendTo(settingsMenu);
-		var ballSelect = $("<select>", {
-			id: "ballSelect"
-		}).appendTo(settingsMenu);
-		var balls = ["공1", "공2", "공3"];
-		$.each(balls, function (index, ball) {
-			$("<option>", {
-				value: ball,
-				text: ball
-			}).appendTo(ballSelect);
-		});
-		var backLabel = $("<label>", { id: "back_label" }).text("배경 색상 선택: ").appendTo(settingsMenu);
-		var backselect = $("<select>", {
-			id: "backSelect"
-		}).appendTo(settingsMenu);
-		var backgrounds = ["배경1", "배경2", "배경3"];
-		$.each(backgrounds, function (index, background) {
-			$("<option>", {
-				value: background,
-				text: background
-			}).appendTo(backSelect);
-		});
-		var musicLabel = $("<label>", { id: "music_label" }).text("배경 음악 선택: ").appendTo(settingsMenu);
-		var musicselect = $("<select>", {
-			id: "musicSelect"
-		}).appendTo(settingsMenu);
-		var backmusics = ["음악1", "음악2", "음악3"];
-		$.each(backmusics, function (index, backmusic) {
-			$("<option>", {
-				value: backmusic,
-				text: backmusic
-			}).appendTo(musicSelect);
-		});
-		var musicVolumeLabel = $("<label>", { id: "music_volume_label" }).text("배경 음악 음량: ").appendTo(settingsMenu);
-		var musicVolumeSlider = $("<input>", {
-			type: "range",
-			id: "musicVolume",
-			min: 0,
-			max: 100,
-			value: 50
-		}).appendTo(settingsMenu);
-
-		var overLabel = $("<label>", { id: "over_label" }).text("실패 음악 선택: ").appendTo(settingsMenu);
-		var overselect = $("<select>", {
-			id: "overSelect"
-		}).appendTo(settingsMenu);
-		var overmusics = ["효과음1", "효과음2", "효과음3"];
-		$.each(overmusics, function (index, overmusic) {
-			$("<option>", {
-				value: overmusic,
-				text: overmusic
-			}).appendTo(overSelect);
-		});
-
-		var overVolumeLabel = $("<label>", { id: "over_volume_label" }).text("실패 음악 음량: ").appendTo(settingsMenu);
-		var overVolumeSlider = $("<input>", {
-			type: "range",
-			id: "overVolume",
-			min: 0,
-			max: 100,
-			value: 50
-		}).appendTo(settingsMenu);
-
-		$("<br>").appendTo(settingsMenu);
-		$("<br>").appendTo(settingsMenu);
-		if ($("#settings"))
-			var saveButton = $("<input>", {
-				type: "button", value: "저장"
-			}).css("margin-right", "10px").appendTo(settingsMenu).on("click", settingsSave);
-		var cancelButton = $("<input>", {
-			type: "button", value: "취소"
-		}).appendTo(settingsMenu).on("click", settingsCancel);
-	}
-	else {
-		$("#settingsMenu").show();
-	}
-}
-function settingsSave() {
-	var selectBall = $("#ballSelect").val();
-	if (selectBall === "공1") {
-		ballColor = "black";
-	}
-	else if (selectBall === "공2") {
-		ballColor = "red";
-	}
-	else {
-		ballColor = "blue";
-	}
-	var selectBack = $("#backSelect").val();
-	if (selectBack === "배경1") {
-		backImage = "url(\"background1.jpg\")";
-	}
-	else if (selectBack === "배경2") {
-		backImage = "url(\"background2.jpg\")";
-	}
-	else {
-		backImage = "url(\"background3.png\")";
-	}
-	var selectMusic = $("#musicSelect").val();
-	if (selectMusic === "음악1") {
-		backgroundMusic.src = "backgroundmusic1.wav";
-	}
-	else if (selectMusic === "음악2") {
-		backgroundMusic.src = "backgroundmusic2.mp3";
-	}
-	else {
-		backgroundMusic.src = "backgroundmusic3.mp3";
-	}
-	var selectOver = $("#overSelect").val();
-	if (selectOver === "효과음1") {
-		gameoverMusic.src = "gameover1.wav";
-	}
-	else if (selectOver === "효과음2") {
-		gameoverMusic.src = "gameover2.wav";
-	}
-	else {
-		gameoverMusic.src = "gameover3.wav";
-	}
-
-	$("#settingsMenu").hide();
-	$("#mainMenu").show();
-	$("#settings_Icon").show();
-}
-function settingsCancel() {
-	$("#settingsMenu").hide();
-	$("#mainMenu").show();
-	$("#settings_Icon").show();
-}
 function gameInit() {
 	sWidth = $(document).width();
 	sHeight = $(document).height();
@@ -267,10 +104,17 @@ function gameInit() {
 	ballRadius = 15;
 	ballMoveSpeed = 10;
 
+	combo = 0;
+
 	padX = sWidth / 2;
 	padY = sHeight - 40;
 	padHeight = 10;
 	padWidth = 150;
+
+
+	scoreView = document.getElementById("myScore");
+	$("#myScore").show();
+
 
 	canvas = document.getElementById("myCanvas");
 	canvas.width = sWidth;
@@ -298,7 +142,7 @@ function makeCanvas() {
 	ctx = canvas.getContext("2d");
 	ctx.clearRect(0, 0, sWidth, sHeight);
 
-	canvas.style.backgroundImage = backImage;
+	canvas.style.backgroundImage = `url("${backImage}")`;
 	canvas.style.backgroundRepeat = "no-repeat";
 	canvas.style.backgroundSize = "cover";
 	$("#myCanvas").mousemove(function (e) {
@@ -418,6 +262,10 @@ function breakBrick() {
 					else { dy = -dy; }
 
 					brickCnt--;
+					console.log(brickCnt);
+					score++;
+					combo++;
+					scoreUpdate();
 					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
 					drawBricks(x, y);
 					return;
@@ -453,12 +301,31 @@ function movBall() {
 	drawBricks(ballX, ballY);
 	if (ballX < ballRadius || ballX > sWidth - ballRadius)
 		dx = -dx;
-	if (ballY > sHeight - ballRadius) {
+	if (ballY > sHeight - timebarHeight - ballRadius) {
 		gameOver();
 		return;
 	}
-	if ((dy > 0 && ballY >= padY - padHeight / 2 - ballRadius && ballY <= padY + padHeight / 2 && ballX > padX - padWidth / 2 && ballX < padX + padWidth / 2) || ballY < ballRadius)
-		dy = -dy;
+	// pad와 부딪혔을때
+	if (dy > 0 && 
+		(ballY >= padY - padHeight / 2 - ballRadius) && 
+		(ballY <= padY + padHeight / 2) && 
+		(ballX > padX - padWidth / 2) && 
+		(ballX < padX + padWidth / 2)
+		){
+		dy = -dy * (1 + paddleSpeed * 2); // 공의 속도를 패드 속도에 비례하여 증가
+		dx = dx + (1 + paddleSpeed * 2);
+		paddleSpeed = 0; // 패드 속도 초기화
+		if(combo >2){
+			console.log(combo);
+			score += combo;
+			combo = 0;
+		}
+		scoreUpdate();
+		console.log("dx : " + dx + "\ndy : " + dy);
+	}
+	// 윗 edge와 부딪혔을때
+	if(ballY < ballRadius) dy = -dy;
+
 	ballX += dx;
 	ballY += dy;
 	drawBall();
@@ -471,7 +338,12 @@ function movBall() {
 	}
 }
 
-function stage(n) {
+function scoreUpdate(){
+	$("#myScore").text("점수 : " + score);
+	
+}
+
+function stage(n) { 
 	if (n >= 4) endings();
 	else {
 		gameInit();
@@ -488,7 +360,9 @@ function stage(n) {
 }
 
 function answer() {
-	alert("Stage " + currentStage + "clear!");
+	score += combo;
+	score += parseInt((sWidth - timeX) / 10);
+	alert("Stage " + currentStage + "clear!\n" + "점수 : " + score);
 	currentStage++;
 	stage(currentStage);
 }
@@ -497,11 +371,23 @@ function gameOver() {
 	clearInterval(ball);
 	clearInterval(timebar);
 	canvas.hidden = true;
-	$("#mainMenu").show();
-	$("#settings_Icon").show();
+	$("#result_page").show();
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();
+	showResult();
+	setTimeout(function(){
+		// showButton();
+		$("#result_page").hide();
+		$("#main_page").show();
+	}
+	,5000);
+	
+	score = 0;
+	$("#myScore").hide();
+
+	//메인 화면 음악 추가 게임종료 화면 추가 후 옮길 예정
+	main_BGM.play();
 }
 
 function endings() {
@@ -528,48 +414,52 @@ function makeRandomBricks() {
 
 function stageOne() {
 	timePerSecond = 180;
-	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
 }
 
 function stageTwo() {
 	timePerSecond = 150;
-	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 }
 
 function stageThree() {
 	timePerSecond = 120;
-	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+}
+
+function exit() {
+
 }

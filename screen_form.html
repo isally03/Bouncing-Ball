@@ -1,81 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Bouncing_Ball</title>
-	<link rel="stylesheet" type="text/css" href="screen_form.css">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<!-- <script src="screen_form.js"></script> -->
+    <meta charset="utf-8">
+    <title>Bouncing_Ball</title>
+    <link rel="stylesheet" type="text/css" href="screen_form.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="screen_form.js"></script>
+    <script src="bouncing_ball.js"></script>
 </head>
 
 <body>
-    <div id="main">
-        <div id="menu_box">
-            <div id="start_game">GAME START</div>
-            <div id="customize">CUSTOMIZE</div>
-            <div id="challenge">CHALLENGE</div>
-            <div id="exit">EXIT</div>
-        </div>
-        <div>please select the menu . . .</div>
-    </div>
-
-	<div id = "storyboard">
-        <div class="exitbar">
-            <img id = "exit_img" src="x.png" alt="X"></img>
-        </div>
-        <div class="contentbox">
-            <div class="storybox">
-                <img src="chara1.jpg" alt="character">
-                <div class="narbox">안녕</div>
+    <div id="main_menu">
+        <div id="main_page">
+            <div id="menu_box">
+                <div id="startGame">GAME START</div>
+                <div id="customize">CUSTOMIZE</div>
+                <div id="challenge">CHALLENGE</div>
+                <div id="exit">EXIT</div>
             </div>
-            <div class="storybox">
-                <img src="chara2.jpg" alt="character">
-                <div class="narbox">안녕</div>
+            <div id="menu_prompt">
+                <span>p</span><span>l</span><span>e</span><span>a</span><span>s</span><span>e</span><span>&nbsp;</span>
+                <span>s</span><span>e</span><span>l</span><span>e</span><span>c</span><span>t</span><span>&nbsp;</span>
+                <span>t</span><span>h</span><span>e</span><span>&nbsp;</span>
+                <span>m</span><span>e</span><span>n</span><span>u</span><span>&nbsp;</span>
+                <span>.</span><span>.</span><span>.</span>
             </div>
-            <div class="storybox">
-                <img src="chara3.jpg" alt="character">
-                <div class="narbox">안녕</div>
-            </div>
-            <div class="storybox">
-                <img src="chara4.jpg" alt="character">
-                <div class="narbox">안녕</div>
-            </div>
-        </div>
-    </div>
-    <div id="customize_page">
-        <nav class="nav">
-            <img id = "return_img" src="arrow.png" alt="<-"></img>
-        </nav>
-        <div class = "content">
-            <div id="previewbox"> <div id = "prev">prev</div></div>
-            <div id="configbox"> <div id = "config">config</div></div>
            
-           
-        </div>
+            <audio src="Debussy - Reverie L68.mp3" autoplay loop controls id="main_menu_audio"></audio>
 
         </div>
-    </div>
-    <div id="challenge_page">
-        <nav class="nav">
-            <img id = "return_img" src="arrow.png" alt="<-"></img>
-        </nav>
-        <div class = "content">
-            <div id="my_box">
-                <div id="chara_box">
-                    <img src="chara1.jpg" alt="캐릭터">
-                    <div id = "name">name</div>
-                </div>  
-                <div id="play_box">평균 플레이 시간</div>
+    
+        <div id="storyboard">
+            <div class="exitbar">
+                <img id="exit_img" src="x.png" alt="X"></img>
             </div>
-           
-            <div id="assignment_box">
-                <div class="assignment">공튀기기(1/5)</div>
-                <div class="assignment">공튀기기(1/5)</div>
-                <div class="assignment">공튀기기(1/5)</div>
+            <div class="contentbox">
+                <div class="storybox">
+                    <img src="chara1.jpg" alt="character">
+                    <div class="narbox">안녕</div>
+                </div>
+                <div class="storybox">
+                    <img src="chara2.jpg" alt="character">
+                    <div class="narbox">안녕</div>
+                </div>
+                <div class="storybox">
+                    <img src="chara3.jpg" alt="character">
+                    <div class="narbox">안녕</div>
+                </div>
+                <div class="storybox">
+                    <img src="chara4.jpg" alt="character">
+                    <div class="narbox">안녕</div>
+                </div>
             </div>
-           
+        </div>
+        <div id="customize_page">
+            <nav class="nav">
+                <img id="return_img" src="arrow.png" alt="<-"></img>
+            </nav>
+            <div class="content">
+                <div id="previewbox"> <div id="prev">prev</div></div>
+                <div id="configbox"> 
+                    <div id="settingsMenu">
+                        <h1 id="ball_colors">BALL COLOR</h1>
+                        <label class="custom-radio"><input type="radio" name="ballColor" value="black" checked><span>BLACK</span></label>
+                        <label class="custom-radio"><input type="radio" name="ballColor" value="red"><span>RED</span></label>
+                        <label class="custom-radio"><input type="radio" name="ballColor" value="blue"><span>BLUE</span></label>
+                        
+                        <h1 id="backgrounds">BACKGROUND</h1>
+                        <label class="custom-radio"><input type="radio" name="backColor" value="background1.jpg" checked><span>AM</span></label>
+                        <label class="custom-radio"><input type="radio" name="backColor" value="background2.jpg"><span>PM</span></label>
+                        <label class="custom-radio"><input type="radio" name="backColor" value="background3.png"><span>NIGHT</span></label>
+                        
+                        <h1 id="BGMS">BGM</h1>
+                        <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic1.wav" checked><span>BGM 1</span></label>
+                        <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic2.mp3"><span>BGM 2</span></label>
+                        <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic3.mp3"><span>BGM 3</span></label>
+                        
+                        <h1 id="music_volume">BGM VOLUME</h1>
+                        <input type="range" id="musicVolume" min="0" max="100" value="50"><span id="musicVolumeValue">50</span>
+                        
+    
+                        <h1 id="OVER">FAIL SOUND</h1>
+                        <label class="custom-radio"><input type="radio" name="overMusic" value="gameover1.wav" checked><span>OVER 1</span></label>
+                        <label class="custom-radio"><input type="radio" name="overMusic" value="gameover2.wav"><span>OVER 2</span></label>
+                        <label class="custom-radio"><input type="radio" name="overMusic" value="gameover3.wav"><span>OVER 3</span></label>
+
+                        <h1 id="over_volume">FAIL SOUND VOLUME</h1>
+                        <input type="range" id="overVolume" min="0" max="100" value="50"><span id="overVolumeValue">50</span>
+                        <h1 id="mute_button">MUTE ALL SOUND</h1>
+                        <input type="checkbox" id=Muteall>음소거
+                       
+                        <h1 id="over_volume">FAIL SOUND VOLUME</h1>
+                        <input type="range" id="overVolume" min="0" max="100" value="50"><span id="overVolumeValue">50</span>
+    
+                        <div>
+                            <input class = "button_animate_1" type="button" value="저장" onclick="settingsSave()">
+                            <input class = "button_animate_1" type="button" value="취소" onclick="settingsCancel()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="challenge_page">
+            <nav class="nav">
+                <img id="return_img" src="arrow.png" alt="<-"></img>
+            </nav>
+            <div class="content">
+                <div id="my_box">
+                    <div id="chara_box">
+                        <img src="chara1.jpg" alt="캐릭터">
+                        <div id="name">name</div>
+                    </div>  
+                    <div id="play_box">평균 플레이 시간</div>
+                </div>
+                <div id="assignment_box">
+                    <div class="assignment">공튀기기(1/5)</div>
+                    <div class="assignment">공튀기기(1/5)</div>
+                    <div class="assignment">공튀기기(1/5)</div>
+                </div>
+            </div>
+        </div>
+        <div id="result_page">
+            <div class="result_box" id="success_box">
+                <div id="round_cover"><p>SCORE</p>
+                    <div id="score_box">
+                        <span class="digit" id="digit1"></span>
+                        <span class="digit" id="digit2"></span>
+                        <span class="digit" id="digit3"></span>
+                        <span class="digit" id="digit4"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="result_box" id="fail_box">
+                <p>FAILED</p>
+            </div>
         </div>
     </div>
-    <div id="help"></div>
+    <canvas id="myCanvas"></canvas>
+    <p id="myScore">점수 : 0</p>
+    
 </body>
 </html>
