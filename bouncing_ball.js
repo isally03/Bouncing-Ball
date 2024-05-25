@@ -343,15 +343,19 @@ function gameOver() {
 	clearInterval(ball);
 	clearInterval(timebar);
 	canvas.hidden = true;
-	$("#main_menu").show();
-	$("#main_page").show();
+	$("#result_page").show();
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();
-
-	//메인 화면 음악 추가 게임종료 화면 추가 후 옮길 예정
+	showResult();
+	setTimeout(function(){
+		// showButton();
+		$("#result_page").hide();
+		$("#main_page").show();
+	}
+	,5000);
+	
 	main_BGM.play();
-
 }
 
 function endings() {

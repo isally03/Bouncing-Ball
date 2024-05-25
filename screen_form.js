@@ -83,11 +83,11 @@ function animateDigit(selector, finalDigit) {
         }
     }
     $digit.html('<span>' + numbers + '</span>');
-    $digit.find('span').css('animation', 'slotSpin 2s linear infinite');
+    $digit.find('span').css('animation', 'slotSpin 1s linear infinite');
     setTimeout(function() {
         $digit.find('span').css('animation', 'slowStop 1s cubic-bezier(0.25, 0.1, 0.25, 1.0) forwards');
         
-    }, 2000); 
+    }, 1000); 
 }
 
 function settings() {
@@ -139,3 +139,16 @@ function finishStory(){
     $("#storyboard").hide();
     gameStart();
 }
+
+
+function showResult(){
+    $("#main_menu").show();
+    $("#result_page").show();
+    startSlotAnimation(4567);
+}
+
+function challenge(){
+    $("#main_page").hide();
+    $("#challenge_page").show();
+}
+
