@@ -464,6 +464,7 @@ function breakBrick() {
 					else { dy = -dy; }
 
 					brickCnt--;
+					score++;
 					ctx.clearRect(x - 1, y - 1, brickLength + 2, brickLength + 2);
 					drawBricks(x, y);
 					return;
@@ -528,7 +529,11 @@ function movBall() {
 	}
 }
 
-function stage(n) {
+function scoreUpdate(){
+	
+}
+
+function stage(n) { 
 	if (n >= 4) endings();
 	else {
 		gameInit();
