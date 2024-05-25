@@ -15,7 +15,10 @@ $(document).ready(function() {
         settings();
     });
 
-    $("#return_img").on("click", function() {
+    $("#return_img1").on("click", function() {
+        settingsCancel();
+    });
+     $("#return_img2").on("click", function() {
         settingsCancel();
     });
 
@@ -27,7 +30,6 @@ $(document).ready(function() {
     $("#overVolume").on("input", function() {
         $("#overVolumeValue").text($(this).val());
         gameoverMusic.volume = $(this).val() / 100;
-    });
 
     $("#Muteall").change(function(){
         if($(this).is(":checked")){
@@ -48,14 +50,14 @@ $(document).ready(function() {
             $("#overVolumeValue").text(50);
         }
     });
+});
 
     $("#startGame").on("click", prolog);
-	$("#challenge").on("click", challenge);
-	$("#exit").on("click", exit);  
+    $("#challenge").on("click", challenge);
+    $("#exit").on("click", exit);  
     $("#exit_img").on("click", finishStory);
     $(document).on("mousemove", mouseMoveSpeed);
 });
-
 
 function startSlotAnimation(finalScore) {
     var finalScoreStr = finalScore.toString().padStart(4, '0');
@@ -110,9 +112,9 @@ function settingsSave() {
 
 function settingsCancel() {
     $("#customize_page").hide();
+    $("#challenge_page").hide();
     $("#main_page").show();
 }
-
 
 function prolog(){
     $("#main_page").hide();
@@ -152,4 +154,3 @@ function challenge(){
     $("#main_page").hide();
     $("#challenge_page").show();
 }
-
