@@ -6,7 +6,11 @@ var gameoverMusic = new Audio("gameover1.wav");
 var backgroundMusicVolume = 0.5;
 var gameoverMusicVolume = 0.5;
 
+var storybox;
+
 $(document).ready(function() {
+    storybox = $(".storybox");
+
     $("#customize").on("click", function() {
         settings();
     });
@@ -45,9 +49,10 @@ $(document).ready(function() {
         }
     });
 
-    $("#startGame").on("click", gameStart);
+    $("#startGame").on("click", prolog);
 	$("#challenge").on("click", challenge);
-	$("#exit").on("click", exit);
+	$("#exit").on("click", exit);  
+    $("#exit_img").on("click", finishStory);
     $(document).on("mousemove", mouseMoveSpeed);
 });
 
@@ -79,11 +84,11 @@ function animateDigit(selector, finalDigit) {
         }
     }
     $digit.html('<span>' + numbers + '</span>');
-    $digit.find('span').css('animation', 'slotSpin 2s linear infinite');
+    $digit.find('span').css('animation', 'slotSpin 1s linear infinite');
     setTimeout(function() {
         $digit.find('span').css('animation', 'slowStop 1s cubic-bezier(0.25, 0.1, 0.25, 1.0) forwards');
         
-    }, 2000); 
+    }, 1000); 
 }
 
 function settings() {
@@ -107,3 +112,44 @@ function settingsCancel() {
     $("#customize_page").hide();
     $("#main_page").show();
 }
+
+
+function prolog(){
+    $("#main_page").hide();
+    $("#storyboard").show();
+    $(window).keydown(playStory);
+}
+
+
+var index = 0;
+
+function playStory(){
+    if((index)== storybox.length ){
+        finishStory();
+    }
+    else{
+        console.log("index: "+index+"\nstorybox[index]"+ storybox[index]);
+        storybox.eq(index).css("display", "flex");
+        index++;
+    }
+   
+}
+
+function finishStory(){
+    $(window).off();
+    $("#storyboard").hide();
+    gameStart();
+}
+
+
+function showResult(){
+    $("#main_menu").show();
+    $("#result_page").show();
+    startSlotAnimation(score);
+}
+
+function challenge(){
+    $("#main_page").hide();
+    $("#challenge_page").show();
+}
+

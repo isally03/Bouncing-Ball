@@ -6,7 +6,17 @@
 }
 
 * { padding: 0; margin: 0; }
-body { overflow: hidden;}
+body {
+    z-index: -3;
+    position: absolute;
+    width: 100%;
+    /* height: 100%; */
+    top: 0;
+    bottom: 0;
+    margin: 0;
+     overflow: hidden;
+    }
+
 li { list-style: none; }
 a { text-decoration: none; }
 img { border: 0; }
@@ -169,6 +179,10 @@ img { border: 0; }
     }
   } 
 
+  #main_menu_audio{
+    opacity: 0.1;
+}
+
 /* 스토리 진행 창 */
 
 #storyboard{
@@ -195,11 +209,13 @@ img { border: 0; }
 }
 
 .storybox {
-    display: flex;
+    display: none;
+    /* display: flex; */
     align-items: center;
     padding: 10px 0;
     margin: 5px 0;
 }
+
 
 .storybox>img {
     margin: 0 15px;
@@ -435,13 +451,10 @@ img { border: 0; }
 }
 
 .result_box {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    flex-direction: column;
     text-align: center;
     width: 500px;
     margin: 0 auto;
+    padding: 200px;
     font-size: 50px;
 }
 
@@ -457,13 +470,13 @@ img { border: 0; }
 }
 
 
-#round_cover:before,
+/* #round_cover:before,
 #round_cover:after {
     position: absolute;
     content: "";
     right: 0;
     top: 0;
-  }
+  } */
 
 
 #round_cover>p {
