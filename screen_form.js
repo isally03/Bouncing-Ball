@@ -9,6 +9,7 @@ var gameoverMusicVolume = 0.5;
 var storybox;
 
 $(document).ready(function() {
+    $("#myCanvas").hide();
     storybox = $(".storybox");
 
     $("#customize").on("click", function() {

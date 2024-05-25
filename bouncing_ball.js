@@ -56,6 +56,7 @@ var main_BGM;
 
 function gameStart() {
 	$("#main_menu").hide();
+    $("#myCanvas").show();
 // // 메인화면 음악 추가
 	main_BGM = document.getElementById("main_menu_audio");
 	main_BGM.pause();
