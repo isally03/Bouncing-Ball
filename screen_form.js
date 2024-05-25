@@ -31,29 +31,22 @@ $(document).ready(function() {
         settingsCancel();
     })
 
-    $("#bgmMute").change(function(){
+    $("#Muteall").change(function(){
         if($(this).is(":checked")){
            backgroundMusic.volume=0;
-           $("#musicVolume").val(0);
+           $("#musicVolume").val(0).prop("disabled",true);
            $("#musicVolumeValue").text(0);
-        }
-        else{
-            var volume=50;
-            backgroundMusic.volume=volume/100;
-            $("#musicVolume").val(50);
-            $("#musicVolumeValue").text(50);
-        }
-    });
-    $("#overMute").change(function(){
-        if($(this).is(":checked")){
            gameoverMusic.volume=0;
-           $("#overVolume").val(0);
+           $("#overVolume").val(0).prop("disabled",true);
            $("#overVolumeValue").text(0);
         }
         else{
             var volume=50;
+            backgroundMusic.volume=volume/100;
+            $("#musicVolume").val(50).prop("disabled",false);
+            $("#musicVolumeValue").text(50);
             gameoverMusic.volume=volume/100;
-            $("#overVolume").val(50);
+            $("#overVolume").val(50).prop("disabled",false);
             $("#overVolumeValue").text(50);
         }
     });
