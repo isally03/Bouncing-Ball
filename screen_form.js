@@ -15,7 +15,10 @@ $(document).ready(function () {
         settings();
     });
 
-    $("#return_img").on("click", function () {
+    $("#return_img1").on("click", function () {
+        settingsCancel();
+    });
+    $("#return_img2").on("click", function () {
         settingsCancel();
     });
 
@@ -27,26 +30,26 @@ $(document).ready(function () {
     $("#overVolume").on("input", function () {
         $("#overVolumeValue").text($(this).val());
         gameoverMusic.volume = $(this).val() / 100;
-    });
 
-    $("#Muteall").change(function () {
-        if ($(this).is(":checked")) {
-            backgroundMusic.volume = 0;
-            $("#musicVolume").val(0).prop("disabled", true);
-            $("#musicVolumeValue").text(0);
-            gameoverMusic.volume = 0;
-            $("#overVolume").val(0).prop("disabled", true);
-            $("#overVolumeValue").text(0);
-        }
-        else {
-            var volume = 50;
-            backgroundMusic.volume = volume / 100;
-            $("#musicVolume").val(50).prop("disabled", false);
-            $("#musicVolumeValue").text(50);
-            gameoverMusic.volume = volume / 100;
-            $("#overVolume").val(50).prop("disabled", false);
-            $("#overVolumeValue").text(50);
-        }
+        $("#Muteall").change(function () {
+            if ($(this).is(":checked")) {
+                backgroundMusic.volume = 0;
+                $("#musicVolume").val(0).prop("disabled", true);
+                $("#musicVolumeValue").text(0);
+                gameoverMusic.volume = 0;
+                $("#overVolume").val(0).prop("disabled", true);
+                $("#overVolumeValue").text(0);
+            }
+            else {
+                var volume = 50;
+                backgroundMusic.volume = volume / 100;
+                $("#musicVolume").val(50).prop("disabled", false);
+                $("#musicVolumeValue").text(50);
+                gameoverMusic.volume = volume / 100;
+                $("#overVolume").val(50).prop("disabled", false);
+                $("#overVolumeValue").text(50);
+            }
+        });
     });
 
     $("#startGame").on("click", prolog);
@@ -55,7 +58,6 @@ $(document).ready(function () {
     $("#exit_img").on("click", finishStory);
     $(document).on("mousemove", mouseMoveSpeed);
 });
-
 
 function startSlotAnimation(finalScore) {
     var finalScoreStr = finalScore.toString().padStart(4, '0');
@@ -110,6 +112,7 @@ function settingsSave() {
 
 function settingsCancel() {
     $("#customize_page").hide();
+    $("#challenge_page").hide();
     $("#main_page").show();
 }
 
@@ -151,4 +154,3 @@ function challenge() {
     $("#main_page").hide();
     $("#challenge_page").show();
 }
-
