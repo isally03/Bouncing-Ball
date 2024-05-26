@@ -9,6 +9,7 @@ var difficult = "easy";
 
 var storybox;
 var prevMove
+var prevMusicTime;
 
 $(document).ready(function () {
     $("#myCanvas").hide();
@@ -29,7 +30,10 @@ $(document).ready(function () {
         backgroundMusic.src = $("input[name='music']:checked").val();
         backgroundMusic.currentTime = 0;
         backgroundMusic.play();
-        setTimeout(function() {
+        if (prevMusicTime) {
+            clearTimeout(prevMusicTime);
+        }
+        prevMusicTime = setTimeout(function() {
             backgroundMusic.pause();
         }, 3000);
     });
