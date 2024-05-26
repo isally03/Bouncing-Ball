@@ -8,6 +8,7 @@ var gameoverMusicVolume = 0.5;
 var difficult = "easy";
 
 var storybox;
+var prevMove
 
 $(document).ready(function () {
     $("#myCanvas").hide();
@@ -53,6 +54,10 @@ $(document).ready(function () {
         prevCanvas.style.backgroundImage = `url("${$("input[name='backColor']:checked").val()}")`;
     });
 
+    $("input[name='ballColor']").on("click", function() {
+        ballColor = $("input[name='ballColor']:checked").val();
+    });
+
     $("#Muteall").change(function () {
         if ($(this).is(":checked")) {
             backgroundMusic.volume = 0;
@@ -87,6 +92,9 @@ $(document).ready(function () {
     prevCanvas = document.getElementById("prevCanvas");
     prevCanvas.width = $("#previewbox").width();
     prevCanvas.height = $("#previewbox").height();
+
+    ballRadius = 15;
+	ballMoveSpeed = 10;
 
     brickMargin = 10;
     brickRowCountMax = 12;
@@ -138,11 +146,45 @@ function settings() {
     $("#customize_page").show();
 
     prevCtx = prevCanvas.getContext("2d");
-	prevCtx.clearRect(0, 0, prevCanvas.width, prevCanvas.height);
-
+    prevCtx.clearRect(0, 0, prevCanvas.width, prevCanvas.height);
     prevCanvas.style.backgroundImage = `url("${$("input[name='backColor']:checked").val()}")`;
 	prevCanvas.style.backgroundRepeat = "no-repeat";
 	prevCanvas.style.backgroundSize = "cover";
+    
+    ballX = prevCanvas.width / 2;
+    ballY = 50;
+    dx = 5;
+    dy = 5;
+    prevDrawBall();
+    prevMove = setInterval(prevMoveBall, 10);
+}
+
+function prevDrawBall() {
+	prevCtx.save();
+	prevCtx.beginPath();
+	prevCtx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2); //(x좌표,y좌표,원 반지름, 시작각도, 끝각도, 그리는 방향)
+	prevCtx.fillStyle = ballColor;
+	prevCtx.fill();
+	prevCtx.closePath();
+	prevCtx.restore();
+}
+
+function prevMoveBall() {
+	prevCtx.save();
+	prevCtx.beginPath();
+	prevCtx.arc(ballX, ballY, ballRadius + 1, 0, Math.PI * 2);
+	prevCtx.closePath();
+	prevCtx.clip();
+	prevCtx.clearRect(ballX - ballRadius - 1, ballY - ballRadius - 1, ballRadius * 2 + 2, ballRadius * 2 + 2);
+	prevCtx.restore();
+	if (ballX < ballRadius || ballX > prevCanvas.width - ballRadius)
+		dx = -dx;
+	if (ballY > prevCanvas.height - ballRadius || ballY < ballRadius) {
+        dy = -dy;
+	}
+	ballX += dx;
+	ballY += dy;
+	prevDrawBall();
 }
 
 function settingsSave() {
@@ -156,12 +198,14 @@ function settingsSave() {
     gameoverMusic.src = overMusicSrc;
     $("#customize_page").hide();
     $("#main_page").show();
+    clearInterval(prevMove);
 }
 
 function settingsCancel() {
     $("#customize_page").hide();
     $("#challenge_page").hide();
     $("#main_page").show();
+    clearInterval(prevMove);
 }
 
 function prolog() {
@@ -169,7 +213,6 @@ function prolog() {
     $("#storyboard").show();
     $(window).keydown(playStory);
 }
-
 
 var index = 0;
 

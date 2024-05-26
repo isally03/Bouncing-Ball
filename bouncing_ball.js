@@ -121,8 +121,6 @@ function gameInit() {
 	velocityY = 5;
 	dx = 5;
 	dy = -5;
-	ballRadius = 15;
-	ballMoveSpeed = 10;
 	brickCnt = 0;
 
 	combo = 0;
