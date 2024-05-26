@@ -66,11 +66,6 @@ function gameStart() {
 	scoreUpdate();
 	stage(currentStage);
 
-	backgroundMusicVolume = $("#musicVolume").val() / 100;
-	gameoverMusicVolume = $("#overVolume").val() / 100;
-
-	backgroundMusic.volume = backgroundMusicVolume;
-	gameoverMusic.volume = gameoverMusicVolume;
 	backgroundMusic.currentTime = 0;
 	backgroundMusic.play();
 	gameoverMusic.pause();
