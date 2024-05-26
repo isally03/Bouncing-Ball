@@ -55,6 +55,10 @@ var bombY;
 var bombLoaded;
 var leftmax;
 var rightmax;
+//폭탄 유지 시간
+var time1;
+//폭탄 생성 주기
+var time2;
 
 function gameStart() {
 	$("#main_menu").hide();
@@ -62,10 +66,22 @@ function gameStart() {
 	// // 메인화면 음악 추가
 	main_BGM = document.getElementById("main_menu_audio");
 	main_BGM.pause();
-
-	if (difficult == "easy") brickRate = 100;
-	if (difficult == "normal") brickRate = 20;
-	if (difficult == "hard") brickRate = 5;
+	if (difficult == "easy"){
+		brickRate = 100;
+		time1=5000;
+		time2=10000;
+	} 
+	if (difficult == "normal"){
+		brickRate = 20;
+		time1=5000;
+		time2=8000;
+	} 
+	if (difficult == "hard") 
+	{
+		brickRate = 5;
+		time1=5000;
+		time2=5500;
+	}
 
 	currentStage = 1;
 	score = 0;
@@ -182,7 +198,7 @@ function drawItem()
 		setTimeout(function(){
 		ctx.clearRect(bombX,bombY,30,30);
 		bombLoaded=false;
-		},4000);
+		},time1);
 	};
 }
 //폭탄과 충돌감지 함수
@@ -372,7 +388,7 @@ function stage(n) {
 		gameInit();
 		makeCanvas();
 		ball = setInterval(movBall, ballMoveSpeed);
-		bomb = setInterval(drawItem,5000);
+		bomb = setInterval(drawItem,time2);
 		if (n == 1) stageOne();
 		else if (n == 2) stageTwo();
 		else stageThree();
