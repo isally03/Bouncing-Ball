@@ -368,7 +368,6 @@ function answer() {
 }
 
 function gameOver() {
-	console.log("test")
 	clearInterval(ball);
 	clearInterval(timebar);
 	$("#myCanvas").hide();
