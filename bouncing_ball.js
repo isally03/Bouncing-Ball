@@ -49,14 +49,15 @@ var bluePerSecond;
 
 var currentStage;
 
-var itmes = [];
-var itemDropRate = 0.2;
-
 let prevMouseX = 0, prevMouseY = 0;
 let paddleSpeed = 0;
 
 var main_BGM;
-
+var bombX;
+var bombY;
+var bombLoaded;
+var leftmax;
+var rightmax;
 
 function gameStart() {
 	$("#main_menu").hide();
@@ -77,6 +78,7 @@ function gameStart() {
 	backgroundMusic.currentTime = 0;
 	backgroundMusic.play();
 	gameoverMusic.pause();
+	drawItem();
 }
 
 function mouseMoveSpeed(event) {
@@ -161,7 +163,44 @@ function drawBall() {
 	ctx.closePath();
 	ctx.restore();
 }
-
+//폭탄 그리는 함수
+function drawItem()
+{
+	var bombImage=new Image();
+	bombImage.src="bomb.jpg";
+	bombImage.onload=function(){
+		if(!bombLoaded){
+			leftmax=sWidth*0.3-bombImage.width;
+			rightmax=sWidth*0.7;
+			if(Math.random()<0.5){
+				bombX=Math.random()*leftmax;
+			}
+		else{
+			bombX=rightmax+Math.random()*(sWidth-rightmax-bombImage.width);
+			}
+		bombY=890;
+		ctx.drawImage(bombImage,bombX,bombY,30,30);
+		bombLoaded=true;
+		}
+		setTimeout(function(){
+		ctx.clearRect(bombX,bombY,30,30);
+		bombLoaded=false;
+		},4000);
+	};
+}
+//폭탄과 충돌감지 함수
+function checkCollide(){
+	var padleft=padX-padWidth/2;
+	var padright=padX+padWidth/2;
+	var bombleft=bombX;
+	var bombright=bombX+30;
+	if(bombLoaded==true && bombleft<padright && bombright>padleft){
+		score-=10;
+		scoreUpdate();
+		ctx.clearRect(bombX,bombY,30,30);
+		bombLoaded=false;
+	}
+}
 function drawPad() {
 	ctx.save();
 	ctx.translate(padX, padY);
@@ -315,6 +354,8 @@ function movBall() {
 	ballY += dy;
 	drawBall();
 	drawPad();
+	//폭탄과 충돌 감지 함수
+	checkCollide();
 	if (brickCnt == 0) {
 		clearInterval(ball);
 		clearInterval(timebar);
@@ -334,6 +375,7 @@ function stage(n) {
 		gameInit();
 		makeCanvas();
 		ball = setInterval(movBall, ballMoveSpeed);
+		bomb = setInterval(drawItem,5000);
 		if (n == 1) stageOne();
 		else if (n == 2) stageTwo();
 		else stageThree();
@@ -354,6 +396,7 @@ function answer() {
 function gameOver() {
 	clearInterval(ball);
 	clearInterval(timebar);
+	clearInterval(bomb);
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();
