@@ -239,11 +239,60 @@ function finishStory() {
 }
 
 
-function showResult() {
+function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 실패했을때(1), 끝까지 성공했을때(2)
     $("#myCanvas").hide();
     $("#main_menu").show();
     $("#result_page").show();
-    startSlotAnimation(score);
+    switch(state){
+        case 0:
+            $("#answer_box").show();
+
+            clearInterval(ball);
+            clearInterval(timebar);
+            clearInterval(bomb);
+            backgroundMusic.pause();
+
+            $("#user_anwser").keydown(function(e){
+                if(e.keyCode == 13){
+                    check_answer();
+                }
+            }); //enter 이벤트 핸들러 연결
+            break;
+        case 1:
+            $("#fail_box").show();
+
+            gameOver();
+            gameoverMusic.currentTime = 0;
+            gameoverMusic.play();	
+
+            setTimeout(function () {
+                $("#fail_box").hide();
+                $("#result_page").hide();
+                $("#main_page").show();
+                main_BGM.play();
+            }
+            , 5000);
+            break;
+        case 2:
+            $("#success_box").show();
+
+            gameOver();
+
+            startSlotAnimation(score);
+            setTimeout(function () {
+                $("#success_box").hide();
+                $("#result_page").hide();
+                $("#main_page").show();
+                main_BGM.play();
+            }
+            , 5000);
+                break;
+        
+        default:
+    }
+
+  
+    
 }
 
 function challenge() {

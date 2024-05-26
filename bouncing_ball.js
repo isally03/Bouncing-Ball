@@ -63,30 +63,42 @@ var time1;
 //폭탄 생성 주기
 var time2;
 
+var scrambled;
+var answer_word;
+var answer_arr = []; 
+
+answer_arr[0] = ["Salt","Beef","Lime","Pear","Milk"]; //easy
+answer_arr[1] = ["Apple","Cherry","Lemon","Peach","Honey"]; //normal, hard
+
 function gameStart() {
 	$("#main_menu").hide();
 	$("#myCanvas").show();
-	// // 메인화면 음악 추가
+	answer_index = Math.floor(Math.random()*5);
+
 	main_BGM = document.getElementById("main_menu_audio");
 	main_BGM.pause();
 	if (difficult == "easy"){
 		brickRate = 100;
 		time1=5000;
 		time2=10000;
+		answer_word = answer_arr[0][answer_index];
 	} 
 	if (difficult == "normal"){
 		brickRate = 20;
 		time1=5000;
 		time2=8000;
+		answer_word = answer_arr[1][answer_index];
 	} 
 	if (difficult == "hard") 
 	{
 		brickRate = 5;
 		time1=5000;
 		time2=5500;
+		answer_word = answer_arr[1][answer_index];
 	}
+	scramble(answer_word);
 
-	currentStage = 3;
+	currentStage = 0;
 	score = 0;
 	scoreUpdate();
 	stage(currentStage);
@@ -240,7 +252,7 @@ function removeTimeBar() {
 	blue += bluePerSecond;
 	timeX += sWidth / timePerSecond;
 	if (timeX > sWidth)
-		gameOver();
+		showResult(0); //시간이 다됐을때
 	ctx.restore();
 }
 
@@ -339,8 +351,8 @@ function movBall() {
 	drawBricks(ballX, ballY);
 	if (ballX < ballRadius || ballX > sWidth - ballRadius)
 		dx = -dx;
-	if (ballY > sHeight - timebarHeight - ballRadius) {
-		gameOver();
+	if (ballY > sHeight - timebarHeight - ballRadius) { //바닥에 부딪혔을때
+		showResult(1); 
 		return;
 	}
 	// pad와 부딪혔을때
@@ -373,7 +385,7 @@ function movBall() {
 	if (brickCnt == 0) {
 		clearInterval(ball);
 		clearInterval(timebar);
-		answer();
+		showResult(0);
 		return;
 	}
 }
@@ -399,39 +411,26 @@ function stage(n) {
 	}
 }
 
-function answer() {
-	score += combo;
-	score += parseInt((sWidth - timeX) / 10);
-	alert("Stage " + currentStage + "clear!\n" + "점수 : " + score);
-	currentStage++;
-	stage(currentStage);
-}
-
 function gameOver() {
 	clearInterval(ball);
 	clearInterval(timebar);
 	clearInterval(bomb);
 	backgroundMusic.pause();
-	gameoverMusic.currentTime = 0;
-	gameoverMusic.play();
-	showResult();
-	setTimeout(function () {
-		// showButton();
-		$("#result_page").hide();
-		$("#main_page").show();
-	}
-		, 5000);
-
 	score = 0;
 	$("#myScore").hide();
-
-	//메인 화면 음악 추가 게임종료 화면 추가 후 옮길 예정
-	main_BGM.play();
 }
+
+//check answer 내부로 편입됨!
+// function answer() {
+// 	score += combo;
+// 	score += parseInt((sWidth - timeX) / 10);
+// 	// alert("Stage " + currentStage + "clear!\n" + "점수 : " + score);
+// 	currentStage++;
+// }
 
 function endings() {
 	alert("Clear!");
-	gameOver();
+	showResult(2); //엔딩에서
 }
 
 function makeRandomBricks() {
@@ -454,11 +453,55 @@ function makeRandomBricks() {
 
 function stageUpdate(stage_num){
 	timePerSecond = 210 - stage_num*30;
-	for(var i = 0 ; i<=11; i++){
-		bricks[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	for(var t = 0 ; t<=11; t++){
+		bricks[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
-	let alphabet_num = Math.floor(Math.random()*brickList.length);
-	alphabet(brickList[alphabet_num], Math.floor(Math.random()*5), Math.floor(Math.random()*25));
+	
+	console.log(currentStage);
+
+	if(currentStage == 4 && difficult !="easy"){
+		var m = Math.floor(Math.random()*5);
+		var l = Math.floor(Math.random()*25);
+		
+		alphabet(stringToFunc(scrambled[4]), m, l);
+		while(true){
+			var temp = Math.floor(Math.random()*25);
+
+			if(temp<(l-7) || temp>=(l+7)){
+				alphabet(stringToFunc(scrambled[currentStage]), Math.floor(Math.random()*5), temp);
+				break;
+			}
+		}
+	
+		
+	}
+	else{
+		alphabet(stringToFunc(scrambled[currentStage]), Math.floor(Math.random()*5), Math.floor(Math.random()*25));
+		console.log(scrambled);
+	}
+}
+
+function check_answer(){
+	
+	console.log(scrambled[currentStage]);
+	console.log($("#user_anwser").val());
+	$("#answer_box").hide();	
+	
+	if(scrambled[currentStage].toLowerCase() == $("#user_anwser").val().toLowerCase()){
+
+		score += combo;
+		score += parseInt((sWidth - timeX) / 10);
+		// alert("Stage " + currentStage + "clear!\n" + "점수 : " + score);
+		currentStage++;
+		stage(currentStage);
+	}
+	else{
+		showResult(1);
+	}
+	$(window).off();
+	$("#user_anwser").val("");
+	
+	
 }
 
 /*
@@ -524,16 +567,79 @@ function exit() {
 
 }
 
+function scramble(word){
+	scrambled =word.split("");
+	for (var i = 0; i < 10; i++) {
+		var mov_index = Math.floor(Math.random()*scrambled.length);
+		var alpha = scrambled[mov_index];
+		scrambled.splice(mov_index,1);
+		scrambled.push(alpha);
+	}
+	console.log(scrambled);
+}
 
 function alphabet(alpha, y,x){
 	for(var i = 0; i<8; i++){
 		for(var j= 0; j<7; j++){
-			console.log("x : " + x + "\ny : "+ y +"\ni : " + i , "\nj : " + j, "\nbrics : " +bricks[y+i][x+j]);
-			bricks[y+i][x+j] = alpha[i][j];
+				console.log("x : " + x + "\ny : "+ y +"\ni : " + i , "\nj : " + j, "\nbricks : " +bricks[y+i][x+j]);
+		bricks[y+i][x+j] = alpha[i][j];
 		}
 	}
 }
 
+
+function stringToFunc(str){
+
+	switch (str) {
+		case 'A':
+			return A;
+		case 'B':
+			return B;
+		case 'C':
+			return C;
+		case 'H':
+			return H;
+		case 'M':
+			return M;
+		case 'P':
+			return P;
+		case 'S':
+			return S;
+		case 'a':
+			return a;
+		case 'b':
+			return b;
+		case 'c':
+			return c;
+		case 'e':
+			return e;
+		case 'f':
+			return f;
+		case 'h':
+			return h;
+		case 'i':
+			return i;
+		case 'k':
+			return k;
+		case 'l':
+			return l;
+		case 'm':
+			return m;
+		case 'n':
+			return n;
+		case 'o':
+			return o;
+		case 'p':
+			return p;
+		case 'r':
+			return r;
+		case 'y':
+			return y;
+		default:
+			return -1;
+	}
+
+}
 var A = [];
 var B = [];
 var C = [];
@@ -543,11 +649,13 @@ var M = [];
 var P = [];
 var S = [];
 var a = [];
+var b = [];
 var c = [];
 var e = [];
 var f = [];
 var h = [];
 var i = [];
+var k = [];
 var l = [];
 var m = [];
 var n = [];
@@ -637,6 +745,15 @@ a[5]  = [0, 2, 0, 0, 0, 2, 0];
 a[6]  = [0, 0, 2, 2, 2, 2, 0];
 a[7]  = [0, 0, 0, 0, 0, 0, 0];
 
+b[0]  = [0, 0, 0, 0, 0, 0, 0]
+b[1]  = [0, 2, 0, 0, 0, 0, 0]
+b[2]  = [0, 2, 0, 0, 0, 0, 0]
+b[3]  = [0, 2, 2, 2, 0, 0, 0]
+b[4]  = [0, 2, 0, 0, 2, 0, 0]
+b[5]  = [0, 2, 0, 0, 2, 0, 0]
+b[6]  = [0, 2, 2, 2, 0, 0, 0]
+b[7]  = [0, 0, 0, 0, 0, 0, 0]
+
 c[0]  = [0, 0, 0, 0, 0, 0, 0];
 c[1]  = [0, 0, 2, 2, 2, 0, 0];
 c[2]  = [0, 2, 0, 0, 0, 2, 0];
@@ -681,6 +798,15 @@ i[4]  = [0, 0, 0, 2, 0, 0, 0];
 i[5]  = [0, 0, 0, 2, 0, 0, 0];
 i[6]  = [0, 0, 0, 2, 0, 0, 0];
 i[7]  = [0, 0, 0, 2, 0, 0, 0];
+
+k[0]  = [0, 0, 0, 0, 0, 0, 0];
+k[1]  = [0, 2, 0, 0, 2, 0, 0];
+k[2]  = [0, 2, 0, 2, 0, 0, 0];
+k[3]  = [0, 2, 2, 0, 0, 0, 0];
+k[4]  = [0, 2, 2, 0, 0, 0, 0];
+k[5]  = [0, 2, 0, 2, 0, 0, 0];
+k[6]  = [0, 2, 0, 0, 2, 0, 0];
+k[7]  = [0, 0, 0, 0, 0, 0, 0];
 
 l[0]  = [0, 0, 0, 2, 0, 0, 0];
 l[1]  = [0, 0, 0, 2, 0, 0, 0];
@@ -746,4 +872,4 @@ y[6]  = [0, 0, 2, 2, 0, 0, 0];
 y[7]  = [0, 0, 0, 0, 0, 0, 0];
 
 
-let brickList = [A,B,C,H,L,M,P,S,a,c,e,f,h,i,l,m,n,o,p,r,y];
+

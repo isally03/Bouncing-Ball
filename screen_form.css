@@ -442,7 +442,16 @@ img { border: 0; }
     background: url("score_background.png"), #e7e6d5 no-repeat center center fixed;
     background-size: cover;
 }
+#answer_box {
+    display: none;
+}
 
+#success_box {
+    display: none;
+}
+#fail_box {
+    display: none;
+}
 .result_box {
     text-align: center;
     width: 500px;
@@ -463,20 +472,8 @@ img { border: 0; }
 }
 
 
-/* #round_cover:before,
-#round_cover:after {
-    position: absolute;
-    content: "";
-    right: 0;
-    top: 0;
-  } */
-
-
 #round_cover>p {
     line-height: 2em;
-}
-#fail_box {
-    display: none;
 }
 
 #score_box {
