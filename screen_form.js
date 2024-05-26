@@ -24,6 +24,21 @@ $(document).ready(function () {
         settingsCancel();
     });
 
+    $("input[name='music']").on("click", function() {
+        backgroundMusic.src = $("input[name='music']:checked").val();
+        backgroundMusic.currentTime = 0;
+        backgroundMusic.play();
+        setTimeout(function() {
+            backgroundMusic.pause();
+        }, 3000);
+    });
+
+    $("input[name='overMusic']").on("click", function() {
+        gameoverMusic.src = $("input[name='overMusic']:checked").val();
+        gameoverMusic.currentTime = 0;
+        gameoverMusic.play();
+    });
+
     $("#musicVolume").on("input", function () {
         $("#musicVolumeValue").text($(this).val());
         backgroundMusic.volume = $(this).val() / 100;
