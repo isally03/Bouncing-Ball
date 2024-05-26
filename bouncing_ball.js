@@ -251,6 +251,7 @@ function removeTimeBar() {
 	green += greenPerSecond;
 	blue += bluePerSecond;
 	timeX += sWidth / timePerSecond;
+	console.log(timeX);
 	if (timeX > sWidth)
 		showResult(0); //시간이 다됐을때
 	ctx.restore();
@@ -402,9 +403,7 @@ function stage(n) {
 		makeCanvas();
 		ball = setInterval(movBall, ballMoveSpeed);
 		bomb = setInterval(drawItem,time2);
-		if (n == 1) stageUpdate(180);
-		else if (n == 2) stageUpdate(150);
-		else stageUpdate(120);
+		stageUpdate(n);
 		draw();
 		makeRandomBricks();
 		drawAllBricks();
