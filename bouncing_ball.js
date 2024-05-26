@@ -94,8 +94,6 @@ function mouseMoveSpeed(event){
 }
 
 function gameInit() {
-	sWidth = $(document).width();
-	sHeight = $(document).height();
 	ballX = sWidth / 2;
 	ballY = sHeight - 100;
 	velocityX = 5;
@@ -109,34 +107,16 @@ function gameInit() {
 
 	padX = sWidth / 2;
 	padY = sHeight - 40;
-	padHeight = 10;
-	padWidth = 150;
-
 
 	scoreView = document.getElementById("myScore");
 	$("#myScore").show();
-
-
-	canvas = document.getElementById("myCanvas");
-	canvas.width = sWidth;
-	canvas.height = sHeight;
-	canvas.hidden = false;
-
-	brickMargin = 10;
-	brickRowCountMax = 12;
-	brickColumnCountMax = 30;
-	brickMargin = sWidth % (brickColumnCountMax + 1) / 2;
-	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
-	brickSideMargin = brickMargin + brickLength / 2;
-	brickTopMargin = brickMargin + brickLength / 2;
-	brickRate = 10;
+	$("#myCanvas").show();
 
 	red = 115;
 	green = 103;
 	blue = 240;
 
 	timeX = 0;
-	timebarHeight = 20;
 }
 
 function makeCanvas() {
@@ -370,8 +350,6 @@ function answer() {
 function gameOver() {
 	clearInterval(ball);
 	clearInterval(timebar);
-	$("#myCanvas").hide();
-	$("#result_page").show();
 	backgroundMusic.pause();
 	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();

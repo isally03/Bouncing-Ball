@@ -58,6 +58,27 @@ $(document).ready(function() {
     $("#exit").on("click", exit);  
     $("#exit_img").on("click", finishStory);
     $(document).on("mousemove", mouseMoveSpeed);
+
+    sWidth = $(document).width();
+	sHeight = $(document).height();
+
+    padHeight = 10;
+	padWidth = 150;
+
+    canvas = document.getElementById("myCanvas");
+	canvas.width = sWidth;
+	canvas.height = sHeight;
+
+    brickMargin = 10;
+	brickRowCountMax = 12;
+	brickColumnCountMax = 30;
+	brickMargin = sWidth % (brickColumnCountMax + 1) / 2;
+	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
+	brickSideMargin = brickMargin + brickLength / 2;
+	brickTopMargin = brickMargin + brickLength / 2;
+	brickRate = 10;
+
+    timebarHeight = 20;
 });
 
 function startSlotAnimation(finalScore) {
@@ -146,6 +167,7 @@ function finishStory(){
 
 
 function showResult(){
+	$("#myCanvas").hide();
     $("#main_menu").show();
     $("#result_page").show();
     startSlotAnimation(score);
