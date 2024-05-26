@@ -15,6 +15,7 @@ var padX;
 var padY;
 var padHeight;
 var padWidth;
+var difficult;
 
 var brickLength;
 var brickMargin;
@@ -45,8 +46,8 @@ var bluePerSecond;
 
 var currentStage;
 
-var itmes=[];
-var itemDropRate=0.2;
+var itmes = [];
+var itemDropRate = 0.2;
 
 let prevMouseX = 0, prevMouseY = 0;
 let paddleSpeed = 0;
@@ -56,10 +57,14 @@ var main_BGM;
 
 function gameStart() {
 	$("#main_menu").hide();
-    $("#myCanvas").show();
-// // 메인화면 음악 추가
+	$("#myCanvas").show();
+	// // 메인화면 음악 추가
 	main_BGM = document.getElementById("main_menu_audio");
 	main_BGM.pause();
+
+	if (difficult == "easy") brickRate = 100;
+	if (difficult == "normal") brickRate = 20;
+	if (difficult == "hard") brickRate = 5;
 
 	currentStage = 1;
 	score = 0;
@@ -71,20 +76,20 @@ function gameStart() {
 	gameoverMusic.pause();
 }
 
-function mouseMoveSpeed(event){
+function mouseMoveSpeed(event) {
 	// 마우스 움직임 속도 계산
 	const distance = Math.sqrt(
 		Math.pow(event.clientX - prevMouseX, 2) +
 		Math.pow(event.clientY - prevMouseY, 2)
-	  );
-	  const mouseSpeed = distance / 16.67; // 1초당 픽셀 수로 변환
-	
-	  // 마우스 속도에 비례하여 패드 속도 조절
-	  paddleSpeed = mouseSpeed * 0.1;
-	
-	  // 이전 마우스 좌표 업데이트
-	  prevMouseX = event.clientX;
-	  prevMouseY = event.clientY;
+	);
+	const mouseSpeed = distance / 16.67; // 1초당 픽셀 수로 변환
+
+	// 마우스 속도에 비례하여 패드 속도 조절
+	paddleSpeed = mouseSpeed * 0.1;
+
+	// 이전 마우스 좌표 업데이트
+	prevMouseX = event.clientX;
+	prevMouseY = event.clientY;
 
 }
 
@@ -283,16 +288,16 @@ function movBall() {
 		return;
 	}
 	// pad와 부딪혔을때
-	if (dy > 0 && 
-		(ballY >= padY - padHeight / 2 - ballRadius) && 
-		(ballY <= padY + padHeight / 2) && 
-		(ballX > padX - padWidth / 2) && 
+	if (dy > 0 &&
+		(ballY >= padY - padHeight / 2 - ballRadius) &&
+		(ballY <= padY + padHeight / 2) &&
+		(ballX > padX - padWidth / 2) &&
 		(ballX < padX + padWidth / 2)
-		){
+	) {
 		dy = -dy * (1 + paddleSpeed * 0.5); // 공의 속도를 패드 속도에 비례하여 증가
-		dx = dx +(dx * paddleSpeed * 0.1);
+		dx = dx + (dx * paddleSpeed * 0.1);
 		paddleSpeed = 0; // 패드 속도 초기화
-		if(combo >2){
+		if (combo > 2) {
 			//console.log(combo);
 			score += combo;
 			combo = 0;
@@ -301,7 +306,7 @@ function movBall() {
 		//console.log("dx : " + dx + "\ndy : " + dy);
 	}
 	// 윗 edge와 부딪혔을때
-	if(ballY < ballRadius) dy = -dy;
+	if (ballY < ballRadius) dy = -dy;
 
 	ballX += dx;
 	ballY += dy;
@@ -315,12 +320,12 @@ function movBall() {
 	}
 }
 
-function scoreUpdate(){
+function scoreUpdate() {
 	$("#myScore").text("점수 : " + score);
-	
+
 }
 
-function stage(n) { 
+function stage(n) {
 	if (n >= 4) endings();
 	else {
 		gameInit();
@@ -350,13 +355,13 @@ function gameOver() {
 	gameoverMusic.currentTime = 0;
 	gameoverMusic.play();
 	showResult();
-	setTimeout(function(){
+	setTimeout(function () {
 		// showButton();
 		$("#result_page").hide();
 		$("#main_page").show();
 	}
-	,5000);
-	
+		, 5000);
+
 	score = 0;
 	$("#myScore").hide();
 

@@ -5,6 +5,7 @@ backgroundMusic.loop = true;
 var gameoverMusic = new Audio("gameover1.wav");
 var backgroundMusicVolume = 0.5;
 var gameoverMusicVolume = 0.5;
+var difficult = "easy";
 
 var storybox;
 
@@ -71,8 +72,7 @@ $(document).ready(function () {
     brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
     brickSideMargin = brickMargin + brickLength / 2;
     brickTopMargin = brickMargin + brickLength / 2;
-    brickRate = 4;
-
+    
     timebarHeight = 20;
 });
 
@@ -118,6 +118,7 @@ function settings() {
 function settingsSave() {
     ballColor = $("input[name='ballColor']:checked").val();
     backImage = $("input[name='backColor']:checked").val();
+    difficult = $("input[name='difficult']:checked").val();
     var musicSrc = $("input[name='music']:checked").val();
     var overMusicSrc = $("input[name='overMusic']:checked").val();
 
