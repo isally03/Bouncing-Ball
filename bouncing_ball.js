@@ -390,9 +390,9 @@ function stage(n) {
 		makeCanvas();
 		ball = setInterval(movBall, ballMoveSpeed);
 		bomb = setInterval(drawItem,time2);
-		if (n == 1) stageOne();
-		else if (n == 2) stageTwo();
-		else stageThree();
+		if (n == 1) stageUpdate(180);
+		else if (n == 2) stageUpdate(150);
+		else stageUpdate(120);
 		draw();
 		makeRandomBricks();
 		drawAllBricks();
@@ -449,6 +449,15 @@ function makeRandomBricks() {
 	}
 	for (var i = -3; i < 3; i++)
 		bricks[brickRowCountMax - 1][Math.floor(brickColumnCountMax / 2) + i] = 0;
+}
+
+function stageUpdate(timePerSecond_input){
+	timePerSecond = timePerSecond_input;
+	for(var i = 0 ; i<=11; i++){
+		bricks[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	}
+	let alphabet_num = Math.floor(Math.random()*brickList.length);
+	alphabet(brickList[alphabet_num], Math.floor(Math.random()*5), Math.floor(Math.random()*25));
 }
 
 function stageOne() {
@@ -516,8 +525,8 @@ function exit() {
 function alphabet(alpha, y,x){
 	for(var i = 0; i<8; i++){
 		for(var j= 0; j<7; j++){
+			console.log("x : " + x + "\ny : "+ y +"\ni : " + i , "\nj : " + j, "\nbrics : " +bricks[y+i][x+j]);
 			bricks[y+i][x+j] = alpha[i][j];
-			console.log(bricks[y+i][x+j]);
 		}
 	}
 }
@@ -732,3 +741,6 @@ y[4]  = [0, 0, 0, 0, 2, 0, 0];
 y[5]  = [0, 2, 0, 0, 2, 0, 0];
 y[6]  = [0, 0, 2, 2, 0, 0, 0];
 y[7]  = [0, 0, 0, 0, 0, 0, 0];
+
+
+let brickList = [A,B,C,H,L,M,P,S,a,c,e,f,h,i,l,m,n,o,p,r,y];
