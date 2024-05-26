@@ -58,7 +58,7 @@ $(document).ready(function () {
     sHeight = $(document).height();
 
     padHeight = 10;
-    padWidth = 150;
+    padWidth = 250;
 
     canvas = document.getElementById("myCanvas");
     canvas.width = sWidth;
@@ -71,7 +71,7 @@ $(document).ready(function () {
     brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
     brickSideMargin = brickMargin + brickLength / 2;
     brickTopMargin = brickMargin + brickLength / 2;
-    brickRate = 10;
+    brickRate = 4;
 
     timebarHeight = 20;
 });
