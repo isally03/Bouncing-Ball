@@ -49,6 +49,10 @@ $(document).ready(function () {
         gameoverMusic.volume = $(this).val() / 100;
     });
 
+    $("input[name='backColor']").on("click", function() {
+        prevCanvas.style.backgroundImage = `url("${$("input[name='backColor']:checked").val()}")`;
+    });
+
     $("#Muteall").change(function () {
         if ($(this).is(":checked")) {
             backgroundMusic.volume = 0;
@@ -79,6 +83,10 @@ $(document).ready(function () {
     canvas = document.getElementById("myCanvas");
     canvas.width = sWidth;
     canvas.height = sHeight;
+
+    prevCanvas = document.getElementById("prevCanvas");
+    prevCanvas.width = $("#previewbox").width();
+    prevCanvas.height = $("#previewbox").height();
 
     brickMargin = 10;
     brickRowCountMax = 12;
@@ -128,6 +136,13 @@ function animateDigit(selector, finalDigit) {
 function settings() {
     $("#main_page").hide();
     $("#customize_page").show();
+
+    prevCtx = prevCanvas.getContext("2d");
+	prevCtx.clearRect(0, 0, prevCanvas.width, prevCanvas.height);
+
+    prevCanvas.style.backgroundImage = `url("${$("input[name='backColor']:checked").val()}")`;
+	prevCanvas.style.backgroundRepeat = "no-repeat";
+	prevCanvas.style.backgroundSize = "cover";
 }
 
 function settingsSave() {

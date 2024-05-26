@@ -3,6 +3,9 @@ var sHeight;
 var canvas;
 var ctx;
 
+var prevCanvas;
+var prevCtx;
+
 var ballX;
 var ballY;
 var velocityX;
