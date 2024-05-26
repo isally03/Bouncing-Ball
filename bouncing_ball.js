@@ -86,7 +86,7 @@ function gameStart() {
 		time2=5500;
 	}
 
-	currentStage = 1;
+	currentStage = 3;
 	score = 0;
 	scoreUpdate();
 	stage(currentStage);
@@ -431,6 +431,7 @@ function gameOver() {
 
 function endings() {
 	alert("Clear!");
+	gameOver();
 }
 
 function makeRandomBricks() {
@@ -451,8 +452,8 @@ function makeRandomBricks() {
 		bricks[brickRowCountMax - 1][Math.floor(brickColumnCountMax / 2) + i] = 0;
 }
 
-function stageUpdate(timePerSecond_input){
-	timePerSecond = timePerSecond_input;
+function stageUpdate(stage_num){
+	timePerSecond = 210 - stage_num*30;
 	for(var i = 0 ; i<=11; i++){
 		bricks[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
@@ -460,6 +461,7 @@ function stageUpdate(timePerSecond_input){
 	alphabet(brickList[alphabet_num], Math.floor(Math.random()*5), Math.floor(Math.random()*25));
 }
 
+/*
 function stageOne() {
 	timePerSecond = 180;
 	bricks[0]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -516,6 +518,7 @@ function stageThree() {
 	alphabet(l, 1, 2);
 
 }
+*/
 
 function exit() {
 
