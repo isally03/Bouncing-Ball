@@ -341,8 +341,6 @@ img {
     height: 90px;
 }
 
-
-
 .content {
     overflow: hidden;
     display: flex;
@@ -599,7 +597,8 @@ img {
     font-weight: bolder;
 }
 
-/*초기 페이지 원래 block임*/
+/* result page */
+
 #result_page {
     display: none;
     justify-content: center;
@@ -608,6 +607,23 @@ img {
     height: 100%;
     background: url("score_background.png"), #e7e6d5 no-repeat center center fixed;
     background-size: cover;
+}
+
+#user_anwser {
+    display: flex;
+    width: 60px;
+    height: 50px;
+    font-size: 45px;
+    text-align: center;
+    background-color: #fff9f9;
+    margin: 100px auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#user_anwser:focus {
+    background-color: #e3dede;
 }
 
 #answer_box {

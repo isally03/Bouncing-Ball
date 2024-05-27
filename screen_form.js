@@ -1,4 +1,4 @@
-var ballColor = "black";
+var ballColor = "#403d39";
 var backImage = "background1.jpg";
 var backgroundMusic = new Audio("backgroundmusic1.wav");
 backgroundMusic.loop = true;
@@ -16,6 +16,12 @@ var isCostomize = false;
 var deadCnt = 0;
 var playTime = 0;
 var clearCnt = 0;
+
+var beforeballColor;
+var beforebackImage;
+var beforedifficult;
+var beforebackgroundMusic;
+var beforegameOverMusic;
 
 $(document).ready(function () {
     $("#myCanvas").hide();
@@ -167,6 +173,12 @@ function settings() {
     prevCanvas.style.backgroundRepeat = "no-repeat";
     prevCanvas.style.backgroundSize = "cover";
 
+    beforeballColor = $("input[name='ballColor']:checked").val();
+    beforebackImage = $("input[name='backColor']:checked").val();
+    beforedifficult = $("input[name='difficult']:checked").val();
+    beforebackgroundMusic = backgroundMusic.src;
+    beforegameOverMusic = gameoverMusic.src;
+
     ballX = prevCanvas.width / 2;
     ballY = 50;
     dx = 5;
@@ -209,9 +221,18 @@ function settingsSave() {
     difficult = $("input[name='difficult']:checked").val();
     var musicSrc = $("input[name='music']:checked").val();
     var overMusicSrc = $("input[name='overMusic']:checked").val();
-
     backgroundMusic.src = musicSrc;
     gameoverMusic.src = overMusicSrc;
+
+    if (beforeballColor != ballColor
+        || beforebackImage != backImage
+        || beforedifficult != difficult
+        || beforebackgroundMusic != backgroundMusic.src
+        || beforegameOverMusic != gameoverMusic.src
+    )
+        isCostomize = true;
+
+
     $("#customize_page").hide();
     $("#main_page").show();
     clearInterval(prevMove);
@@ -323,21 +344,21 @@ function challenge() {
 function challengeChange() {
     var touchBarCntMax = 20;
     var deadCntMax = 3;
-    var playTimeMax = 3;
+    var playTimeMax = 180;
     var clearCntMax = 3;
 
     $("#touchBarCnt").text(`발판에 닿은 횟수 (${touchBarCnt}/${touchBarCntMax})`);
-    if (touchBarCnt == touchBarCntMax) $("#touchBarCnt").attr("class", "clearassignment");
+    if (touchBarCnt == touchBarCntMax) $("#touchBarCnt").attr("class", "clearedassignment");
 
     $("#isCostomize").text(`나만의 디자인`);
-    if (isCostomize == true) $("#isCostomize").attr("class", "clearassignment");
+    if (isCostomize == true) $("#isCostomize").attr("class", "clearedassignment");
 
     $("#deadCnt").text(`죽은 횟수 (${deadCnt}/${deadCntMax})`);
-    if (deadCnt == deadCntMax) $("#deadCnt").attr("class", "clearassignment");
+    if (deadCnt == deadCntMax) $("#deadCnt").attr("class", "clearedassignment");
 
-    $("#playTime").text(`플레이 시간 (${playTime}/${playTimeMax}) (단위: 분)`);
-    if (playTime == playTimeMax) $("#playTime").attr("class", "clearassignment");
+    $("#playTime").text(`플레이 시간 (${playTime}/${playTimeMax}) (단위: 초)`);
+    if (playTime == playTimeMax) $("#playTime").attr("class", "clearedassignment");
 
     $("#clearCnt").text(`성공 횟수 (${clearCnt}/${clearCntMax})`);
-    if (clearCnt == clearCntMax) $("#clearCnt").attr("class", "clearassignment");
+    if (clearCnt == clearCntMax) $("#clearCnt").attr("class", "clearedassignment");
 }

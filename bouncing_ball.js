@@ -414,6 +414,7 @@ function stage(n) {
 }
 
 function gameOver() {
+	deadCnt++;
 	clearInterval(ball);
 	clearInterval(timebar);
 	clearInterval(bomb);
@@ -431,6 +432,7 @@ function gameOver() {
 // }
 
 function endings() {
+	clearCnt++;
 	alert("Clear!");
 	showResult(2); //엔딩에서
 }
