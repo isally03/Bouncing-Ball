@@ -404,7 +404,7 @@ function scoreUpdate() {
 }
 
 function stage(n) {
-	if (n >= 4) endings();
+	if (n == answer_word.length) endings();
 	else {
 		gameInit();
 		makeCanvas();
@@ -452,7 +452,9 @@ function makeRandomBricks() {
 		for (var j = 0; j < brickColumnCountMax; j++) {
 			if (bricks[i][j] == 0) {
 				var randomInt = Math.floor(Math.random() * brickRate);
-				if (randomInt == 0) {
+				if (randomInt == 0
+					&& !(i == brickRowCountMax - 1 && j >= Math.floor(brickColumnCountMax / 2) - 3 && j < Math.floor(brickColumnCountMax / 2) + 3)
+				) {
 					bricks[i][j] = 1;
 					brickCnt++;
 				}
@@ -461,8 +463,6 @@ function makeRandomBricks() {
 				brickCnt++;
 		}
 	}
-	for (var i = -3; i < 3; i++)
-		bricks[brickRowCountMax - 1][Math.floor(brickColumnCountMax / 2) + i] = 0;
 }
 
 function stageUpdate(stage_num) {
@@ -481,7 +481,7 @@ function stageUpdate(stage_num) {
 
 		alphabet(stringToFunc(scrambled[4]), m, l);
 		while (true) {
-			var temp = Math.floor(Math.random() * 25);
+			var temp = Math.floor(Math.random() * 24);
 
 			if (temp < (l - 7) || temp >= (l + 7)) {
 				alphabet(stringToFunc(scrambled[currentStage]), Math.floor(Math.random() * 5), temp);
@@ -509,7 +509,7 @@ function check_answer() {
 		score += parseInt((sWidth - timeX) / sWidth *100);
 		// alert("실패.....\n점수 : " + score);
 		currentStage++;
-		clearCnt++;
+		clearCnt = Math.min(clearCnt + 1, clearCntMax);
 
 		// console.log("++");
 		stage(currentStage);

@@ -317,6 +317,7 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
     switch (state) {
         case 0:
             $("#answer_box").show();
+            $("#user_anwser").focus();
 
             clearInterval(ball);
             clearInterval(timebar);
@@ -399,7 +400,7 @@ function challengeChange() {
 
 function profilesChange() {
     if (sumStart == 0) {
-        $("#maxAlive").text(`최고 생존 시간 : ${maxAlive}초`);
+        $("#maxAlive").text(`최고 생존 시간 : ${parseInt(maxAlive)}초`);
         $("#meansAlive").text(`평균 생존 시간 : ${sumAlive}초`);
         $("#maxScore").text(`최고 점수 : ${maxScore}점`);
         $("#meansScore").text(`평균 점수 : ${sumScore}점`);
@@ -408,7 +409,7 @@ function profilesChange() {
         $("#sumStart").text(`플레이 횟수 : ${sumStart}회`);
     }
     else {
-        $("#maxAlive").text(`최고 생존 시간 : ${maxAlive}초`);
+        $("#maxAlive").text(`최고 생존 시간 : ${parseInt(maxAlive)}초`);
         $("#meansAlive").text(`평균 생존 시간 : ${parseInt(sumAlive / sumStart)}초`);
         $("#maxScore").text(`최고 점수 : ${maxScore}점`);
         $("#meansScore").text(`평균 점수 : ${parseInt(sumScore / sumStart)}점`);
