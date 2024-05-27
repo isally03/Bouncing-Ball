@@ -195,7 +195,7 @@ function drawBall() {
 //폭탄 그리는 함수
 function drawItem() {
 	var bombImage = new Image();
-	bombImage.src = "bomb.jpg";
+	bombImage.src = "bomb.png";
 	bombImage.onload = function () {
 		if (!bombLoaded) {
 			leftmax = sWidth * 0.3 - bombLength;
