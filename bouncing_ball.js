@@ -147,6 +147,8 @@ function gameInit() {
 	padY = sHeight - 40;
 
 	scoreView = document.getElementById("myScore");
+	$("#myScore").css("font-size","30px");
+	$("#myScore").css("margin","0 10px");
 	$("#myScore").show();
 	$("#myCanvas").show();
 
@@ -198,7 +200,7 @@ function drawBall() {
 //폭탄 그리는 함수
 function drawItem() {
 	var bombImage = new Image();
-	bombImage.src = "bomb.jpg";
+	bombImage.src = "bomb.png";
 	bombImage.onload = function () {
 		if (!bombLoaded) {
 			leftmax = sWidth * 0.3 - bombLength;
@@ -558,6 +560,8 @@ function stringToFunc(str) {
 			return C;
 		case 'H':
 			return H;
+		case 'L':
+			return L;
 		case 'M':
 			return M;
 		case 'P':

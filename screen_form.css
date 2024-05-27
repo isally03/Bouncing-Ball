@@ -290,8 +290,17 @@ img {
     border-radius: 0 0 25px 25px;
     background-color: #FFFDF7;
     opacity: 0.95;
+    
 }
-
+.contentbox>span{
+    display: block;
+    color: gray;
+    width: 100%;
+    font-size: 35px;
+    font-style: italic;
+    text-align: center;
+    letter-spacing: 8px;
+}
 .exitbar {
     overflow: hidden;
     height: 50px;
@@ -303,15 +312,15 @@ img {
     display: none;
     /* display: flex; */
     align-items: center;
-    padding: 10px 0;
+    padding: 10px 30px;
     margin: 5px 0;
 }
 
 
 .storybox>img {
-    margin: 0 15px;
+    margin: 0 20px;
     height: 60px;
-    width: 70px;
+    width: 60px;
 }
 
 .storybox>.narbox {
