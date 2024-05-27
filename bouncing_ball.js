@@ -550,6 +550,8 @@ function stringToFunc(str) {
 			return C;
 		case 'H':
 			return H;
+		case 'L':
+			return L;
 		case 'M':
 			return M;
 		case 'P':

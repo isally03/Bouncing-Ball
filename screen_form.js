@@ -133,7 +133,16 @@ $(document).ready(function () {
 });
 
 function startSlotAnimation(finalScore) {
-    var finalScoreStr = finalScore.toString().padStart(4, '0');
+    var finalScoreStr;
+    if(finalScore<0){
+        finalScoreStr = finalScore.toString();
+        finalScoreStr = finalScoreStr.padStart(4, ' ');
+       
+    }
+    else{
+        finalScoreStr = finalScore.toString().padStart(4, '0');
+    }
+   
 
     finalScoreStr.split('').forEach((digit, index) => {
         setTimeout(() => {
