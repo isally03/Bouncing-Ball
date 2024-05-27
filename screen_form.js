@@ -5,8 +5,11 @@ backgroundMusic.loop = true;
 var gameoverMusic = new Audio("gameover1.wav");
 var backgroundMusicVolume = 0.5;
 var gameoverMusicVolume = 0.5;
+var difficult = "easy";
 
 var storybox;
+var prevMove
+var prevMusicTime;
 
 $(document).ready(function () {
     $("#myCanvas").hide();
@@ -23,6 +26,24 @@ $(document).ready(function () {
         settingsCancel();
     });
 
+    $("input[name='music']").on("click", function () {
+        backgroundMusic.src = $("input[name='music']:checked").val();
+        backgroundMusic.currentTime = 0;
+        backgroundMusic.play();
+        if (prevMusicTime) {
+            clearTimeout(prevMusicTime);
+        }
+        prevMusicTime = setTimeout(function () {
+            backgroundMusic.pause();
+        }, 3000);
+    });
+
+    $("input[name='overMusic']").on("click", function () {
+        gameoverMusic.src = $("input[name='overMusic']:checked").val();
+        gameoverMusic.currentTime = 0;
+        gameoverMusic.play();
+    });
+
     $("#musicVolume").on("input", function () {
         $("#musicVolumeValue").text($(this).val());
         backgroundMusic.volume = $(this).val() / 100;
@@ -31,26 +52,29 @@ $(document).ready(function () {
     $("#overVolume").on("input", function () {
         $("#overVolumeValue").text($(this).val());
         gameoverMusic.volume = $(this).val() / 100;
+    });
 
-        $("#Muteall").change(function () {
-            if ($(this).is(":checked")) {
-                backgroundMusic.volume = 0;
-                $("#musicVolume").val(0).prop("disabled", true);
-                $("#musicVolumeValue").text(0);
-                gameoverMusic.volume = 0;
-                $("#overVolume").val(0).prop("disabled", true);
-                $("#overVolumeValue").text(0);
-            }
-            else {
-                var volume = 50;
-                backgroundMusic.volume = volume / 100;
-                $("#musicVolume").val(50).prop("disabled", false);
-                $("#musicVolumeValue").text(50);
-                gameoverMusic.volume = volume / 100;
-                $("#overVolume").val(50).prop("disabled", false);
-                $("#overVolumeValue").text(50);
-            }
-        });
+    $("input[name='backColor']").on("click", function () {
+        prevCanvas.style.backgroundImage = `url("${$("input[name='backColor']:checked").val()}")`;
+    });
+
+    $("input[name='ballColor']").on("click", function () {
+        ballColor = $("input[name='ballColor']:checked").val();
+    });
+
+    $("#Muteall").change(function () {
+        if ($(this).is(":checked")) {
+            backgroundMusic.volume = 0;
+            $("#musicVolume").prop("disabled", true);
+            gameoverMusic.volume = 0;
+            $("#overVolume").prop("disabled", true);
+        }
+        else {
+            backgroundMusic.volume = backgroundMusicVolume;
+            $("#musicVolume").prop("disabled", false);
+            gameoverMusic.volume = gameoverMusicVolume;
+            $("#overVolume").prop("disabled", false);
+        }
     });
 
     $("#startGame").on("click", prolog);
@@ -58,6 +82,33 @@ $(document).ready(function () {
     $("#exit").on("click", exit);
     $("#exit_img").on("click", finishStory);
     $(document).on("mousemove", mouseMoveSpeed);
+
+    sWidth = $(document).width();
+    sHeight = $(document).height();
+
+    padHeight = 10;
+    padWidth = 250;
+
+    canvas = document.getElementById("myCanvas");
+    canvas.width = sWidth;
+    canvas.height = sHeight;
+
+    prevCanvas = document.getElementById("prevCanvas");
+    prevCanvas.width = $("#previewbox").width();
+    prevCanvas.height = $("#previewbox").height();
+
+    ballRadius = 15;
+    ballMoveSpeed = 10;
+
+    brickMargin = 10;
+    brickRowCountMax = 12;
+    brickColumnCountMax = 30;
+    brickMargin = sWidth % (brickColumnCountMax + 1) / 2;
+    brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
+    brickSideMargin = brickMargin + brickLength / 2;
+    brickTopMargin = brickMargin + brickLength / 2;
+
+    timebarHeight = 20;
 });
 
 function startSlotAnimation(finalScore) {
@@ -97,11 +148,53 @@ function animateDigit(selector, finalDigit) {
 function settings() {
     $("#main_page").hide();
     $("#customize_page").show();
+
+    prevCtx = prevCanvas.getContext("2d");
+    prevCtx.clearRect(0, 0, prevCanvas.width, prevCanvas.height);
+    prevCanvas.style.backgroundImage = `url("${$("input[name='backColor']:checked").val()}")`;
+    prevCanvas.style.backgroundRepeat = "no-repeat";
+    prevCanvas.style.backgroundSize = "cover";
+
+    ballX = prevCanvas.width / 2;
+    ballY = 50;
+    dx = 5;
+    dy = 5;
+    prevDrawBall();
+    prevMove = setInterval(prevMoveBall, 10);
+}
+
+function prevDrawBall() {
+    prevCtx.save();
+    prevCtx.beginPath();
+    prevCtx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2); //(x좌표,y좌표,원 반지름, 시작각도, 끝각도, 그리는 방향)
+    prevCtx.fillStyle = ballColor;
+    prevCtx.fill();
+    prevCtx.closePath();
+    prevCtx.restore();
+}
+
+function prevMoveBall() {
+    prevCtx.save();
+    prevCtx.beginPath();
+    prevCtx.arc(ballX, ballY, ballRadius + 1, 0, Math.PI * 2);
+    prevCtx.closePath();
+    prevCtx.clip();
+    prevCtx.clearRect(ballX - ballRadius - 1, ballY - ballRadius - 1, ballRadius * 2 + 2, ballRadius * 2 + 2);
+    prevCtx.restore();
+    if (ballX < ballRadius || ballX > prevCanvas.width - ballRadius)
+        dx = -dx;
+    if (ballY > prevCanvas.height - ballRadius || ballY < ballRadius) {
+        dy = -dy;
+    }
+    ballX += dx;
+    ballY += dy;
+    prevDrawBall();
 }
 
 function settingsSave() {
     ballColor = $("input[name='ballColor']:checked").val();
     backImage = $("input[name='backColor']:checked").val();
+    difficult = $("input[name='difficult']:checked").val();
     var musicSrc = $("input[name='music']:checked").val();
     var overMusicSrc = $("input[name='overMusic']:checked").val();
 
@@ -109,12 +202,14 @@ function settingsSave() {
     gameoverMusic.src = overMusicSrc;
     $("#customize_page").hide();
     $("#main_page").show();
+    clearInterval(prevMove);
 }
 
 function settingsCancel() {
     $("#customize_page").hide();
     $("#challenge_page").hide();
     $("#main_page").show();
+    clearInterval(prevMove);
 }
 
 function prolog() {
@@ -122,7 +217,6 @@ function prolog() {
     $("#storyboard").show();
     $(window).keydown(playStory);
 }
-
 
 var index = 0;
 
@@ -145,10 +239,60 @@ function finishStory() {
 }
 
 
-function showResult() {
+function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 실패했을때(1), 끝까지 성공했을때(2)
+    $("#myCanvas").hide();
     $("#main_menu").show();
     $("#result_page").show();
-    startSlotAnimation(score);
+    switch (state) {
+        case 0:
+            $("#answer_box").show();
+
+            clearInterval(ball);
+            clearInterval(timebar);
+            clearInterval(bomb);
+            backgroundMusic.pause();
+
+            $("#user_anwser").keydown(function (e) {
+                if (e.keyCode == 13) {
+                    check_answer();
+                }
+            }); //enter 이벤트 핸들러 연결
+            break;
+        case 1:
+            $("#fail_box").show();
+
+            gameOver();
+            gameoverMusic.currentTime = 0;
+            gameoverMusic.play();
+
+            setTimeout(function () {
+                $("#fail_box").hide();
+                $("#result_page").hide();
+                $("#main_page").show();
+                main_BGM.play();
+            }
+                , 5000);
+            break;
+        case 2:
+            $("#success_box").show();
+
+            gameOver();
+
+            startSlotAnimation(score);
+            setTimeout(function () {
+                $("#success_box").hide();
+                $("#result_page").hide();
+                $("#main_page").show();
+                main_BGM.play();
+            }
+                , 5000);
+            break;
+
+        default:
+    }
+
+
+
 }
 
 function challenge() {

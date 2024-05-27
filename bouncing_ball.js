@@ -3,6 +3,9 @@ var sHeight;
 var canvas;
 var ctx;
 
+var prevCanvas;
+var prevCtx;
+
 var ballX;
 var ballY;
 var velocityX;
@@ -15,6 +18,7 @@ var padX;
 var padY;
 var padHeight;
 var padWidth;
+var difficult;
 
 var brickLength;
 var brickMargin;
@@ -52,27 +56,59 @@ let prevMouseX = 0, prevMouseY = 0;
 let paddleSpeed = 0;
 
 var main_BGM;
+var bombX;
+var bombY;
+var bombLoaded;
+var leftmax;
+var rightmax;
+//폭탄 유지 시간
+var time1;
+//폭탄 생성 주기
+var time2;
+
+var scrambled;
+var answer_word;
+var answer_arr = [];
+
+answer_arr[0] = ["Salt", "Beef", "Lime", "Pear", "Milk"]; //easy
+answer_arr[1] = ["Apple", "Cherry", "Lemon", "Peach", "Honey"]; //normal, hard
 
 function gameStart() {
 	$("#main_menu").hide();
 	$("#myCanvas").show();
-	// // 메인화면 음악 추가
+	answer_index = Math.floor(Math.random() * 5);
+
 	main_BGM = document.getElementById("main_menu_audio");
 	main_BGM.pause();
+	if (difficult == "easy") {
+		brickRate = 100;
+		time1 = 5000;
+		time2 = 10000;
+		answer_word = answer_arr[0][answer_index];
+	}
+	if (difficult == "normal") {
+		brickRate = 20;
+		time1 = 5000;
+		time2 = 8000;
+		answer_word = answer_arr[1][answer_index];
+	}
+	if (difficult == "hard") {
+		brickRate = 5;
+		time1 = 5000;
+		time2 = 5500;
+		answer_word = answer_arr[1][answer_index];
+	}
+	scramble(answer_word);
 
-	currentStage = 1;
+	currentStage = 0;
 	score = 0;
 	scoreUpdate();
 	stage(currentStage);
 
-	backgroundMusicVolume = $("#musicVolume").val() / 100;
-	gameoverMusicVolume = $("#overVolume").val() / 100;
-
-	backgroundMusic.volume = backgroundMusicVolume;
-	gameoverMusic.volume = gameoverMusicVolume;
 	backgroundMusic.currentTime = 0;
 	backgroundMusic.play();
 	gameoverMusic.pause();
+	drawItem();
 }
 
 function mouseMoveSpeed(event) {
@@ -93,49 +129,28 @@ function mouseMoveSpeed(event) {
 }
 
 function gameInit() {
-	sWidth = $(document).width();
-	sHeight = $(document).height();
 	ballX = sWidth / 2;
 	ballY = sHeight - 100;
 	velocityX = 5;
 	velocityY = 5;
 	dx = 5;
 	dy = -5;
-	ballRadius = 15;
-	ballMoveSpeed = 10;
+	brickCnt = 0;
 
 	combo = 0;
 
 	padX = sWidth / 2;
 	padY = sHeight - 40;
-	padHeight = 10;
-	padWidth = 150;
-
 
 	scoreView = document.getElementById("myScore");
 	$("#myScore").show();
-
-
-	canvas = document.getElementById("myCanvas");
-	canvas.width = sWidth;
-	canvas.height = sHeight;
-	canvas.hidden = false;
-
-	brickMargin = 10;
-	brickRowCountMax = 12;
-	brickColumnCountMax = 30;
-	brickMargin = sWidth % (brickColumnCountMax + 1) / 2;
-	brickLength = (sWidth - 2 * brickMargin) / (brickColumnCountMax + 1);
-	brickSideMargin = brickMargin + brickLength / 2;
-	brickTopMargin = brickMargin + brickLength / 2;
-	brickRate = 10;
+	$("#myCanvas").show();
 
 	red = 115;
 	green = 103;
 	blue = 240;
 
 	timeX = 0;
-	timebarHeight = 20;
 }
 
 function makeCanvas() {
@@ -176,7 +191,43 @@ function drawBall() {
 	ctx.closePath();
 	ctx.restore();
 }
-
+//폭탄 그리는 함수
+function drawItem() {
+	var bombImage = new Image();
+	bombImage.src = "bomb.jpg";
+	bombImage.onload = function () {
+		if (!bombLoaded) {
+			leftmax = sWidth * 0.3 - bombImage.width;
+			rightmax = sWidth * 0.7;
+			if (Math.random() < 0.5) {
+				bombX = Math.random() * leftmax;
+			}
+			else {
+				bombX = rightmax + Math.random() * (sWidth - rightmax - bombImage.width);
+			}
+			bombY = 890;
+			ctx.drawImage(bombImage, bombX, bombY, 30, 30);
+			bombLoaded = true;
+		}
+		setTimeout(function () {
+			ctx.clearRect(bombX, bombY, 30, 30);
+			bombLoaded = false;
+		}, time1);
+	};
+}
+//폭탄과 충돌감지 함수
+function checkCollide() {
+	var padleft = padX - padWidth / 2;
+	var padright = padX + padWidth / 2;
+	var bombleft = bombX;
+	var bombright = bombX + 30;
+	if (bombLoaded == true && bombleft < padright && bombright > padleft) {
+		score -= 10;
+		scoreUpdate();
+		ctx.clearRect(bombX, bombY, 30, 30);
+		bombLoaded = false;
+	}
+}
 function drawPad() {
 	ctx.save();
 	ctx.translate(padX, padY);
@@ -201,8 +252,9 @@ function removeTimeBar() {
 	green += greenPerSecond;
 	blue += bluePerSecond;
 	timeX += sWidth / timePerSecond;
+	console.log(timeX);
 	if (timeX > sWidth)
-		gameOver();
+		showResult(0); //시간이 다됐을때
 	ctx.restore();
 }
 
@@ -262,6 +314,7 @@ function breakBrick() {
 					else { dy = -dy; }
 
 					brickCnt--;
+					console.log(brickCnt);
 					score += 10;
 					combo += 10;
 					scoreUpdate();
@@ -300,8 +353,8 @@ function movBall() {
 	drawBricks(ballX, ballY);
 	if (ballX < ballRadius || ballX > sWidth - ballRadius)
 		dx = -dx;
-	if (ballY > sHeight - timebarHeight - ballRadius) {
-		gameOver();
+	if (ballY > sHeight - timebarHeight - ballRadius) { //바닥에 부딪혔을때
+		showResult(1);
 		return;
 	}
 	// pad와 부딪혔을때
@@ -315,12 +368,12 @@ function movBall() {
 		dx = dx + (dx * paddleSpeed * 0.1);
 		paddleSpeed = 0; // 패드 속도 초기화
 		if (combo > 2) {
-			console.log(combo);
+			//console.log(combo);
 			score += combo;
 			combo = 0;
 		}
 		scoreUpdate();
-		console.log("dx : " + dx + "\ndy : " + dy);
+		//console.log("dx : " + dx + "\ndy : " + dy);
 	}
 	// 윗 edge와 부딪혔을때
 	if (ballY < ballRadius) dy = -dy;
@@ -329,10 +382,12 @@ function movBall() {
 	ballY += dy;
 	drawBall();
 	drawPad();
+	//폭탄과 충돌 감지 함수
+	checkCollide();
 	if (brickCnt == 0) {
 		clearInterval(ball);
 		clearInterval(timebar);
-		answer();
+		showResult(0);
 		return;
 	}
 }
@@ -348,50 +403,34 @@ function stage(n) {
 		gameInit();
 		makeCanvas();
 		ball = setInterval(movBall, ballMoveSpeed);
-		brickCnt = 0;
-		if (n == 1) stageOne();
-		else if (n == 2) stageTwo();
-		else stageThree();
+		bomb = setInterval(drawItem, time2);
+		stageUpdate(n);
 		draw();
 		makeRandomBricks();
 		drawAllBricks();
 	}
 }
 
-function answer() {
-	score += combo;
-	score += parseInt((sWidth - timeX) / 10);
-	alert("Stage " + currentStage + "clear!\n" + "점수 : " + score);
-	currentStage++;
-	stage(currentStage);
-}
-
 function gameOver() {
-	console.log("test")
 	clearInterval(ball);
 	clearInterval(timebar);
-	$("#myCanvas").hide();
-	$("#result_page").show();
+	clearInterval(bomb);
 	backgroundMusic.pause();
-	gameoverMusic.currentTime = 0;
-	gameoverMusic.play();
-	showResult();
-	setTimeout(function () {
-		// showButton();
-		$("#result_page").hide();
-		$("#main_page").show();
-	}
-		, 5000);
-
 	score = 0;
 	$("#myScore").hide();
-
-	//메인 화면 음악 추가 게임종료 화면 추가 후 옮길 예정
-	main_BGM.play();
 }
+
+//check answer 내부로 편입됨!
+// function answer() {
+// 	score += combo;
+// 	score += parseInt((sWidth - timeX) / 10);
+// 	// alert("Stage " + currentStage + "clear!\n" + "점수 : " + score);
+// 	currentStage++;
+// }
 
 function endings() {
 	alert("Clear!");
+	showResult(2); //엔딩에서
 }
 
 function makeRandomBricks() {
@@ -412,54 +451,425 @@ function makeRandomBricks() {
 		bricks[brickRowCountMax - 1][Math.floor(brickColumnCountMax / 2) + i] = 0;
 }
 
+function stageUpdate(stage_num) {
+	timePerSecond = 210 - stage_num * 30;
+	for (var t = 0; t <= 11; t++) {
+		bricks[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	}
+
+	console.log(currentStage);
+
+	if (currentStage == 4 && difficult != "easy") {
+		var m = Math.floor(Math.random() * 5);
+		var l = Math.floor(Math.random() * 25);
+
+		alphabet(stringToFunc(scrambled[4]), m, l);
+		while (true) {
+			var temp = Math.floor(Math.random() * 25);
+
+			if (temp < (l - 7) || temp >= (l + 7)) {
+				alphabet(stringToFunc(scrambled[currentStage]), Math.floor(Math.random() * 5), temp);
+				break;
+			}
+		}
+
+
+	}
+	else {
+		alphabet(stringToFunc(scrambled[currentStage]), Math.floor(Math.random() * 5), Math.floor(Math.random() * 25));
+		console.log(scrambled);
+	}
+}
+
+function check_answer() {
+
+	console.log(scrambled[currentStage]);
+	console.log($("#user_anwser").val());
+	$("#answer_box").hide();
+
+	if (scrambled[currentStage].toLowerCase() == $("#user_anwser").val().toLowerCase()) {
+
+		score += combo;
+		score += parseInt((sWidth - timeX) / 10);
+		// alert("Stage " + currentStage + "clear!\n" + "점수 : " + score);
+		currentStage++;
+		stage(currentStage);
+	}
+	else {
+		showResult(1);
+	}
+	$(window).off();
+	$("#user_anwser").val("");
+
+
+}
+
+/*
 function stageOne() {
 	timePerSecond = 180;
-	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[0]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[1]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[2]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[3]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[4]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[5]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[6]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[7]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[8]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[9]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+	alphabet(a, 1, 2);
+
 }
 
 function stageTwo() {
 	timePerSecond = 150;
-	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[0]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[1]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[2]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[3]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[4]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[5]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[6]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[7]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[8]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[9]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+	alphabet(p, 3, 3);
+
 }
 
 function stageThree() {
 	timePerSecond = 120;
-	bricks[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[7] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	bricks[9] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[0]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[1]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[2]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[3]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[4]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[5]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[6]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[7]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[8]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	bricks[9]  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	bricks[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	bricks[11] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+	alphabet(l, 1, 2);
+
 }
+*/
 
 function exit() {
 
 }
+
+function scramble(word) {
+	scrambled = word.split("");
+	for (var i = 0; i < 10; i++) {
+		var mov_index = Math.floor(Math.random() * scrambled.length);
+		var alpha = scrambled[mov_index];
+		scrambled.splice(mov_index, 1);
+		scrambled.push(alpha);
+	}
+	console.log(scrambled);
+}
+
+function alphabet(alpha, y, x) {
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 7; j++) {
+			console.log("x : " + x + "\ny : " + y + "\ni : " + i, "\nj : " + j, "\nbricks : " + bricks[y + i][x + j]);
+			bricks[y + i][x + j] = alpha[i][j];
+		}
+	}
+}
+
+
+function stringToFunc(str) {
+
+	switch (str) {
+		case 'A':
+			return A;
+		case 'B':
+			return B;
+		case 'C':
+			return C;
+		case 'H':
+			return H;
+		case 'M':
+			return M;
+		case 'P':
+			return P;
+		case 'S':
+			return S;
+		case 'a':
+			return a;
+		case 'b':
+			return b;
+		case 'c':
+			return c;
+		case 'e':
+			return e;
+		case 'f':
+			return f;
+		case 'h':
+			return h;
+		case 'i':
+			return i;
+		case 'k':
+			return k;
+		case 'l':
+			return l;
+		case 'm':
+			return m;
+		case 'n':
+			return n;
+		case 'o':
+			return o;
+		case 'p':
+			return p;
+		case 'r':
+			return r;
+		case 'y':
+			return y;
+		default:
+			return -1;
+	}
+
+}
+var A = [];
+var B = [];
+var C = [];
+var H = [];
+var L = [];
+var M = [];
+var P = [];
+var S = [];
+var a = [];
+var b = [];
+var c = [];
+var e = [];
+var f = [];
+var h = [];
+var i = [];
+var k = [];
+var l = [];
+var m = [];
+var n = [];
+var o = [];
+var p = [];
+var r = [];
+var y = [];
+
+A[0] = [0, 0, 0, 2, 0, 0, 0];
+A[1] = [0, 0, 2, 0, 2, 0, 0];
+A[2] = [0, 2, 0, 0, 0, 2, 0];
+A[3] = [0, 2, 2, 2, 2, 2, 0];
+A[4] = [0, 2, 0, 0, 0, 2, 0];
+A[5] = [0, 2, 0, 0, 0, 2, 0];
+A[6] = [0, 2, 0, 0, 0, 2, 0];
+A[7] = [0, 0, 0, 0, 0, 0, 0];
+
+B[0] = [0, 0, 0, 0, 0, 0, 0];
+B[1] = [0, 2, 2, 2, 0, 0, 0];
+B[2] = [0, 2, 0, 0, 2, 0, 0];
+B[3] = [0, 2, 0, 0, 2, 0, 0];
+B[4] = [0, 2, 2, 2, 0, 0, 0];
+B[5] = [0, 2, 0, 0, 2, 0, 0];
+B[6] = [0, 2, 0, 0, 2, 0, 0];
+B[7] = [0, 2, 2, 2, 0, 0, 0];
+
+C[0] = [0, 0, 2, 2, 2, 0, 0];
+C[1] = [0, 2, 0, 0, 0, 2, 0];
+C[2] = [0, 2, 0, 0, 0, 0, 0];
+C[3] = [0, 2, 0, 0, 0, 0, 0];
+C[4] = [0, 2, 0, 0, 0, 0, 0];
+C[5] = [0, 2, 0, 0, 0, 0, 0];
+C[6] = [0, 2, 0, 0, 0, 2, 0];
+C[7] = [0, 0, 2, 2, 2, 0, 0];
+
+H[0] = [0, 2, 0, 0, 0, 2, 0];
+H[1] = [0, 2, 0, 0, 0, 2, 0];
+H[2] = [0, 2, 0, 0, 0, 2, 0];
+H[3] = [0, 2, 2, 2, 2, 2, 0];
+H[4] = [0, 2, 0, 0, 0, 2, 0];
+H[5] = [0, 2, 0, 0, 0, 2, 0];
+H[6] = [0, 2, 0, 0, 0, 2, 0];
+H[7] = [0, 2, 0, 0, 0, 2, 0];
+
+L[0] = [0, 2, 0, 0, 0, 0, 0];
+L[1] = [0, 2, 0, 0, 0, 0, 0];
+L[2] = [0, 2, 0, 0, 0, 0, 0];
+L[3] = [0, 2, 0, 0, 0, 0, 0];
+L[4] = [0, 2, 0, 0, 0, 0, 0];
+L[5] = [0, 2, 0, 0, 0, 0, 0];
+L[6] = [0, 2, 0, 0, 0, 0, 0];
+L[7] = [0, 2, 2, 2, 2, 2, 0];
+
+M[0] = [0, 2, 0, 0, 0, 2, 0];
+M[1] = [0, 2, 2, 0, 2, 2, 0];
+M[2] = [0, 2, 2, 0, 2, 2, 0];
+M[3] = [0, 2, 0, 2, 0, 2, 0];
+M[4] = [0, 2, 0, 0, 0, 2, 0];
+M[5] = [0, 2, 0, 0, 0, 2, 0];
+M[6] = [0, 2, 0, 0, 0, 2, 0];
+M[7] = [0, 2, 0, 0, 0, 2, 0];
+
+P[0] = [0, 2, 2, 2, 2, 0, 0];
+P[1] = [0, 2, 0, 0, 0, 2, 0];
+P[2] = [0, 2, 0, 0, 0, 2, 0];
+P[3] = [0, 2, 0, 0, 0, 2, 0];
+P[4] = [0, 2, 2, 2, 2, 0, 0];
+P[5] = [0, 2, 0, 0, 0, 0, 0];
+P[6] = [0, 2, 0, 0, 0, 0, 0];
+P[7] = [0, 2, 0, 0, 0, 0, 0];
+
+S[0] = [0, 0, 2, 2, 2, 0, 0];
+S[1] = [0, 2, 0, 0, 0, 2, 0];
+S[2] = [0, 2, 0, 0, 0, 0, 0];
+S[3] = [0, 0, 2, 2, 0, 0, 0];
+S[4] = [0, 0, 0, 2, 2, 0, 0];
+S[5] = [0, 0, 0, 0, 0, 2, 0];
+S[6] = [0, 2, 0, 0, 0, 2, 0];
+S[7] = [0, 0, 2, 2, 2, 0, 0];
+
+a[0] = [0, 0, 2, 2, 2, 0, 0];
+a[1] = [0, 2, 0, 0, 0, 2, 0];
+a[2] = [0, 0, 0, 0, 0, 2, 0];
+a[3] = [0, 0, 2, 2, 2, 2, 0];
+a[4] = [0, 2, 0, 0, 0, 2, 0];
+a[5] = [0, 2, 0, 0, 0, 2, 0];
+a[6] = [0, 0, 2, 2, 2, 2, 0];
+a[7] = [0, 0, 0, 0, 0, 0, 0];
+
+b[0] = [0, 0, 0, 0, 0, 0, 0]
+b[1] = [0, 2, 0, 0, 0, 0, 0]
+b[2] = [0, 2, 0, 0, 0, 0, 0]
+b[3] = [0, 2, 2, 2, 0, 0, 0]
+b[4] = [0, 2, 0, 0, 2, 0, 0]
+b[5] = [0, 2, 0, 0, 2, 0, 0]
+b[6] = [0, 2, 2, 2, 0, 0, 0]
+b[7] = [0, 0, 0, 0, 0, 0, 0]
+
+c[0] = [0, 0, 0, 0, 0, 0, 0];
+c[1] = [0, 0, 2, 2, 2, 0, 0];
+c[2] = [0, 2, 0, 0, 0, 2, 0];
+c[3] = [0, 2, 0, 0, 0, 0, 0];
+c[4] = [0, 2, 0, 0, 0, 0, 0];
+c[5] = [0, 2, 0, 0, 0, 2, 0];
+c[6] = [0, 0, 2, 2, 2, 0, 0];
+c[7] = [0, 0, 0, 0, 0, 0, 0];
+
+e[0] = [0, 0, 2, 2, 2, 0, 0];
+e[1] = [0, 2, 0, 0, 0, 2, 0];
+e[2] = [0, 2, 0, 0, 0, 2, 0];
+e[3] = [0, 2, 2, 2, 2, 2, 0];
+e[4] = [0, 2, 0, 0, 0, 0, 0];
+e[5] = [0, 2, 0, 0, 0, 2, 0];
+e[6] = [0, 0, 2, 2, 2, 0, 0];
+e[7] = [0, 0, 0, 0, 0, 0, 0];
+
+f[0] = [0, 0, 0, 2, 0, 0, 0];
+f[1] = [0, 0, 2, 0, 2, 0, 0];
+f[2] = [0, 0, 2, 0, 0, 0, 0];
+f[3] = [0, 0, 2, 0, 0, 0, 0];
+f[4] = [0, 2, 2, 2, 2, 0, 0];
+f[5] = [0, 0, 2, 0, 0, 0, 0];
+f[6] = [0, 0, 2, 0, 0, 0, 0];
+f[7] = [0, 0, 2, 0, 0, 0, 0];
+
+h[0] = [0, 0, 0, 0, 0, 0, 0];
+h[1] = [0, 2, 0, 0, 0, 0, 0];
+h[2] = [0, 2, 0, 0, 0, 0, 0];
+h[3] = [0, 2, 2, 2, 0, 0, 0];
+h[4] = [0, 2, 0, 0, 2, 0, 0];
+h[5] = [0, 2, 0, 0, 2, 0, 0];
+h[6] = [0, 2, 0, 0, 2, 0, 0];
+h[7] = [0, 0, 0, 0, 0, 0, 0];
+
+i[0] = [0, 0, 0, 2, 0, 0, 0];
+i[1] = [0, 0, 0, 0, 0, 0, 0];
+i[2] = [0, 0, 0, 2, 0, 0, 0];
+i[3] = [0, 0, 0, 2, 0, 0, 0];
+i[4] = [0, 0, 0, 2, 0, 0, 0];
+i[5] = [0, 0, 0, 2, 0, 0, 0];
+i[6] = [0, 0, 0, 2, 0, 0, 0];
+i[7] = [0, 0, 0, 2, 0, 0, 0];
+
+k[0] = [0, 0, 0, 0, 0, 0, 0];
+k[1] = [0, 2, 0, 0, 2, 0, 0];
+k[2] = [0, 2, 0, 2, 0, 0, 0];
+k[3] = [0, 2, 2, 0, 0, 0, 0];
+k[4] = [0, 2, 2, 0, 0, 0, 0];
+k[5] = [0, 2, 0, 2, 0, 0, 0];
+k[6] = [0, 2, 0, 0, 2, 0, 0];
+k[7] = [0, 0, 0, 0, 0, 0, 0];
+
+l[0] = [0, 0, 0, 2, 0, 0, 0];
+l[1] = [0, 0, 0, 2, 0, 0, 0];
+l[2] = [0, 0, 0, 2, 0, 0, 0];
+l[3] = [0, 0, 0, 2, 0, 0, 0];
+l[4] = [0, 0, 0, 2, 0, 0, 0];
+l[5] = [0, 0, 0, 2, 0, 0, 0];
+l[6] = [0, 0, 0, 2, 0, 0, 0];
+l[7] = [0, 0, 0, 2, 0, 0, 0];
+
+m[0] = [0, 0, 0, 0, 0, 0, 0];
+m[1] = [0, 2, 2, 0, 2, 2, 0];
+m[2] = [2, 0, 0, 2, 0, 0, 2];
+m[3] = [2, 0, 0, 2, 0, 0, 2];
+m[4] = [2, 0, 0, 2, 0, 0, 2];
+m[5] = [2, 0, 0, 2, 0, 0, 2];
+m[6] = [2, 0, 0, 0, 0, 0, 2];
+m[7] = [0, 0, 0, 0, 0, 0, 0];
+
+n[0] = [0, 0, 0, 0, 0, 0, 0];
+n[1] = [0, 0, 0, 0, 0, 0, 0];
+n[2] = [0, 2, 0, 2, 2, 0, 0];
+n[3] = [0, 2, 2, 0, 0, 2, 0];
+n[4] = [0, 2, 0, 0, 0, 2, 0];
+n[5] = [0, 2, 0, 0, 0, 2, 0];
+n[6] = [0, 2, 0, 0, 0, 2, 0];
+n[7] = [0, 0, 0, 0, 0, 0, 0];
+
+o[0] = [0, 0, 0, 0, 0, 0, 0];
+o[1] = [0, 0, 2, 2, 2, 0, 0];
+o[2] = [0, 2, 0, 0, 0, 2, 0];
+o[3] = [0, 2, 0, 0, 0, 2, 0];
+o[4] = [0, 2, 0, 0, 0, 2, 0];
+o[5] = [0, 0, 2, 2, 2, 0, 0];
+o[6] = [0, 0, 0, 0, 0, 0, 0];
+o[7] = [0, 0, 0, 0, 0, 0, 0];
+
+p[0] = [0, 0, 0, 0, 0, 0, 0];
+p[1] = [0, 2, 2, 2, 0, 0, 0];
+p[2] = [0, 2, 0, 0, 2, 0, 0];
+p[3] = [0, 2, 0, 0, 2, 0, 0];
+p[4] = [0, 2, 2, 2, 0, 0, 0];
+p[5] = [0, 2, 0, 0, 0, 0, 0];
+p[6] = [0, 2, 0, 0, 0, 0, 0];
+p[7] = [0, 0, 0, 0, 0, 0, 0];
+
+r[0] = [0, 0, 0, 0, 0, 0, 0];
+r[1] = [0, 2, 0, 2, 0, 0, 0];
+r[2] = [0, 2, 2, 0, 2, 0, 0];
+r[3] = [0, 2, 0, 0, 0, 0, 0];
+r[4] = [0, 2, 0, 0, 0, 0, 0];
+r[5] = [0, 2, 0, 0, 0, 0, 0];
+r[6] = [0, 2, 0, 0, 0, 0, 0];
+r[7] = [0, 0, 0, 0, 0, 0, 0];
+
+y[0] = [0, 2, 0, 0, 2, 0, 0];
+y[1] = [0, 2, 0, 0, 2, 0, 0];
+y[2] = [0, 2, 0, 0, 2, 0, 0];
+y[3] = [0, 0, 2, 2, 2, 0, 0];
+y[4] = [0, 0, 0, 0, 2, 0, 0];
+y[5] = [0, 2, 0, 0, 2, 0, 0];
+y[6] = [0, 0, 2, 2, 0, 0, 0];
+y[7] = [0, 0, 0, 0, 0, 0, 0];
+
+
+

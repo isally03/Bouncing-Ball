@@ -60,6 +60,7 @@
             </nav>
             <div class="content">
                 <div id="previewbox">
+                    <canvas id="prevCanvas"></canvas>
                     <div id="prev">prev</div>
                 </div>
                 <div id="configbox">
@@ -79,6 +80,14 @@
                                 value="background2.jpg"><span>PM</span></label>
                         <label class="custom-radio"><input type="radio" name="backColor"
                                 value="background3.png"><span>NIGHT</span></label>
+
+                        <h1 id="diffculty">DIFFICULTY</h1>
+                        <label class="custom-radio"><input type="radio" name="difficult" value="easy"
+                                checked><span>EASY</span></label>
+                        <label class="custom-radio"><input type="radio" name="difficult"
+                                value="normal"><span>NORMAL</span></label>
+                        <label class="custom-radio"><input type="radio" name="difficult"
+                                value="hard"><span>HARD</span></label>
 
                         <h1 id="BGMS">BGM</h1>
                         <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic1.wav"
@@ -107,13 +116,11 @@
                         <h1 id="mute_button">MUTE ALL SOUND</h1>
                         <input type="checkbox" id=Muteall>음소거
 
-                        <h1 id="over_volume">FAIL SOUND VOLUME</h1>
-                        <input type="range" id="overVolume" min="0" max="100" value="50"><span
-                            id="overVolumeValue">50</span>
-
                         <div>
-                            <input class="button_animate_1" type="button" value="저장" onclick="settingsSave()">
-                            <input class="button_animate_1" type="button" value="취소" onclick="settingsCancel()">
+                            <input class="button_animate_1" type="button" value="저장" id="save_button"
+                                onclick="settingsSave()">
+                            <input class="button_animate_1" type="button" value="취소" id="cancel_button"
+                                onclick="settingsCancel()">
                         </div>
                     </div>
                 </div>
@@ -138,7 +145,11 @@
                 </div>
             </div>
         </div>
+
         <div id="result_page">
+            <div class="result_box" id="answer_box">
+                <input type="text" name="user_anser" id="user_anwser">
+            </div>
             <div class="result_box" id="success_box">
                 <div id="round_cover">
                     <p>SCORE</p>
