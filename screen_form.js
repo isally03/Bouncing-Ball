@@ -24,6 +24,14 @@ var clearCntMax = 3;
 
 var initialSettings = {};
 
+var maxAlive = 0;
+var sumAlive = 0;
+var maxScore = 0;
+var sumScore = 0;
+var maxStage = 0;
+var sumStage = 0;
+var sumStart = 0;
+
 $(document).ready(function () {
     $("#myCanvas").hide();
     storybox = $(".storybox");
@@ -359,6 +367,7 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
 function challenge() {
     $("#main_page").hide();
     challengeChange();
+    profilesChange();
     $("#challenge_page").show();
 }
 
@@ -377,4 +386,25 @@ function challengeChange() {
 
     $("#clearCnt").text(`스테이지 성공 횟수 (${clearCnt}/${clearCntMax})`);
     if (clearCnt >= clearCntMax) $("#clearCnt").attr("class", "clearedassignment");
+}
+
+function profilesChange() {
+    if (sumStart == 0) {
+        $("#maxAlive").text(`최고 생존 시간 (단위: 초) : (${maxAlive})`);
+        $("#meansAlive").text(`평균 생존 시간 (단위: 초) : (${sumAlive})`);
+        $("#maxScore").text(`최고 점수 : (${maxScore})`);
+        $("#meansScore").text(`평균 점수 : (${sumScore})`);
+        $("#maxStage").text(`최고 스테이지 : (${maxStage})`);
+        $("#meansStage").text(`평균 스테이지 : (${sumStage})`);
+        $("#sumStart").text(`플레이 횟수 : (${sumStart})`);
+    }
+    else {
+        $("#maxAlive").text(`최고 생존 시간 (단위: 초) : (${maxAlive})`);
+        $("#meansAlive").text(`평균 생존 시간 (단위: 초) : (${sumAlive / sumStart})`);
+        $("#maxScore").text(`최고 점수 : (${maxScore})`);
+        $("#meansScore").text(`평균 점수 : (${sumScore / sumStart})`);
+        $("#maxStage").text(`최고 스테이지 : (${maxStage})`);
+        $("#meansStage").text(`평균 스테이지 : (${sumStage / sumStart})`);
+        $("#sumStart").text(`플레이 횟수 : (${sumStart})`);
+    }
 }

@@ -39,6 +39,7 @@ var timebar;
 var timebarHeight;
 var timePerSecond;
 var timeX;
+var totalAlive;
 
 var red;
 var redPerSecond;
@@ -78,6 +79,7 @@ function gameStart() {
 	$("#main_menu").hide();
 	$("#myCanvas").show();
 	answer_index = Math.floor(Math.random() * 5);
+	sumStart++;
 
 	main_BGM = document.getElementById("main_menu_audio");
 	main_BGM.pause();
@@ -103,6 +105,7 @@ function gameStart() {
 
 	currentStage = 0;
 	score = 0;
+	totalAlive = 0;
 	scoreUpdate();
 	stage(currentStage);
 
@@ -413,7 +416,14 @@ function stage(n) {
 }
 
 function gameOver() {
+	totalAlive += Math.ceil(timeX * timePerSecond/ sWidth);
 	deadCnt = Math.min(deadCnt + 1, deadCntMax);
+	sumAlive += totalAlive;
+	maxAlive = Math.max(maxAlive, totalAlive);
+	sumScore += score;
+	maxScore = Math.max(maxScore, score);
+	sumStage += currentStage + 1;
+	maxStage = Math.max(maxStage, currentStage + 1);
 	clearInterval(ball);
 	clearInterval(timebar);
 	clearInterval(bomb);
@@ -486,13 +496,13 @@ function stageUpdate(stage_num) {
 }
 
 function check_answer() {
-
+	totalAlive += timeX / timePerSecond;
 
 	console.log("user_anwser" + $("#user_anwser").val());
 	$("#answer_box").hide();
 	console.log("scrambled[currentStage].toLowerCase()" + scrambled[currentStage].toLowerCase());
 	if (scrambled[currentStage].toLowerCase() == $("#user_anwser").val().toLowerCase()) {
-
+		
 		score += combo;
 		score += parseInt((sWidth - timeX) / sWidth *100);
 		// alert("실패.....\n점수 : " + score);
