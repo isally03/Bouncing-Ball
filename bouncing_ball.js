@@ -58,6 +58,7 @@ let paddleSpeed = 0;
 var main_BGM;
 var bombX;
 var bombY;
+var bombLength;
 var bombLoaded;
 var leftmax;
 var rightmax;
@@ -197,15 +198,15 @@ function drawItem() {
 	bombImage.src = "bomb.jpg";
 	bombImage.onload = function () {
 		if (!bombLoaded) {
-			leftmax = sWidth * 0.3 - bombImage.width;
+			leftmax = sWidth * 0.3 - bombLength;
 			rightmax = sWidth * 0.7;
 			if (Math.random() < 0.5) {
 				bombX = Math.random() * leftmax;
 			}
 			else {
-				bombX = rightmax + Math.random() * (sWidth - rightmax - bombImage.width);
+				bombX = rightmax + Math.random() * (sWidth - rightmax - bombLength);
 			}
-			bombY = 890;
+			bombY = padY - (padHeight / 2) - bombLength;
 			ctx.drawImage(bombImage, bombX, bombY, 30, 30);
 			bombLoaded = true;
 		}

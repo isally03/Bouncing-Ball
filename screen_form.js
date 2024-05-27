@@ -109,6 +109,8 @@ $(document).ready(function () {
     brickTopMargin = brickMargin + brickLength / 2;
 
     timebarHeight = 20;
+
+    bombLength = 10;
 });
 
 function startSlotAnimation(finalScore) {
