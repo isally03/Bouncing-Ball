@@ -253,7 +253,7 @@ function removeTimeBar() {
 	green += greenPerSecond;
 	blue += bluePerSecond;
 	timeX += sWidth / timePerSecond;
-	// console.log(timeX);
+	// console.log(parseInt((sWidth - timeX) / sWidth *100));
 	if (timeX > sWidth)
 		showResult(0); //시간이 다됐을때
 	ctx.restore();
@@ -493,7 +493,7 @@ function check_answer() {
 	if (scrambled[currentStage].toLowerCase() == $("#user_anwser").val().toLowerCase()) {
 
 		score += combo;
-		score += parseInt((sWidth - timeX) / 10);
+		score += parseInt((sWidth - timeX) / sWidth *100);
 		// alert("실패.....\n점수 : " + score);
 		currentStage++;
 		// console.log("++");
