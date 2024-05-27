@@ -144,6 +144,8 @@ function gameInit() {
 	padY = sHeight - 40;
 
 	scoreView = document.getElementById("myScore");
+	$("#myScore").css("font-size","30px");
+	$("#myScore").css("margin","0 10px");
 	$("#myScore").show();
 	$("#myCanvas").show();
 
