@@ -82,19 +82,19 @@ function gameStart() {
 	main_BGM = document.getElementById("main_menu_audio");
 	main_BGM.pause();
 	if (difficult == "easy") {
-		brickRate = 100;
+		brickRate = 20;
 		time1 = 5000;
 		time2 = 10000;
 		answer_word = answer_arr[0][answer_index];
 	}
 	if (difficult == "normal") {
-		brickRate = 20;
+		brickRate = 10;
 		time1 = 5000;
 		time2 = 8000;
 		answer_word = answer_arr[1][answer_index];
 	}
 	if (difficult == "hard") {
-		brickRate = 5;
+		brickRate = 4;
 		time1 = 5000;
 		time2 = 5500;
 		answer_word = answer_arr[1][answer_index];
