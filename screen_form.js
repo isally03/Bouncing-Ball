@@ -399,21 +399,21 @@ function challengeChange() {
 
 function profilesChange() {
     if (sumStart == 0) {
-        $("#maxAlive").text(`최고 생존 시간 (단위: 초) : (${maxAlive})`);
-        $("#meansAlive").text(`평균 생존 시간 (단위: 초) : (${sumAlive})`);
-        $("#maxScore").text(`최고 점수 : (${maxScore})`);
-        $("#meansScore").text(`평균 점수 : (${sumScore})`);
-        $("#maxStage").text(`최고 스테이지 : (${maxStage})`);
-        $("#meansStage").text(`평균 스테이지 : (${sumStage})`);
-        $("#sumStart").text(`플레이 횟수 : (${sumStart})`);
+        $("#maxAlive").text(`최고 생존 시간 : ${maxAlive}초`);
+        $("#meansAlive").text(`평균 생존 시간 : ${sumAlive}초`);
+        $("#maxScore").text(`최고 점수 : ${maxScore}점`);
+        $("#meansScore").text(`평균 점수 : ${sumScore}점`);
+        $("#maxStage").text(`최고 스테이지 : ${maxStage}`);
+        $("#meansStage").text(`평균 스테이지 : ${sumStage}`);
+        $("#sumStart").text(`플레이 횟수 : ${sumStart}회`);
     }
     else {
-        $("#maxAlive").text(`최고 생존 시간 (단위: 초) : (${maxAlive})`);
-        $("#meansAlive").text(`평균 생존 시간 (단위: 초) : (${sumAlive / sumStart})`);
-        $("#maxScore").text(`최고 점수 : (${maxScore})`);
-        $("#meansScore").text(`평균 점수 : (${sumScore / sumStart})`);
-        $("#maxStage").text(`최고 스테이지 : (${maxStage})`);
-        $("#meansStage").text(`평균 스테이지 : (${sumStage / sumStart})`);
-        $("#sumStart").text(`플레이 횟수 : (${sumStart})`);
+        $("#maxAlive").text(`최고 생존 시간 : ${maxAlive}초`);
+        $("#meansAlive").text(`평균 생존 시간 : ${parseInt(sumAlive / sumStart)}초`);
+        $("#maxScore").text(`최고 점수 : ${maxScore}점`);
+        $("#meansScore").text(`평균 점수 : ${parseInt(sumScore / sumStart)}점`);
+        $("#maxStage").text(`최고 스테이지 : ${maxStage}`);
+        $("#meansStage").text(`평균 스테이지 : ${parseInt(sumStage / sumStart)}`);
+        $("#sumStart").text(`플레이 횟수 : ${sumStart}회`);
     }
 }
