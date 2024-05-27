@@ -492,7 +492,7 @@ function stageUpdate(stage_num) {
 
 	}
 	else {
-		alphabet(stringToFunc(scrambled[currentStage]), Math.floor(Math.random() * 5), Math.floor(Math.random() * 25));
+		alphabet(stringToFunc(scrambled[currentStage]), Math.floor(Math.random() * 5), Math.floor(Math.random() * 24));
 		console.log(scrambled);
 	}
 }
