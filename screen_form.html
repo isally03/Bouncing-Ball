@@ -4,7 +4,12 @@
 <head>
     <meta charset="utf-8">
     <title>Bouncing_Ball</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="screen_form.css">
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="screen_form.js"></script>
     <script src="bouncing_ball.js"></script>
@@ -61,17 +66,17 @@
             <div class="content">
                 <div id="previewbox">
                     <canvas id="prevCanvas"></canvas>
-                    <div id="prev">prev</div>
+                    <div id="prev">preview</div>
                 </div>
                 <div id="configbox">
                     <div id="settingsMenu">
                         <h1 id="ball_colors">BALL COLOR</h1>
-                        <label class="custom-radio"><input type="radio" name="ballColor" value="black"
+                        <label class="custom-radio"><input type="radio" name="ballColor" value="#403d39"
                                 checked><span>BLACK</span></label>
                         <label class="custom-radio"><input type="radio" name="ballColor"
-                                value="red"><span>RED</span></label>
+                                value="#9b2226"><span>RED</span></label>
                         <label class="custom-radio"><input type="radio" name="ballColor"
-                                value="blue"><span>BLUE</span></label>
+                                value="#005f73"><span>BLUE</span></label>
 
                         <h1 id="backgrounds">BACKGROUND</h1>
                         <label class="custom-radio"><input type="radio" name="backColor" value="background1.jpg"
@@ -79,7 +84,7 @@
                         <label class="custom-radio"><input type="radio" name="backColor"
                                 value="background2.jpg"><span>PM</span></label>
                         <label class="custom-radio"><input type="radio" name="backColor"
-                                value="background3.png"><span>NIGHT</span></label>
+                                value="background3.jpg"><span>NIGHT</span></label>
 
                         <h1 id="diffculty">DIFFICULTY</h1>
                         <label class="custom-radio"><input type="radio" name="difficult" value="easy"
@@ -97,8 +102,8 @@
                         <label class="custom-radio"><input type="radio" name="music"
                                 value="backgroundmusic3.mp3"><span>BGM 3</span></label>
 
-                        <h1 id="music_volume">BGM VOLUME</h1>
-                        <input type="range" id="musicVolume" min="0" max="100" value="50"><span
+                        <!-- <h1 id="music_volume">BGM VOLUME</h1> -->
+                        <span>volume</span>&nbsp;<input type="range" id="musicVolume" min="0" max="100" value="50">&nbsp;<span
                             id="musicVolumeValue">50</span>
 
 
@@ -110,11 +115,19 @@
                         <label class="custom-radio"><input type="radio" name="overMusic"
                                 value="gameover3.wav"><span>OVER 3</span></label>
 
-                        <h1 id="over_volume">FAIL SOUND VOLUME</h1>
-                        <input type="range" id="overVolume" min="0" max="100" value="50"><span
+                        <!-- <h1 id="over_volume">FAIL SOUND VOLUME</h1> -->
+                        <span>volume</span>&nbsp;<input type="range" id="overVolume" min="0" max="100" value="50">&nbsp;<span
                             id="overVolumeValue">50</span>
                         <h1 id="mute_button">MUTE ALL SOUND</h1>
-                        <input type="checkbox" id=Muteall>음소거
+                        <br>
+                        <!-- <label class="check_label"></label> -->
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="Muteall">
+                            <span class="checkmark"></span>
+                            음소거
+                        </label>
+
+
 
                         <div>
                             <input class="button_animate_1" type="button" value="저장" id="save_button"

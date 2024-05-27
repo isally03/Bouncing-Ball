@@ -5,7 +5,11 @@
     font-style: normal;
 }
 
-* { padding: 0; margin: 0; }
+
+* { padding: 0; margin: 0; 
+    font-family: "Do Hyeon", sans-serif;
+    font-weight: 400;
+    font-style: normal;}
 
 body { overflow: hidden; }
 li { list-style: none; }
@@ -259,7 +263,7 @@ img { border: 0; }
     margin-left: 15%;
     width: 300px;
     height: 600px;
-    background-color:#eaf3f8af;
+    background-color:#ffffff;
     box-shadow: 8px 3px 0px 5px#4c545a96;
 }
 
@@ -279,7 +283,7 @@ img { border: 0; }
 
 #prev{
     position: absolute;
-    bottom: -10px;
+    bottom: -40px;
     left: 100px;
     width: 100px;
     height: 50px;
@@ -311,7 +315,6 @@ img { border: 0; }
 
 .custom-radio span {
     position: relative;
-
 }
 
 .custom-radio input:checked + span:before {
@@ -361,6 +364,64 @@ img { border: 0; }
      margin: 50px 45px 20px 45px;
 }
 
+#settingsMenu>span{
+    font-size: 20px;
+}
+#Muteall {
+    display: none;
+}
+
+.custom-checkbox {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 25px;
+    margin-right: 15px; /* 레이블 간격 조정 필요시 수정 */
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* 체크박스의 가상 체크마크 상자 */
+.custom-checkbox .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #a8a8a8;
+    border-radius: 5px; /* 원형 모서리 필요 없으면 삭제 */
+}
+
+/* 체크박스 클릭 시 체크마크 표시 */
+.custom-checkbox input:checked ~ .checkmark {
+    background-color: #71a8c5dc;
+}
+
+/* 체크마크의 스타일 */
+.custom-checkbox .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* 체크박스 체크 시 가상 체크마크의 디자인 */
+.custom-checkbox input:checked ~ .checkmark:after {
+    display: block;
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
 /* challenge_page */
 
 #challenge_page{

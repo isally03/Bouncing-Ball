@@ -492,7 +492,7 @@ function check_answer() {
 
 		score += combo;
 		score += parseInt((sWidth - timeX) / 10);
-		alert("실패.....\n점수 : " + score);
+		// alert("실패.....\n점수 : " + score);
 		currentStage++;
 		// console.log("++");
 		stage(currentStage);
