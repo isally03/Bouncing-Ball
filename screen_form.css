@@ -446,12 +446,18 @@ img { border: 0; }
     display: none;
 }
 
-#success_box {
+#_box {
     display: none;
 }
-#fail_box {
+
+#success{
     display: none;
 }
+
+#failed{
+    display: none;
+}
+
 .result_box {
     text-align: center;
     width: 500px;

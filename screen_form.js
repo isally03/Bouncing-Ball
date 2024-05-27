@@ -227,7 +227,7 @@ function playStory() {
         finishStory();
     }
     else {
-        console.log("index: " + index + "\nstorybox[index]" + storybox[index]);
+        // console.log("index: " + index + "\nstorybox[index]" + storybox[index]);
         storybox.eq(index).css("display", "flex");
         index++;
     }
@@ -261,30 +261,37 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
             }); //enter 이벤트 핸들러 연결
             break;
         case 1:
-            $("#fail_box").show();
+            $("#_box").show();
+            $("#failed").show();
 
             gameOver();
             gameoverMusic.currentTime = 0;
             gameoverMusic.play();
+            startSlotAnimation(score);
 
             setTimeout(function () {
-                $("#fail_box").hide();
+                $("#_box").hide();
+                $("#failed").hide();
                 $("#result_page").hide();
                 $("#main_page").show();
+                score = 0;
                 main_BGM.play();
             }
                 , 5000);
             break;
         case 2:
-            $("#success_box").show();
+            $("#_box").show();
+            $("#success").show();
 
             gameOver();
 
             startSlotAnimation(score);
             setTimeout(function () {
-                $("#success_box").hide();
+                $("#_box").hide();
+                $("#success").hide();
                 $("#result_page").hide();
                 $("#main_page").show();
+                score = 0;
                 main_BGM.play();
             }
                 , 5000);
