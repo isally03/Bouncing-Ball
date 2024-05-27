@@ -365,6 +365,7 @@ function movBall() {
 		(ballX > padX - padWidth / 2) &&
 		(ballX < padX + padWidth / 2)
 	) {
+		touchBarCnt = Math.min(touchBarCnt + 1, 20);
 		dy = -dy * (1 + paddleSpeed * 0.5); // 공의 속도를 패드 속도에 비례하여 증가
 		dx = dx + (dx * paddleSpeed * 0.1);
 		paddleSpeed = 0; // 패드 속도 초기화
@@ -458,7 +459,7 @@ function stageUpdate(stage_num) {
 		bricks[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
 
-	console.log("stageUpdate - currentStage"+currentStage);
+	console.log("stageUpdate - currentStage" + currentStage);
 
 	if (currentStage == 4 && difficult != "easy") {
 		var m = Math.floor(Math.random() * 5);
@@ -484,10 +485,10 @@ function stageUpdate(stage_num) {
 
 function check_answer() {
 
-	
-	console.log("user_anwser"+$("#user_anwser").val());
+
+	console.log("user_anwser" + $("#user_anwser").val());
 	$("#answer_box").hide();
-	console.log("scrambled[currentStage].toLowerCase()"+scrambled[currentStage].toLowerCase());
+	console.log("scrambled[currentStage].toLowerCase()" + scrambled[currentStage].toLowerCase());
 	if (scrambled[currentStage].toLowerCase() == $("#user_anwser").val().toLowerCase()) {
 
 		score += combo;

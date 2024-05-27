@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="screen_form.css">
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="screen_form.js"></script>
     <script src="bouncing_ball.js"></script>
@@ -103,8 +103,8 @@
                                 value="backgroundmusic3.mp3"><span>BGM 3</span></label>
 
                         <!-- <h1 id="music_volume">BGM VOLUME</h1> -->
-                        <span>volume</span>&nbsp;<input type="range" id="musicVolume" min="0" max="100" value="50">&nbsp;<span
-                            id="musicVolumeValue">50</span>
+                        <span>volume</span>&nbsp;<input type="range" id="musicVolume" min="0" max="100"
+                            value="50">&nbsp;<span id="musicVolumeValue">50</span>
 
 
                         <h1 id="OVER">FAIL SOUND</h1>
@@ -116,8 +116,8 @@
                                 value="gameover3.wav"><span>OVER 3</span></label>
 
                         <!-- <h1 id="over_volume">FAIL SOUND VOLUME</h1> -->
-                        <span>volume</span>&nbsp;<input type="range" id="overVolume" min="0" max="100" value="50">&nbsp;<span
-                            id="overVolumeValue">50</span>
+                        <span>volume</span>&nbsp;<input type="range" id="overVolume" min="0" max="100"
+                            value="50">&nbsp;<span id="overVolumeValue">50</span>
                         <h1 id="mute_button">MUTE ALL SOUND</h1>
                         <br>
                         <!-- <label class="check_label"></label> -->
@@ -152,9 +152,11 @@
                     <div id="play_box">평균 플레이 시간</div>
                 </div>
                 <div id="assignment_box">
-                    <div class="assignment">공튀기기(1/5)</div>
-                    <div class="assignment">공튀기기(1/5)</div>
-                    <div class="assignment">공튀기기(1/5)</div>
+                    <div class="assignment" id="touchBarCnt"></div>
+                    <div class="assignment" id="isCostomize"></div>
+                    <div class="assignment" id="deadCnt"></div>
+                    <div class="assignment" id="playTime"></div>
+                    <div class="assignment" id="clearCnt"></div>
                 </div>
             </div>
         </div>
@@ -165,7 +167,8 @@
             </div>
             <div class="result_box" id="_box">
                 <div id="round_cover">
-                    <p id = "success">SUCCESS</p><p id = "failed">FAILED</p>
+                    <p id="success">SUCCESS</p>
+                    <p id="failed">FAILED</p>
                     <div id="score_box">
                         <span class="digit" id="digit1"></span>
                         <span class="digit" id="digit2"></span>

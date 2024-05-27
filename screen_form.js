@@ -11,6 +11,12 @@ var storybox;
 var prevMove
 var prevMusicTime;
 
+var touchBarCnt = 0;
+var isCostomize = false;
+var deadCnt = 0;
+var playTime = 0;
+var clearCnt = 0;
+
 $(document).ready(function () {
     $("#myCanvas").hide();
     storybox = $(".storybox");
@@ -82,6 +88,10 @@ $(document).ready(function () {
     $("#exit").on("click", exit);
     $("#exit_img").on("click", finishStory);
     $(document).on("mousemove", mouseMoveSpeed);
+
+    setInterval(function () {
+        playTime++;
+    }, 1000);
 
     sWidth = $(document).width();
     sHeight = $(document).height();
@@ -306,5 +316,28 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
 
 function challenge() {
     $("#main_page").hide();
+    challengeChange();
     $("#challenge_page").show();
+}
+
+function challengeChange() {
+    var touchBarCntMax = 20;
+    var deadCntMax = 3;
+    var playTimeMax = 3;
+    var clearCntMax = 3;
+
+    $("#touchBarCnt").text(`발판에 닿은 횟수 (${touchBarCnt}/${touchBarCntMax})`);
+    if (touchBarCnt == touchBarCntMax) $("#touchBarCnt").attr("class", "clearassignment");
+
+    $("#isCostomize").text(`나만의 디자인`);
+    if (isCostomize == true) $("#isCostomize").attr("class", "clearassignment");
+
+    $("#deadCnt").text(`죽은 횟수 (${deadCnt}/${deadCntMax})`);
+    if (deadCnt == deadCntMax) $("#deadCnt").attr("class", "clearassignment");
+
+    $("#playTime").text(`플레이 시간 (${playTime}/${playTimeMax}) (단위: 분)`);
+    if (playTime == playTimeMax) $("#playTime").attr("class", "clearassignment");
+
+    $("#clearCnt").text(`성공 횟수 (${clearCnt}/${clearCntMax})`);
+    if (clearCnt == clearCntMax) $("#clearCnt").attr("class", "clearassignment");
 }
