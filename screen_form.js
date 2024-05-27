@@ -142,15 +142,15 @@ $(document).ready(function () {
 
 function startSlotAnimation(finalScore) {
     var finalScoreStr;
-    if(finalScore<0){
+    if (finalScore < 0) {
         finalScoreStr = finalScore.toString();
         finalScoreStr = finalScoreStr.padStart(4, ' ');
-       
+
     }
-    else{
+    else {
         finalScoreStr = finalScore.toString().padStart(4, '0');
     }
-   
+
 
     finalScoreStr.split('').forEach((digit, index) => {
         setTimeout(() => {
@@ -201,7 +201,7 @@ function settings() {
     prevDrawBall();
     prevMove = setInterval(prevMoveBall, 10);
 
-    $("#settingsMenu input[type='radio']").each(function() {
+    $("#settingsMenu input[type='radio']").each(function () {
         if ($(this).is(':checked')) {
             initialSettings[$(this).attr('name')] = $(this).val();
         }
@@ -209,6 +209,8 @@ function settings() {
     initialSettings["Muteall"] = $("#Muteall").is(":checked");
     initialSettings["musicVolume"] = $("#musicVolume").is(":disabled");
     initialSettings["overVolume"] = $("#overVolume").is(":disabled");
+    initialSettings["musicVolumeValue"] = $("#musicVolume").val();
+    initialSettings["overVolumeValue"] = $("#overVolumeValue").val();
 }
 
 function prevDrawBall() {
@@ -248,7 +250,7 @@ function settingsSave() {
     backgroundMusic.src = musicSrc;
     gameoverMusic.src = overMusicSrc;
 
-    $("#settingsMenu input[type='radio']:checked").each(function() {
+    $("#settingsMenu input[type='radio']:checked").each(function () {
         var name = $(this).attr('name');
         if (initialSettings[name] !== $(this).val()) {
             isCostomize = true;
@@ -262,7 +264,7 @@ function settingsSave() {
 
 function settingsCancel(flag) {
     if (flag == true) {
-        $("#settingsMenu input[type='radio']").each(function() {
+        $("#settingsMenu input[type='radio']").each(function () {
             var name = $(this).attr('name');
             if (initialSettings[name] === $(this).val()) {
                 $(this).prop('checked', true);
@@ -275,6 +277,10 @@ function settingsCancel(flag) {
         $("#Muteall").prop("checked", initialSettings["Muteall"]);
         $("#musicVolume").prop("disabled", initialSettings["musicVolume"]);
         $("#overVolume").prop("disabled", initialSettings["overVolume"]);
+        $("#musicVolume").val(initialSettings["musicVolumeValue"]);
+        $("#overVolume").val(initialSettings["overVolumeValue"]);
+        $("#musicVolumeValue").text($(musicVolume).val());
+        $("#overVolumeValue").text($(overVolume).val());
     }
 
     $("#customize_page").hide();
