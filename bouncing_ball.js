@@ -206,12 +206,12 @@ function drawItem() {
 			else {
 				bombX = rightmax + Math.random() * (sWidth - rightmax - bombLength);
 			}
-			bombY = padY - (padHeight / 2) - bombLength;
-			ctx.drawImage(bombImage, bombX, bombY, 30, 30);
+			bombY = padY - bombLength / 2;
+			ctx.drawImage(bombImage, bombX, bombY, bombLength, bombLength);
 			bombLoaded = true;
 		}
 		setTimeout(function () {
-			ctx.clearRect(bombX, bombY, 30, 30);
+			ctx.clearRect(bombX - 1, bombY - 1, bombLength + 2, bombLength + 2);
 			bombLoaded = false;
 		}, time1);
 	};
@@ -364,7 +364,7 @@ function movBall() {
 		(ballX > padX - padWidth / 2) &&
 		(ballX < padX + padWidth / 2)
 	) {
-		touchBarCnt = Math.min(touchBarCnt + 1, 20);
+		touchBarCnt = Math.min(touchBarCnt + 1, touchBarCntMax);
 		dy = -dy * (1 + paddleSpeed * 0.5); // 공의 속도를 패드 속도에 비례하여 증가
 		dx = dx + (dx * paddleSpeed * 0.1);
 		paddleSpeed = 0; // 패드 속도 초기화
@@ -413,7 +413,7 @@ function stage(n) {
 }
 
 function gameOver() {
-	deadCnt++;
+	deadCnt = Math.min(deadCnt + 1, deadCntMax);
 	clearInterval(ball);
 	clearInterval(timebar);
 	clearInterval(bomb);
@@ -431,7 +431,6 @@ function gameOver() {
 // }
 
 function endings() {
-	clearCnt++;
 	alert("Clear!");
 	showResult(2); //엔딩에서
 }
@@ -498,6 +497,8 @@ function check_answer() {
 		score += parseInt((sWidth - timeX) / sWidth *100);
 		// alert("실패.....\n점수 : " + score);
 		currentStage++;
+		clearCnt++;
+
 		// console.log("++");
 		stage(currentStage);
 	}

@@ -17,6 +17,11 @@ var deadCnt = 0;
 var playTime = 0;
 var clearCnt = 0;
 
+var touchBarCntMax = 20;
+var deadCntMax = 3;
+var playTimeMax = 180;
+var clearCntMax = 3;
+
 var initialSettings = {};
 
 $(document).ready(function () {
@@ -91,8 +96,10 @@ $(document).ready(function () {
     $("#exit_img").on("click", finishStory);
     $(document).on("mousemove", mouseMoveSpeed);
 
-    setInterval(function () {
+    var playTimes = setInterval(function () {
         playTime++;
+        if (playTime >= playTimeMax)
+            clearInterval(playTimes);
     }, 1000);
 
     sWidth = $(document).width();
@@ -122,7 +129,7 @@ $(document).ready(function () {
 
     timebarHeight = 20;
 
-    bombLength = 10;
+    bombLength = 30;
 });
 
 function startSlotAnimation(finalScore) {
@@ -355,23 +362,18 @@ function challenge() {
 }
 
 function challengeChange() {
-    var touchBarCntMax = 20;
-    var deadCntMax = 3;
-    var playTimeMax = 180;
-    var clearCntMax = 3;
-
     $("#touchBarCnt").text(`발판에 닿은 횟수 (${touchBarCnt}/${touchBarCntMax})`);
-    if (touchBarCnt == touchBarCntMax) $("#touchBarCnt").attr("class", "clearedassignment");
+    if (touchBarCnt >= touchBarCntMax) $("#touchBarCnt").attr("class", "clearedassignment");
 
-    $("#isCostomize").text(`나만의 디자인`);
+    $("#isCostomize").text(`설정에서 디자인 변경`);
     if (isCostomize == true) $("#isCostomize").attr("class", "clearedassignment");
 
-    $("#deadCnt").text(`실패 횟수 (${deadCnt}/${deadCntMax})`);
-    if (deadCnt == deadCntMax) $("#deadCnt").attr("class", "clearedassignment");
+    $("#deadCnt").text(`스테이지 실패 횟수 (${deadCnt}/${deadCntMax})`);
+    if (deadCnt >= deadCntMax) $("#deadCnt").attr("class", "clearedassignment");
 
     $("#playTime").text(`플레이 시간 (${playTime}/${playTimeMax}) (단위: 초)`);
-    if (playTime == playTimeMax) $("#playTime").attr("class", "clearedassignment");
+    if (playTime >= playTimeMax) $("#playTime").attr("class", "clearedassignment");
 
-    $("#clearCnt").text(`성공 횟수 (${clearCnt}/${clearCntMax})`);
-    if (clearCnt == clearCntMax) $("#clearCnt").attr("class", "clearedassignment");
+    $("#clearCnt").text(`스테이지 성공 횟수 (${clearCnt}/${clearCntMax})`);
+    if (clearCnt >= clearCntMax) $("#clearCnt").attr("class", "clearedassignment");
 }
