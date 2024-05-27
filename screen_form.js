@@ -17,11 +17,7 @@ var deadCnt = 0;
 var playTime = 0;
 var clearCnt = 0;
 
-var beforeballColor;
-var beforebackImage;
-var beforedifficult;
-var beforebackgroundMusic;
-var beforegameOverMusic;
+var initialSettings = {};
 
 $(document).ready(function () {
     $("#myCanvas").hide();
@@ -32,10 +28,10 @@ $(document).ready(function () {
     });
 
     $("#return_img1").on("click", function () {
-        settingsCancel();
+        settingsCancel(true);
     });
     $("#return_img2").on("click", function () {
-        settingsCancel();
+        settingsCancel(false);
     });
 
     $("input[name='music']").on("click", function () {
@@ -173,18 +169,21 @@ function settings() {
     prevCanvas.style.backgroundRepeat = "no-repeat";
     prevCanvas.style.backgroundSize = "cover";
 
-    beforeballColor = $("input[name='ballColor']:checked").val();
-    beforebackImage = $("input[name='backColor']:checked").val();
-    beforedifficult = $("input[name='difficult']:checked").val();
-    beforebackgroundMusic = backgroundMusic.src;
-    beforegameOverMusic = gameoverMusic.src;
-
     ballX = prevCanvas.width / 2;
     ballY = 50;
     dx = 5;
     dy = 5;
     prevDrawBall();
     prevMove = setInterval(prevMoveBall, 10);
+
+    $("#settingsMenu input[type='radio']").each(function() {
+        if ($(this).is(':checked')) {
+            initialSettings[$(this).attr('name')] = $(this).val();
+        }
+    });
+    initialSettings["Muteall"] = $("#Muteall").is(":checked");
+    initialSettings["musicVolume"] = $("#musicVolume").is(":disabled");
+    initialSettings["overVolume"] = $("#overVolume").is(":disabled");
 }
 
 function prevDrawBall() {
@@ -224,21 +223,35 @@ function settingsSave() {
     backgroundMusic.src = musicSrc;
     gameoverMusic.src = overMusicSrc;
 
-    if (beforeballColor != ballColor
-        || beforebackImage != backImage
-        || beforedifficult != difficult
-        || beforebackgroundMusic != backgroundMusic.src
-        || beforegameOverMusic != gameoverMusic.src
-    )
-        isCostomize = true;
-
+    $("#settingsMenu input[type='radio']:checked").each(function() {
+        var name = $(this).attr('name');
+        if (initialSettings[name] !== $(this).val()) {
+            isCostomize = true;
+        }
+    });
 
     $("#customize_page").hide();
     $("#main_page").show();
     clearInterval(prevMove);
 }
 
-function settingsCancel() {
+function settingsCancel(flag) {
+    if (flag == true) {
+        $("#settingsMenu input[type='radio']").each(function() {
+            var name = $(this).attr('name');
+            if (initialSettings[name] === $(this).val()) {
+                $(this).prop('checked', true);
+                if (name == "ballColor")
+                    ballColor = $(this).val();
+                else if (name == "backColor")
+                    backImage = $(this).val();
+            }
+        });
+        $("#Muteall").prop("checked", initialSettings["Muteall"]);
+        $("#musicVolume").prop("disabled", initialSettings["musicVolume"]);
+        $("#overVolume").prop("disabled", initialSettings["overVolume"]);
+    }
+
     $("#customize_page").hide();
     $("#challenge_page").hide();
     $("#main_page").show();
