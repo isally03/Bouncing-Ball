@@ -353,7 +353,7 @@ function challengeChange() {
     $("#isCostomize").text(`나만의 디자인`);
     if (isCostomize == true) $("#isCostomize").attr("class", "clearedassignment");
 
-    $("#deadCnt").text(`죽은 횟수 (${deadCnt}/${deadCntMax})`);
+    $("#deadCnt").text(`실패 횟수 (${deadCnt}/${deadCntMax})`);
     if (deadCnt == deadCntMax) $("#deadCnt").attr("class", "clearedassignment");
 
     $("#playTime").text(`플레이 시간 (${playTime}/${playTimeMax}) (단위: 초)`);

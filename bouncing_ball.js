@@ -253,7 +253,7 @@ function removeTimeBar() {
 	green += greenPerSecond;
 	blue += bluePerSecond;
 	timeX += sWidth / timePerSecond;
-	// console.log(timeX);
+	// console.log(parseInt((sWidth - timeX) / sWidth *100));
 	if (timeX > sWidth)
 		showResult(0); //시간이 다됐을때
 	ctx.restore();
@@ -375,7 +375,7 @@ function movBall() {
 			combo = 0;
 		}
 		scoreUpdate();
-		//console.log("dx : " + dx + "\ndy : " + dy);
+		console.log("dx : " + dx + "\ndy : " + dy);
 	}
 	// 윗 edge와 부딪혔을때
 	if (ballY < ballRadius) dy = -dy;
@@ -457,6 +457,8 @@ function makeRandomBricks() {
 
 function stageUpdate(stage_num) {
 	timePerSecond = 210 - stage_num * 30;
+	dx = 5 + 0.5*stage_num;
+	dy = -5 - 0.5*stage_num;
 	for (var t = 0; t <= 11; t++) {
 		bricks[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
@@ -494,7 +496,7 @@ function check_answer() {
 	if (scrambled[currentStage].toLowerCase() == $("#user_anwser").val().toLowerCase()) {
 
 		score += combo;
-		score += parseInt((sWidth - timeX) / 10);
+		score += parseInt((sWidth - timeX) / sWidth *100);
 		// alert("실패.....\n점수 : " + score);
 		currentStage++;
 		// console.log("++");
