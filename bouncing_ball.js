@@ -374,7 +374,7 @@ function movBall() {
 			combo = 0;
 		}
 		scoreUpdate();
-		//console.log("dx : " + dx + "\ndy : " + dy);
+		console.log("dx : " + dx + "\ndy : " + dy);
 	}
 	// 윗 edge와 부딪혔을때
 	if (ballY < ballRadius) dy = -dy;
@@ -454,6 +454,8 @@ function makeRandomBricks() {
 
 function stageUpdate(stage_num) {
 	timePerSecond = 210 - stage_num * 30;
+	dx = 5 + 0.5*stage_num;
+	dy = -5 - 0.5*stage_num;
 	for (var t = 0; t <= 11; t++) {
 		bricks[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
