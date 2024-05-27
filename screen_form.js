@@ -1,4 +1,4 @@
-var ballColor = "#403d39";
+var ballColor = "#000814";
 var backImage = "background1.jpg";
 var backgroundMusic = new Audio("backgroundmusic1.wav");
 backgroundMusic.loop = true;
@@ -174,7 +174,8 @@ function settings() {
     prevCtx.clearRect(0, 0, prevCanvas.width, prevCanvas.height);
     prevCanvas.style.backgroundImage = `url("${$("input[name='backColor']:checked").val()}")`;
     prevCanvas.style.backgroundRepeat = "no-repeat";
-    prevCanvas.style.backgroundSize = "cover";
+    prevCanvas.style.backgroundSize = "100% 100%";
+
 
     ballX = prevCanvas.width / 2;
     ballY = 50;
