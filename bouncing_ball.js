@@ -53,7 +53,6 @@ let paddleSpeed = 0;
 
 var main_BGM;
 
-
 function gameStart() {
 	$("#main_menu").hide();
 	$("#myCanvas").show();
