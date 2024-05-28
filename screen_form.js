@@ -324,15 +324,15 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
     $("#result_page").show();
     switch (state) {
         case 0:
-            $("#answer_box").show();
-            $("#user_anwser").focus();
+            $("#alphabet_box").show();
+            $("#user_alphabet").focus();
 
             clearInterval(ball);
             clearInterval(timebar);
             clearInterval(bomb);
             backgroundMusic.pause();
 
-            $("#user_anwser").keydown(function (e) {
+            $("#user_alphabet").keydown(function (e) {
                 if (e.keyCode == 13) {
                     check_answer();
                 }
@@ -352,28 +352,44 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
                 $("#failed").hide();
                 $("#result_page").hide();
                 $("#main_page").show();
-                score = 0;
+                // score = 0;
                 main_BGM.play();
             }
                 , 5000);
             break;
         case 2:
-            $("#_box").show();
-            $("#success").show();
+            $("#word_box").show();
+            $("#hint").text("hint: "+scrambled.join(" "));
+            // console.log("scrambled.join"+scrambled.join(""));
+            $("#user_word").focus();
 
             gameOver();
 
-            startSlotAnimation(score);
-            setTimeout(function () {
-                $("#_box").hide();
-                $("#success").hide();
-                $("#result_page").hide();
-                $("#main_page").show();
-                score = 0;
-                main_BGM.play();
-            }
-                , 5000);
+            $("#user_word").keydown(function (e) {
+                if (e.keyCode == 13) {
+                    check_word();
+                }
+            }); //enter 이벤트 핸들러 연결
             break;
+            
+        // case 3:
+        //     $("#_box").show();
+        //     $("#success").show();
+
+        //     gameOver();
+
+        //     startSlotAnimation(score);
+        //     setTimeout(function () {
+        //         $("#_box").hide();
+        //         $("#success").hide();
+        //         $("#result_page").hide();
+        //         $("#main_page").show();
+        //         // score = 0;
+        //         main_BGM.play();
+        //     }
+        //         , 5000);
+        //     break;
+
 
         default:
     }

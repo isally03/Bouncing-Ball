@@ -185,16 +185,25 @@
         </div>
 
         <div id="result_page">
-            <div class="result_box" id="answer_box">
+            <div class="result_box" id="alphabet_box">
+                <br>
                 <h2>Inset the alphabet!</h2>
                 <br>
-                <p>only in lowercase!</p>
-                <input type="text" name="user_anser" maxlength="1" id="user_anwser">
+                <p>press enter to submit</p>
+                <input type="text" name="user_alphabet" maxlength="1" id="user_alphabet">
             </div>
+            <div class="result_box" id="word_box">
+                <h2>What do i have to buy??</h2>
+                <br>
+                <p style="font-size: 40px">공백 없이 입력해주세요</p>
+                <p id = "hint"></p>
+                <input type="text" name="user_word" maxlength="5" id="user_word">
+            </div>
+            
             <div class="result_box" id="_box">
                 <div id="round_cover">
-                    <p id="success">SUCCESS</p>
-                    <p id="failed">FAILED</p>
+                    <h2 id="success">SUCCESS</h2>
+                    <h2 id="failed">FAILED</h2>
                     <div id="score_box">
                         <span class="digit" id="digit1"></span>
                         <span class="digit" id="digit2"></span>
@@ -203,6 +212,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="final_page">
+            <div id="success_end">성공!!</div>
+            <div id="fail_end">실패!!</div>
         </div>
     </div>
     <canvas id="myCanvas"></canvas>

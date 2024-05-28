@@ -444,7 +444,6 @@ function gameOver() {
 // }
 
 function endings() {
-	// alert("Clear!");
 	showResult(2); //엔딩에서
 }
 
@@ -501,10 +500,10 @@ function stageUpdate(stage_num) {
 function check_answer(){
 	totalAlive += timeX * timePerSecond / sWidth;
 
-	console.log("user_anwser" + $("#user_anwser").val());
-	$("#answer_box").hide();
+	console.log("user_alphabet" + $("#user_alphabet").val());
+	$("#alphabet_box").hide();
 	console.log("scrambled[currentStage].toLowerCase()" + scrambled[currentStage].toLowerCase());
-	if (scrambled[currentStage].toLowerCase() == $("#user_anwser").val().toLowerCase()) {
+	if (scrambled[currentStage].toLowerCase() == $("#user_alphabet").val().toLowerCase()) {
 
 		score += combo;
 		score += parseInt((sWidth - timeX) / sWidth * 100);
@@ -518,10 +517,39 @@ function check_answer(){
 	else {
 		showResult(1);
 	}
-	$(user_anwser).off();
-	$("#user_anwser").val("");
+	$("#user_alphabet").off();
+	$("#user_alphabet").val("");
 
 
+}
+
+function check_word(){
+	totalAlive += timeX * timePerSecond / sWidth;
+	console.log("user_word" + $("#user_word").val());
+	$("#word_box").hide();
+
+	setTimeout(function (){
+		$("#result_page").hide();
+		$("#final_page").show();
+	}, 500);
+	
+	if($("#user_word").val().toLowerCase == answer_word.toLowerCase){
+		$("#success_end").show();
+	}
+	else{
+		$("#fail_end").show();
+	}
+	$("#user_word").off();
+	$("#user_word").val("");
+
+	setTimeout(function () {
+		$("#final_page").hide();
+		$("#success_end").hide();
+		$("#fail_end").hide();
+		$("#main_page").show();
+		main_BGM.play();
+	}
+		, 3000);
 }
 
 
