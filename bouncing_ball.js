@@ -376,8 +376,8 @@ function movBall() {
 		if (combo > 20) {
 			//console.log(combo);
 			score += combo;
-			combo = 0;
 		}
+		combo = 0;
 		scoreUpdate();
 		console.log("dx : " + dx + "\ndy : " + dy);
 	}
