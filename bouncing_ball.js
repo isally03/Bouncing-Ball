@@ -78,6 +78,7 @@ answer_arr[1] = ["Apple", "Cherry", "Lemon", "Peach", "Honey"]; //normal, hard
 function gameStart() {
 	$("#main_menu").hide();
 	$("#myCanvas").show();
+	$(window).keydown(masterkeyHandler);
 	answer_index = Math.floor(Math.random() * 5);
 	sumStart++;
 
@@ -102,7 +103,7 @@ function gameStart() {
 		answer_word = answer_arr[1][answer_index];
 	}
 	scramble(answer_word);
-
+	
 	currentStage = 0;
 	score = 0;
 	totalAlive = 0;
@@ -443,7 +444,7 @@ function gameOver() {
 // }
 
 function endings() {
-	alert("Clear!");
+	// alert("Clear!");
 	showResult(2); //엔딩에서
 }
 
@@ -497,7 +498,7 @@ function stageUpdate(stage_num) {
 	}
 }
 
-function check_answer() {
+function check_answer(){
 	totalAlive += timeX * timePerSecond / sWidth;
 
 	console.log("user_anwser" + $("#user_anwser").val());
@@ -526,6 +527,12 @@ function check_answer() {
 
 function exit() {
 
+}
+
+function masterkeyHandler(e){
+	if(e.keyCode == 27){
+		showResult(0);
+	}
 }
 
 function scramble(word) {

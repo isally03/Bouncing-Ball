@@ -21,6 +21,7 @@ var touchBarCntMax = 20;
 var deadCntMax = 3;
 var playTimeMax = 180;
 var clearCntMax = 3;
+var index = 0;
 
 var initialSettings = {};
 
@@ -295,11 +296,12 @@ function prolog() {
     $(window).keydown(playStory);
 }
 
-var index = 0;
+
 
 function playStory() {
     if ((index) == storybox.length) {
         finishStory();
+        index = 0;
     }
     else {
         // console.log("index: " + index + "\nstorybox[index]" + storybox[index]);
@@ -316,7 +318,7 @@ function finishStory() {
 }
 
 
-function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 실패했을때(1), 끝까지 성공했을때(2)
+function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 실패했을때(1), 한단계를 끝까지 성공했을때(2), 마지막 스테이지까지 성공했을때(2)
     $("#myCanvas").hide();
     $("#main_menu").show();
     $("#result_page").show();
