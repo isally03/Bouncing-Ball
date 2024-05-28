@@ -310,6 +310,7 @@ img {
 
 .storybox {
     display: none;
+    font-size: 25px;
     /* display: flex; */
     align-items: center;
     padding: 10px 30px;
