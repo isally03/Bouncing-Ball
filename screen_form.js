@@ -410,17 +410,18 @@ function profilesChange() {
         $("#meansAlive").text(`평균 생존 시간 : ${sumAlive}초`);
         $("#maxScore").text(`최고 점수 : ${maxScore}점`);
         $("#meansScore").text(`평균 점수 : ${sumScore}점`);
-        $("#maxStage").text(`최고 스테이지 : ${maxStage}`);
-        $("#meansStage").text(`평균 스테이지 : ${sumStage}`);
+        $("#maxStage").text(`최고 스테이지 : ${maxStage}레벨`);
+        $("#meansStage").text(`평균 스테이지 : ${sumStage}레벨`);
         $("#sumStart").text(`플레이 횟수 : ${sumStart}회`);
     }
     else {
         $("#maxAlive").text(`최고 생존 시간 : ${parseInt(maxAlive)}초`);
-        $("#meansAlive").text(`평균 생존 시간 : ${parseInt(sumAlive / sumStart)}초`);
+        $("#meansAlive").text(`평균 생존 시간 : ${parseFloat(sumAlive / sumStart).toFixed(1)}초`);
         $("#maxScore").text(`최고 점수 : ${maxScore}점`);
-        $("#meansScore").text(`평균 점수 : ${parseInt(sumScore / sumStart)}점`);
-        $("#maxStage").text(`최고 스테이지 : ${maxStage}`);
-        $("#meansStage").text(`평균 스테이지 : ${parseInt(sumStage / sumStart)}`);
+        $("#meansScore").text(`평균 점수 : ${parseFloat(sumScore / sumStart).toFixed(1)}점`);
+        $("#maxStage").text(`최고 스테이지 : ${maxStage}레벨`);
+        $("#meansStage").text(`평균 스테이지 : ${parseFloat(sumStage / sumStart).toFixed(1)}레벨`);
         $("#sumStart").text(`플레이 횟수 : ${sumStart}회`);
     }
+
 }

@@ -147,8 +147,8 @@ function gameInit() {
 	padY = sHeight - 40;
 
 	scoreView = document.getElementById("myScore");
-	$("#myScore").css("font-size","30px");
-	$("#myScore").css("margin","0 10px");
+	$("#myScore").css("font-size", "30px");
+	$("#myScore").css("margin", "0 10px");
 	$("#myScore").show();
 	$("#myCanvas").show();
 
@@ -418,7 +418,7 @@ function stage(n) {
 }
 
 function gameOver() {
-	totalAlive += Math.ceil(timeX * timePerSecond/ sWidth);
+	totalAlive += Math.ceil(timeX * timePerSecond / sWidth);
 	deadCnt = Math.min(deadCnt + 1, deadCntMax);
 	sumAlive += totalAlive;
 	maxAlive = Math.max(maxAlive, totalAlive);
@@ -467,8 +467,8 @@ function makeRandomBricks() {
 
 function stageUpdate(stage_num) {
 	timePerSecond = 210 - stage_num * 30;
-	dx = 5 + 0.5*stage_num;
-	dy = -5 - 0.5*stage_num;
+	dx = 5 + 0.5 * stage_num;
+	dy = -5 - 0.5 * stage_num;
 	for (var t = 0; t <= 11; t++) {
 		bricks[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
@@ -498,15 +498,15 @@ function stageUpdate(stage_num) {
 }
 
 function check_answer() {
-	totalAlive += timeX / timePerSecond;
+	totalAlive += Math.ceil(timeX * timePerSecond / sWidth);
 
 	console.log("user_anwser" + $("#user_anwser").val());
 	$("#answer_box").hide();
 	console.log("scrambled[currentStage].toLowerCase()" + scrambled[currentStage].toLowerCase());
 	if (scrambled[currentStage].toLowerCase() == $("#user_anwser").val().toLowerCase()) {
-		
+
 		score += combo;
-		score += parseInt((sWidth - timeX) / sWidth *100);
+		score += parseInt((sWidth - timeX) / sWidth * 100);
 		// alert("실패.....\n점수 : " + score);
 		currentStage++;
 		clearCnt = Math.min(clearCnt + 1, clearCntMax);
