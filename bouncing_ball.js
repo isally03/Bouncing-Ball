@@ -169,7 +169,7 @@ function makeCanvas() {
 	$("#myCanvas").mousemove(function (e) {
 		ctx.save();
 		ctx.translate(padX, padY);
-		ctx.clearRect(-padWidth / 2, -padHeight / 2, padWidth + 1, padHeight);
+		ctx.clearRect(- padWidth / 2 - 1, -padHeight / 2 - 1, padWidth + 2, padHeight + 2);
 		ctx.restore();
 		if (e.pageX < padWidth / 2)
 			padX = padWidth / 2;
@@ -418,7 +418,7 @@ function stage(n) {
 }
 
 function gameOver() {
-	totalAlive += Math.ceil(timeX * timePerSecond / sWidth);
+	totalAlive += timeX * timePerSecond / sWidth;
 	deadCnt = Math.min(deadCnt + 1, deadCntMax);
 	sumAlive += totalAlive;
 	maxAlive = Math.max(maxAlive, totalAlive);
@@ -498,7 +498,7 @@ function stageUpdate(stage_num) {
 }
 
 function check_answer() {
-	totalAlive += Math.ceil(timeX * timePerSecond / sWidth);
+	totalAlive += timeX * timePerSecond / sWidth;
 
 	console.log("user_anwser" + $("#user_anwser").val());
 	$("#answer_box").hide();

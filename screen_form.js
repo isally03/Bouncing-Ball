@@ -416,7 +416,7 @@ function profilesChange() {
     }
     else {
         $("#maxAlive").text(`최고 생존 시간 : ${parseInt(maxAlive)}초`);
-        $("#meansAlive").text(`평균 생존 시간 : ${parseFloat(sumAlive / sumStart).toFixed(1)}초`);
+        $("#meansAlive").text(`평균 생존 시간 : ${parseInt(sumAlive / sumStart)}초`);
         $("#maxScore").text(`최고 점수 : ${maxScore}점`);
         $("#meansScore").text(`평균 점수 : ${parseFloat(sumScore / sumStart).toFixed(1)}점`);
         $("#maxStage").text(`최고 스테이지 : ${maxStage}레벨`);
