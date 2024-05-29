@@ -5,8 +5,10 @@ backgroundMusic.loop = true;
 var gameoverMusic = new Audio("gameover1.wav");
 var backgroundMusicVolume = 0.5;
 var gameoverMusicVolume = 0.5;
+var mainMusicVolume = 0;
 var difficult = "easy";
-
+var mainMusic= new Audio("Debussy - Reverie L68.mp3");
+mainMusic.loop=true;
 var storybox;
 var prevMove
 var prevMusicTime;
@@ -42,6 +44,8 @@ $(document).ready(function () {
     });
 
     $("#return_img1").on("click", function () {
+        backgroundMusic.pause();
+        gameoverMusic.pause();
         settingsCancel(true);
     });
     $("#return_img2").on("click", function () {
@@ -75,6 +79,11 @@ $(document).ready(function () {
         $("#overVolumeValue").text($(this).val());
         gameoverMusic.volume = $(this).val() / 100;
     });
+    $("#mainVolume").on("input",function(){
+        $("#mainVolumeValue").text($(this).val());
+        mainMusic.volume=$(this).val() / 100;
+
+    });
 
     $("input[name='backColor']").on("click", function () {
         prevCanvas.style.backgroundImage = `url("${$("input[name='backColor']:checked").val()}")`;
@@ -90,12 +99,17 @@ $(document).ready(function () {
             $("#musicVolume").prop("disabled", true);
             gameoverMusic.volume = 0;
             $("#overVolume").prop("disabled", true);
+            mainMusic.volume=0;
+            $("#mainVolume").prop("disabled",true);
         }
         else {
             backgroundMusic.volume = backgroundMusicVolume;
             $("#musicVolume").prop("disabled", false);
             gameoverMusic.volume = gameoverMusicVolume;
             $("#overVolume").prop("disabled", false);
+            mainMusic.volume=mainMusicVolume;
+            $("#mainVolume").prop("disabled",false);
+
         }
     });
 
@@ -209,9 +223,11 @@ function settings() {
     });
     initialSettings["Muteall"] = $("#Muteall").is(":checked");
     initialSettings["musicVolume"] = $("#musicVolume").is(":disabled");
+    initialSettings["mainVolume"]=$("#mainVolume").is(":disabled");
     initialSettings["overVolume"] = $("#overVolume").is(":disabled");
     initialSettings["musicVolumeValue"] = $("#musicVolume").val();
-    initialSettings["overVolumeValue"] = $("#overVolumeValue").val();
+    initialSettings["overVolumeValue"] = $("#overVolume").val();
+    initialSettings["mainVolumeValue"] = $("#mainVolume").val();
 }
 
 function prevDrawBall() {
@@ -260,6 +276,7 @@ function settingsSave() {
 
     $("#customize_page").hide();
     $("#main_page").show();
+    mainMusic.play();
     clearInterval(prevMove);
 }
 
@@ -276,10 +293,13 @@ function settingsCancel(flag) {
             }
         });
         $("#Muteall").prop("checked", initialSettings["Muteall"]);
+        $("#mainVolume").prop("disabled",initialSettings["mainVolume"]);
         $("#musicVolume").prop("disabled", initialSettings["musicVolume"]);
         $("#overVolume").prop("disabled", initialSettings["overVolume"]);
-        $("#musicVolume").val(initialSettings["musicVolumeValue"]);
+        $("#mainVolume").val(initialSettings["mainVolumeValue"]);
         $("#overVolume").val(initialSettings["overVolumeValue"]);
+        $("#musicVolume").val(initialSettings["musicVolumeValue"]);
+        $("#mainVolumeValue").text($(mainVolume).val());
         $("#musicVolumeValue").text($(musicVolume).val());
         $("#overVolumeValue").text($(overVolume).val());
     }
@@ -287,6 +307,8 @@ function settingsCancel(flag) {
     $("#customize_page").hide();
     $("#challenge_page").hide();
     $("#main_page").show();
+    mainMusic.volume=initialSettings["mainVolumeValue"]/100;
+    mainMusic.play();
     clearInterval(prevMove);
 }
 
@@ -352,7 +374,7 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
                 $("#result_page").hide();
                 $("#main_page").show();
                 // score = 0;
-                main_BGM.play();
+                mainMusic.play();
             }
                 , 5000);
             break;
