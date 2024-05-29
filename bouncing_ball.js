@@ -523,7 +523,7 @@ function check_word(){
 		$("#final_page").show();
 	}, 500);
 	
-	if($("#user_word").val().toLowerCase == answer_word.toLowerCase){
+	if($("#user_word").val().toLowerCase() === answer_word.toLowerCase()){
 		$("#success_end").show();
 	}
 	else{
