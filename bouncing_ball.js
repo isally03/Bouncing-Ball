@@ -542,9 +542,11 @@ function check_word(){
 		, 3000);
 }
 
-
 function exit() {
-
+	$('body').animate({ opacity: "0" }, 2000);
+    setTimeout(function() {
+		window.close();
+    }, 2000);
 }
 
 function masterkeyHandler(e){
