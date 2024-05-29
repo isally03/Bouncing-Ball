@@ -267,7 +267,7 @@ img {
 }
 
 #main_menu_audio {
-    display: none;
+    opacity: 0.1;
 }
 
 /* 스토리 진행 창 */

@@ -301,7 +301,6 @@ function prolog() {
 function playStory() {
     if ((index) == storybox.length) {
         finishStory();
-        index = 0;
     }
     else {
         // console.log("index: " + index + "\nstorybox[index]" + storybox[index]);
