@@ -111,7 +111,6 @@ function gameStart() {
 	stage(currentStage);
 
 	backgroundMusic.currentTime = 0;
-	backgroundMusic.play();
 	gameoverMusic.pause();
 	drawItem();
 }
@@ -134,6 +133,8 @@ function mouseMoveSpeed(event) {
 }
 
 function gameInit() {
+	backgroundMusic.play();
+
 	ballX = sWidth / 2;
 	ballY = sHeight - 100;
 	velocityX = 5;
