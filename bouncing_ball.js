@@ -527,7 +527,6 @@ function check_word(){
 	totalAlive += timeX * timePerSecond / sWidth;
 	console.log("user_word" + $("#user_word").val());
 	$("#word_box").hide();
-
 	setTimeout(function (){
 		$("#result_page").hide();
 		$("#final_page").show();

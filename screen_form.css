@@ -292,7 +292,7 @@ img {
     display: block;
     color: gray;
     width: 100%;
-    font-size: 35px;
+    font-size: 30px;
     font-style: italic;
     text-align: center;
     letter-spacing: 8px;
@@ -306,6 +306,7 @@ img {
 
 .storybox {
     display: none;
+    font-size: 26px;
     /* display: flex; */
     align-items: center;
     padding: 10px 30px;
@@ -756,18 +757,37 @@ img {
 /* final page */
 
 #final_page{
+    z-index: 1;
     display: none;
-    width: 100%;
-    height: 100%;
-    background-color: #fff9f9;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
-#success_end, #fail_end{
+#success_end{
+    width: 100%;
+    height: 100%;
     display: none;
     font-size: large;
    text-align: center;
+   background: url("final_page_1.jpg");
+   background-repeat: no-repeat;
+   background-size: cover;
 }
 
+
+#fail_end{
+    width: 100%;
+    height: 100%;
+    display: none;
+    font-size: large;
+   text-align: center;
+   background: url("final_page_2.jpg");
+   background-repeat: no-repeat;
+   background-size: cover;
+}
 
 
 

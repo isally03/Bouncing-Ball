@@ -372,25 +372,6 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
             }); //enter 이벤트 핸들러 연결
             break;
             
-        // case 3:
-        //     $("#_box").show();
-        //     $("#success").show();
-
-        //     gameOver();
-
-        //     startSlotAnimation(score);
-        //     setTimeout(function () {
-        //         $("#_box").hide();
-        //         $("#success").hide();
-        //         $("#result_page").hide();
-        //         $("#main_page").show();
-        //         // score = 0;
-        //         main_BGM.play();
-        //     }
-        //         , 5000);
-        //     break;
-
-
         default:
     }
 
