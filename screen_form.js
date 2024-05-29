@@ -115,7 +115,7 @@ $(document).ready(function () {
     sHeight = $(document).height();
 
     padHeight = 10;
-    padWidth = 250;
+    padWidth = 1920;
 
     canvas = document.getElementById("myCanvas");
     canvas.width = sWidth;
@@ -126,7 +126,7 @@ $(document).ready(function () {
     prevCanvas.height = $("#previewbox").height();
 
     ballRadius = 15;
-    ballMoveSpeed = 10;
+    ballMoveSpeed = 5;
 
     brickMargin = 10;
     brickRowCountMax = 12;
