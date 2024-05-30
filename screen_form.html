@@ -32,8 +32,6 @@
                 <span>.</span><span>.</span><span>.</span>
             </div>
 
-            <audio src="Debussy - Reverie L68.mp3" autoplay loop controls id="main_menu_audio"></audio>
-
         </div>
 
         <div id="storyboard">
@@ -109,6 +107,11 @@
                         <label class="custom-radio"><input type="radio" name="difficult"
                                 value="hard"><span>HARD</span></label>
 
+                        <h1 id="main_menu_audio">Main BGM VOLUME</h1>
+                        <label>BGM VOLUME</label>
+                        <input type="range" id="mainVolume" min="0" max="100" value="0">&nbsp;
+                        <span id="mainVolumeValue">0</span>
+
                         <h1 id="BGMS">BGM</h1>
                         <label class="custom-radio"><input type="radio" name="music" value="backgroundmusic1.wav"
                                 checked><span>BGM 1</span></label>
@@ -133,6 +136,7 @@
                         <!-- <h1 id="over_volume">FAIL SOUND VOLUME</h1> -->
                         <span>volume</span>&nbsp;<input type="range" id="overVolume" min="0" max="100"
                             value="50">&nbsp;<span id="overVolumeValue">50</span>
+                            
                         <h1 id="mute_button">MUTE ALL SOUND</h1>
                         <br>
                         <!-- <label class="check_label"></label> -->
@@ -162,8 +166,9 @@
                 <div id="my_box">
                     <div id="chara_box">
                         <img src="character.png" alt="캐릭터">
-                        <div id="name">USER</div>
+                        
                     </div>
+                    <h3 id="name">USER</h3>
                     <div id="play_box">
                         <div class="profiles" id="maxAlive"></div>
                         <div class="profiles" id="meansAlive"></div>
@@ -174,7 +179,9 @@
                         <div class="profiles" id="sumStart"></div>
                     </div>
                 </div>
+                
                 <div id="assignment_box">
+                    <h3>CHALLENGE</h3>
                     <div class="assignment" id="touchBarCnt"></div>
                     <div class="assignment" id="isCostomize"></div>
                     <div class="assignment" id="deadCnt"></div>
@@ -214,8 +221,8 @@
             </div>
         </div>
         <div id="final_page">
-            <div id="success_end">성공!!</div>
-            <div id="fail_end">실패!!</div>
+            <div id="success_end"></div>
+            <div id="fail_end"></div>
         </div>
     </div>
     <canvas id="myCanvas"></canvas>

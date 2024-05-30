@@ -266,10 +266,6 @@ img {
     }
 }
 
-#main_menu_audio {
-    opacity: 0.1;
-}
-
 /* 스토리 진행 창 */
 
 #storyboard {
@@ -292,7 +288,7 @@ img {
     display: block;
     color: gray;
     width: 100%;
-    font-size: 35px;
+    font-size: 30px;
     font-style: italic;
     text-align: center;
     letter-spacing: 8px;
@@ -306,6 +302,7 @@ img {
 
 .storybox {
     display: none;
+    font-size: 26px;
     /* display: flex; */
     align-items: center;
     padding: 10px 30px;
@@ -452,9 +449,12 @@ img {
 }
 
 #settingsMenu>h1 {
+    font-size: 2.2em;
+    font-weight: 900;
+    color: #23292c;
     width: 450px;
     margin-top: 40px;
-    text-shadow: 5px 5px 0px #ffffff;
+    text-shadow: 5px -3px 0px #eaf3f8dc;
     box-shadow: inset 0 -0.5em 0 0 #eaf3f8dc;
 }
 
@@ -537,38 +537,43 @@ img {
 }
 
 #my_box {
+    
     position: relative;
     display: inline-block;
-    width: 400px;
     height: 500px;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 10%;
+    /* padding: 0 80px; */
 }
 
 #assignment_box {
     overflow: scroll;
     display: block;
-    width: 35%;
-    height: 400px;
-    margin-top: 100px;
+    width: 400px;
+    height: 500px;
+    padding: 50px 50px;
+    margin-top: 20px;
     background-color: #eaf3f8af;
+    
 }
 
 .assignment {
-    font-size: 1.5em;
+    font-size: 1.8em;
     margin: 2em 1em;
+    /* text-shadow: 5px 5px 2px #d9e4ec; */
 }
 
 .clearedassignment {
-    font-size: 1.5em;
-    margin: 2em 1em;
+    font-size: 1.8em;
+    margin: 2em 0.5em;
     text-decoration: line-through;
 }
 
 #chara_box {
-    position: relative;
+    overflow: hidden;
+    width: 140px;
+    margin: 20px auto;
     background-color: #ffffff;
-    width: 40%;
     opacity: 0.8;
 
 }
@@ -577,33 +582,45 @@ img {
     width: 80%;
     margin: 10% 10%;
     padding: 5% 0;
-
-
 }
 
-#name {
-    position: absolute;
+
+#play_box {
+    /* border: 5px solid white; */
+    width: 250px;
+    bottom: 20px;
+    padding: 10px 10px;
+    color: #ffffff;
+    font-size: 2em;
+    font-weight: bolder;
+    text-shadow: 8px 5px 0 black;
+}
+
+
+#name{
+    box-shadow: inset 0 -0.5em 0 0 #eaf3f8dc;
     width: 100%;
     height: 50px;
-    bottom: -70px;
-    margin: 5% 0;
+    margin-bottom: 20px;
     line-height: 50px;
     font-size: 40px;
     font-weight: bolder;
     color: #ffffff;
-    text-shadow: 0px 0px 2px #ffffff;
-    color: transparent;
     text-align: center;
+    text-shadow: 8px 5px 0 black;
 }
 
-#play_box {
-    position: absolute;
-    bottom: 20px;
-    color: #ffffff;
-    font-size: 20px;
+#assignment_box>h3{
+    box-shadow: inset 0 -0.5em 0 0 #eaf3f8dc;
+    height: 50px;
+    width: 100%;
+    line-height: 50px;
+    font-size: 40px;
+    text-align: center;
     font-weight: bolder;
+    color: #ffffff;
+    text-shadow: 8px 5px 0 black;
 }
-
 /* result page */
 
 #result_page {
@@ -756,18 +773,37 @@ img {
 /* final page */
 
 #final_page{
+    z-index: 1;
     display: none;
-    width: 100%;
-    height: 100%;
-    background-color: #fff9f9;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
-#success_end, #fail_end{
+#success_end{
+    width: 100%;
+    height: 100%;
     display: none;
     font-size: large;
    text-align: center;
+   background: url("final_page_1.jpg");
+   background-repeat: no-repeat;
+   background-size: cover;
 }
 
+
+#fail_end{
+    width: 100%;
+    height: 100%;
+    display: none;
+    font-size: large;
+   text-align: center;
+   background: url("final_page_2.jpg");
+   background-repeat: no-repeat;
+   background-size: cover;
+}
 
 
 

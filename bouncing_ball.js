@@ -111,7 +111,6 @@ function gameStart() {
 	stage(currentStage);
 
 	backgroundMusic.currentTime = 0;
-	backgroundMusic.play();
 	gameoverMusic.pause();
 	drawItem();
 }
@@ -134,6 +133,8 @@ function mouseMoveSpeed(event) {
 }
 
 function gameInit() {
+	backgroundMusic.play();
+
 	ballX = sWidth / 2;
 	ballY = sHeight - 100;
 	velocityX = 5;
@@ -380,7 +381,7 @@ function movBall() {
 		}
 		combo = 0;
 		scoreUpdate();
-		console.log("dx : " + dx + "\ndy : " + dy);
+		//console.log("dx : " + dx + "\ndy : " + dy);
 	}
 	// 윗 edge와 부딪혔을때
 	if (ballY < ballRadius) dy = -dy;
@@ -431,17 +432,8 @@ function gameOver() {
 	clearInterval(timebar);
 	clearInterval(bomb);
 	backgroundMusic.pause();
-	// score = 0;
 	$("#myScore").hide();
 }
-
-//check answer 내부로 편입됨!
-// function answer() {
-// 	score += combo;
-// 	score += parseInt((sWidth - timeX) / 10);
-// 	// alert("Stage " + currentStage + "clear!\n" + "점수 : " + score);
-// 	currentStage++;
-// }
 
 function endings() {
 	showResult(2); //엔딩에서
@@ -470,14 +462,14 @@ function stageUpdate(stage_num) {
 	dx = 5 + 0.5 * stage_num;
 	dy = -5 - 0.5 * stage_num;
 	for (var t = 0; t <= 11; t++) {
-		bricks[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		bricks[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
 
 	console.log("stageUpdate - currentStage" + currentStage);
 
 	if (currentStage == 4 && difficult != "easy") {
 		var m = Math.floor(Math.random() * 5);
-		var l = Math.floor(Math.random() * 25);
+		var l = Math.floor(Math.random() * 24);
 
 		alphabet(stringToFunc(scrambled[4]), m, l);
 		while (true) {
@@ -527,13 +519,12 @@ function check_word() {
 	totalAlive += timeX * timePerSecond / sWidth;
 	console.log("user_word" + $("#user_word").val());
 	$("#word_box").hide();
-
 	setTimeout(function () {
 		$("#result_page").hide();
 		$("#final_page").show();
 	}, 500);
 
-	if ($("#user_word").val().toLowerCase == answer_word.toLowerCase) {
+	if ($("#user_word").val().toLowerCase() === answer_word.toLowerCase()) {
 		$("#success_end").show();
 	}
 	else {
@@ -552,9 +543,11 @@ function check_word() {
 		, 3000);
 }
 
-
 function exit() {
-
+	$('body').animate({ opacity: "0" }, 2000);
+	setTimeout(function () {
+		window.close();
+	}, 2000);
 }
 
 function masterkeyHandler(e) {
