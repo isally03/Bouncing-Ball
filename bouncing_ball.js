@@ -84,20 +84,20 @@ function gameStart() {
 	mainMusic.pause();
 	if (difficult == "easy") {
 		brickRate = 20;
-		time1 = 5000;
+		time1 = 3000;
 		time2 = 10000;
 		answer_word = answer_arr[0][answer_index];
 	}
 	if (difficult == "normal") {
 		brickRate = 10;
-		time1 = 5000;
+		time1 = 4000;
 		time2 = 8000;
 		answer_word = answer_arr[1][answer_index];
 	}
 	if (difficult == "hard") {
 		brickRate = 4;
 		time1 = 5000;
-		time2 = 5500;
+		time2 = 6000;
 		answer_word = answer_arr[1][answer_index];
 	}
 	scramble(answer_word);
