@@ -282,9 +282,10 @@ img {
     border-radius: 0 0 25px 25px;
     background-color: #FFFDF7;
     opacity: 0.95;
-    
+
 }
-.contentbox>span{
+
+.contentbox>span {
     display: block;
     color: gray;
     width: 100%;
@@ -293,6 +294,7 @@ img {
     text-align: center;
     letter-spacing: 8px;
 }
+
 .exitbar {
     overflow: hidden;
     height: 50px;
@@ -537,7 +539,7 @@ img {
 }
 
 #my_box {
-    
+
     position: relative;
     display: inline-block;
     height: 500px;
@@ -554,7 +556,7 @@ img {
     padding: 50px 50px;
     margin-top: 20px;
     background-color: #eaf3f8af;
-    
+
 }
 
 .assignment {
@@ -591,13 +593,13 @@ img {
     bottom: 20px;
     padding: 10px 10px;
     color: #ffffff;
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: bolder;
     text-shadow: 8px 5px 0 black;
 }
 
 
-#name{
+#name {
     box-shadow: inset 0 -0.5em 0 0 #eaf3f8dc;
     width: 100%;
     height: 50px;
@@ -610,7 +612,7 @@ img {
     text-shadow: 8px 5px 0 black;
 }
 
-#assignment_box>h3{
+#assignment_box>h3 {
     box-shadow: inset 0 -0.5em 0 0 #eaf3f8dc;
     height: 50px;
     width: 100%;
@@ -621,6 +623,7 @@ img {
     color: #ffffff;
     text-shadow: 8px 5px 0 black;
 }
+
 /* result page */
 
 #result_page {
@@ -657,7 +660,7 @@ img {
 
 
 
-#user_word{
+#user_word {
     display: flex;
     width: 300px;
     height: 50px;
@@ -674,17 +677,20 @@ img {
     background-color: #e3dede;
 }
 
-#word_box, #_box, #success, #failed {
+#word_box,
+#_box,
+#success,
+#failed {
     display: none;
 }
 
-#result_page h2{
+#result_page h2 {
     font-size: 80px;
     font-weight: 700;
     text-shadow: 10px 7px 0 #0000003b;
 }
 
-#result_page p{
+#result_page p {
     font-size: 50px;
     color: #5f5c55;
     font-weight: 500;
@@ -772,37 +778,37 @@ img {
 
 /* final page */
 
-#final_page{
+#final_page {
     z-index: 1;
     display: none;
     position: absolute;
-    top:0;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
 }
 
-#success_end{
+#success_end {
     width: 100%;
     height: 100%;
     display: none;
     font-size: large;
-   text-align: center;
-   background: url("final_page_1.jpg");
-   background-repeat: no-repeat;
-   background-size: cover;
+    text-align: center;
+    background: url("final_page_1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 
-#fail_end{
+#fail_end {
     width: 100%;
     height: 100%;
     display: none;
     font-size: large;
-   text-align: center;
-   background: url("final_page_2.jpg");
-   background-repeat: no-repeat;
-   background-size: cover;
+    text-align: center;
+    background: url("final_page_2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 
