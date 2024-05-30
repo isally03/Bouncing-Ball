@@ -103,7 +103,7 @@ function gameStart() {
 		answer_word = answer_arr[1][answer_index];
 	}
 	scramble(answer_word);
-	
+
 	currentStage = 0;
 	score = 0;
 	totalAlive = 0;
@@ -497,7 +497,7 @@ function stageUpdate(stage_num) {
 	}
 }
 
-function check_answer(){
+function check_answer() {
 	totalAlive += timeX * timePerSecond / sWidth;
 
 	console.log("user_alphabet" + $("#user_alphabet").val());
@@ -523,20 +523,20 @@ function check_answer(){
 
 }
 
-function check_word(){
+function check_word() {
 	totalAlive += timeX * timePerSecond / sWidth;
 	console.log("user_word" + $("#user_word").val());
 	$("#word_box").hide();
 
-	setTimeout(function (){
+	setTimeout(function () {
 		$("#result_page").hide();
 		$("#final_page").show();
 	}, 500);
-	
-	if($("#user_word").val().toLowerCase == answer_word.toLowerCase){
+
+	if ($("#user_word").val().toLowerCase == answer_word.toLowerCase) {
 		$("#success_end").show();
 	}
-	else{
+	else {
 		$("#fail_end").show();
 	}
 	$("#user_word").off();
@@ -557,8 +557,8 @@ function exit() {
 
 }
 
-function masterkeyHandler(e){
-	if(e.keyCode == 27){
+function masterkeyHandler(e) {
+	if (e.keyCode == 27) {
 		showResult(0);
 	}
 }

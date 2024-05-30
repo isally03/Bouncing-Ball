@@ -115,7 +115,7 @@ $(document).ready(function () {
     sHeight = $(document).height();
 
     padHeight = 10;
-    padWidth = 250;
+    padWidth = 1920;
 
     canvas = document.getElementById("myCanvas");
     canvas.width = sWidth;
@@ -126,7 +126,7 @@ $(document).ready(function () {
     prevCanvas.height = $("#previewbox").height();
 
     ballRadius = 15;
-    ballMoveSpeed = 10;
+    ballMoveSpeed = 5;
 
     brickMargin = 10;
     brickRowCountMax = 12;
@@ -359,7 +359,7 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
             break;
         case 2:
             $("#word_box").show();
-            $("#hint").text("hint: "+scrambled.join(" "));
+            $("#hint").text("hint: " + scrambled.join(" "));
             // console.log("scrambled.join"+scrambled.join(""));
             $("#user_word").focus();
 
@@ -371,7 +371,7 @@ function showResult(state) { //중간에 정답 도전할 때(0), 공 떨궈서 
                 }
             }); //enter 이벤트 핸들러 연결
             break;
-            
+
         // case 3:
         //     $("#_box").show();
         //     $("#success").show();
