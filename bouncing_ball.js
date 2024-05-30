@@ -56,7 +56,6 @@ var itemDropRate = 0.2;
 let prevMouseX = 0, prevMouseY = 0;
 let paddleSpeed = 0;
 
-var main_BGM;
 var bombX;
 var bombY;
 var bombLength;
@@ -82,8 +81,7 @@ function gameStart() {
 	answer_index = Math.floor(Math.random() * 5);
 	sumStart++;
 
-	main_BGM = document.getElementById("main_menu_audio");
-	main_BGM.pause();
+	mainMusic.pause();
 	if (difficult == "easy") {
 		brickRate = 20;
 		time1 = 5000;
@@ -538,7 +536,7 @@ function check_word() {
 		$("#success_end").hide();
 		$("#fail_end").hide();
 		$("#main_page").show();
-		main_BGM.play();
+		mainMusic.play();
 	}
 		, 3000);
 }

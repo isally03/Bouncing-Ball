@@ -36,6 +36,8 @@ var sumStage = 0;
 var sumStart = 0;
 
 $(document).ready(function () {
+    mainMusic.volume = mainMusicVolume;
+    mainMusic.play();
     $("#myCanvas").hide();
     storybox = $(".storybox");
 
@@ -129,7 +131,7 @@ $(document).ready(function () {
     sHeight = $(document).height();
 
     padHeight = 10;
-    padWidth = 1920;
+    padWidth = 250;
 
     canvas = document.getElementById("myCanvas");
     canvas.width = sWidth;
@@ -140,7 +142,7 @@ $(document).ready(function () {
     prevCanvas.height = $("#previewbox").height();
 
     ballRadius = 15;
-    ballMoveSpeed = 5;
+    ballMoveSpeed = 10;
 
     brickMargin = 10;
     brickRowCountMax = 12;
@@ -276,7 +278,6 @@ function settingsSave() {
 
     $("#customize_page").hide();
     $("#main_page").show();
-    mainMusic.play();
     clearInterval(prevMove);
 }
 
@@ -308,7 +309,6 @@ function settingsCancel(flag) {
     $("#challenge_page").hide();
     $("#main_page").show();
     mainMusic.volume = initialSettings["mainVolumeValue"] / 100;
-    mainMusic.play();
     clearInterval(prevMove);
 }
 
